@@ -1,6 +1,8 @@
 # zsh.nix
 { config, pkgs, ... }:
 {
+
+ #   programs.starship = {      enable = true;      settings = {        add_newline = true;        format = "$line_break$package$character"; # CLI-Anzeigeformat       scan_timeout = 20;      };      interactiveOnly = true;      # presets = ./path/to starship.toml; # Optional: Externe Preset-Datei    };
 #   -----------------------------------------------------------------
 #       Z  S  H
  programs.command-not-found.enable = false;
@@ -11,16 +13,17 @@
 
  programs.nix-index =        { #damit command: nix-locate pattern
         enable = true;   # whether to enable nix-index, a file database for nixpkgs.
-    package = pkgs.nix-index;
-    enableBashIntegration = true;
-    enableZshIntegration = true;    };
-
- programs.bash.enableCompletion = true;
- programs.bash.enableLsColors =true;
- programs.fzf.fuzzyCompletion = true;
- programs.thefuck.enable = true;
+    	package = pkgs.nix-index;
+    	enableBashIntegration = true;
+    	enableZshIntegration = true;    
+    	};
+    	
+ programs.bash.enableCompletion = true; 
+ programs.bash.enableLsColors = true; 
+ programs.fzf.fuzzyCompletion = true; 
+ programs.thefuck.enable = true; 
  programs.thefuck.alias = "F0";
-
+ 
 # enable zsh system-wide use
 users.defaultUserShell = pkgs.zsh;
 # add a shell to /etc/shells

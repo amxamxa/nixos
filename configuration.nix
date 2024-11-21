@@ -185,6 +185,7 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!"'';
      sound.enable = true;
      hardware.pulseaudio.enable = false; # pipewire ist altenative zu pulseaudio
      security.rtkit.enable = true; #ealtimeKit system service, which hands out realtime scheduling priority to user processes on demand
+     
      services.pipewire = {
        enable = true;
        alsa.enable = true;
@@ -192,9 +193,28 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!"'';
        # If you want to use JACK applications, uncomment this
        #jack.enable = true;
        wireplumber.enable = true; # a modular session / policy manager for PipeWire   # pipewire-media-session is no longer supported, switch to `services.pipewire.wireplumber`.
-     };
+        wireplumber.extraConfig."77-no-suspend" = {
+    "context.modules" = [ {
+          args = {
+            audio.node.target = "auto";
+            audio.suspend-node.idle-timeout-seconds = 0;
+          };
+        }
+       ];
+};
 
-  # Some programs need SUID wrappers, can be configured further or are started in user sessions.
+ services.pipewire.extraConfig.pipewire."92-low-latency" = {
+    "context.properties" = {
+      "default.clock.rate" = 48000;
+      "default.clock.quantum" = 32;
+      "default.clock.min-quantum" = 32;
+      "default.clock.max-quantum" = 32;
+    };
+  };
+
+};
+
+# Some programs need SUID wrappers, can be configured further or are started in user sessions.
   # programs.mtr.enable = true;
   # programs.gnupg.agent = {
   #   enable = true;
@@ -225,34 +245,18 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!"'';
  #xdg-desktop-portal-gtk 	# -> flatpak.github.io/xdg-desktop-portal/
 # Flatpak Ende     						
 */
-   programs = {
-    thunar.enable = lib.mkForce false;  # Deaktiviere Thunar
-    traceroute.enable = true;          # Aktiviere Traceroute
-    file-roller.enable = true;         # Aktiviere File Roller
-    gnome-disks.enable = true;         # Aktiviere GNOME Disks
-    git = {
+ programs.xwayland.enable = true;            # Aktiviere XWayland
+    programs.sway.enable = true;
+    programs.thunar.enable = lib.mkForce false;  # Deaktiviere Thunar
+    programs.traceroute.enable = true;          # Aktiviere Traceroute
+    programs.file-roller.enable = true;         # Aktiviere File Roller
+    programs.gnome-disks.enable = true;         # Aktiviere GNOME Disks
+    programs.git = {
       enable = true;
       prompt.enable = true;            # Git-Prompt aktivieren
     };
-    xwayland.enable = true;            # Aktiviere XWayland
-    fzf = {
-      keybindings = true;              # Fuzzy-Suche mit Keybindings
-      fuzzyCompletion = true;          # Fuzzy-Autovervollständigung
-    };
-    starship = {
-      enable = true;
-      settings = {
-        add_newline = true;
-        format = "$line_break$package$character"; # CLI-Anzeigeformat
-        scan_timeout = 20;
-      };
-      interactiveOnly = true;
-      # presets = ./path/to/starship.toml; # Optional: Externe Preset-Datei
-    };
-  };
-  
-programs.sway.enable = true;
-xdg.portal.wlr.enable = true;
+xdg.portal.wlr.enable = true;  # Whether to enable desktop portal for wlroots-based desktops. This will add the xdg-desktop-portal-wlr package into the xdg.portal.extraPortals option, and provide the configuration file .
+
 /* programs.sway.enable = true; #  launch Sway by executing “exec sway” on a TTY. Copy /etc/sway/config to ~/.config/sway/config to modify the default configuration. See https://github.com/swaywm/sway/wiki and “man 5 sway” for more information.
   programs.waybar.enable = true;
  programs.sway.extraSessionCommands = ''
