@@ -40,8 +40,8 @@
 #  hardware.bumblebee.driver = "nvidia";  #"nvidia" or "nouveau"
 #  hardware.bumblebee.pmMethod = "auto"; #Set preferred power management method 
 
-        hardware.opengl.enable 			= true; # Treiber HW-beschleunigung von Medienfunktionen
-  		hardware.opengl.driSupport 		= true;
-hardware.opengl.driSupport32Bit = true;
-#   
+        hardware.opengl.enable 	= true; # Treiber HW-beschleunigung von Medienfunktionen
+  	hardware.opengl.driSupport = true;
+	hardware.opengl.driSupport32Bit = true; 
 }
+

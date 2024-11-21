@@ -1,12 +1,17 @@
 { config, pkgs, lib, ... }:
+
+
 let
   # Import the custom package
-  lightdm-settings = import /etc/nixos/costum-pkgs/lightdm-settings.nix { inherit pkgs; };
+  lightdm-settings = import /etc/nixos/custom-pkgs/lightdm-settings.nix { inherit pkgs; };
 in
+ 
 {
 environment.systemPackages = with pkgs; [
    lightdm-settings
-  
+   libxkbcommon # library to handle keyboard descriptions
+   nixos-icons # icons of the Nix logo, in Freedesktop Icon Directory Layout
+     steam
   xorg.libXrandr
   libglvnd #The GL Vendor-Neutral Dispatch library
 libGL #Stub bindings using libglvnd
@@ -21,9 +26,10 @@ superTuxKart # Tux Kart
 	nixos-grub2-theme
  	unstable.hugo
  	flameshot # Powerful yet simple to use screenshot software
-# neues zeug _______________________________________
-	cli-visualizer # CLI based audio visualizer
-    	ruby # object-oriented language for quick and easy programming
+
+cava # console-based Audio Visualizer for Alsa
+cavalier # visualize audio with CAVA
+	ruby # object-oriented language 
 	shunit2 #xUnit based unit test framework for bash scripts
 	# genymotion # Fast and easy Android emulation
 	# refind
@@ -290,4 +296,6 @@ environment.gnome.excludePackages = [
  # 			];
 #		};
 
+   
 }
+

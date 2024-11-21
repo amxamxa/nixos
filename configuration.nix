@@ -225,6 +225,31 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!"'';
  #xdg-desktop-portal-gtk 	# -> flatpak.github.io/xdg-desktop-portal/
 # Flatpak Ende     						
 */
+   programs = {
+    thunar.enable = lib.mkForce false;  # Deaktiviere Thunar
+    traceroute.enable = true;          # Aktiviere Traceroute
+    file-roller.enable = true;         # Aktiviere File Roller
+    gnome-disks.enable = true;         # Aktiviere GNOME Disks
+    git = {
+      enable = true;
+      prompt.enable = true;            # Git-Prompt aktivieren
+    };
+    xwayland.enable = true;            # Aktiviere XWayland
+    fzf = {
+      keybindings = true;              # Fuzzy-Suche mit Keybindings
+      fuzzyCompletion = true;          # Fuzzy-Autovervollständigung
+    };
+    starship = {
+      enable = true;
+      settings = {
+        add_newline = true;
+        format = "$line_break$package$character"; # CLI-Anzeigeformat
+        scan_timeout = 20;
+      };
+      interactiveOnly = true;
+      # presets = ./path/to/starship.toml; # Optional: Externe Preset-Datei
+    };
+  };
   
 programs.sway.enable = true;
 xdg.portal.wlr.enable = true;
