@@ -21,6 +21,7 @@
     KITTY_CONFIG_DIRECTORY = "/share/kitty";    # kitty-Terminal Konfigurationspfad
     NIX_INDEX_DATABASE = "/share/nix-index";    # Nix-Index-Datenbank
     TEALDEER_CONFIG_DIR = "/share/zsh/tldr";	# tealdeer-rs
+    NAVI_CONFIG = "/share/zsh/navi";
   };
 
   # Sitzungsspezifische Umgebungsvariablen

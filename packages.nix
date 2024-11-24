@@ -79,6 +79,7 @@ cavalier # visualize audio with CAVA
 	  sanctity # Terminal color combinations
 	  notcurses # TUIs and character graphics
 	  terminal-parrot # Shows colorful, animated party parrot in your terminial
+	  bat-extras.batman # scripts: batgrep, batman, batpipe (less), batwatch, batdiff, prettybat 
 # Miscellaneous
 	  thefuck # Corrects previous console commands
 	  ripgrep # Fast search tool
@@ -130,15 +131,15 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  jq # lightweight and flexible command-line JSON processo
 	  neofetch hyfetch
 	 theme-sh
-	# IDEs
+# IDEs
 	 # emacs # Powerful text editor
 	   sublime 	# Text editor for code, markup, and prose
-	# txt editors
+   # txt editors
 	  gnome-text-editor # Simple text editor for GNOME
 	  cherrytree 	# Hierarchical note-taking application
 	  obsidian 	# Note-taking app for networked thoughts
 	  typora 	# Markdown editor
-	   micro 	# Terminal-based text editor
+	  micro 	# Terminal-based text editor
 	 # marker 	# Markdown editor
 	# Python Development
 	  jetbrains.pycharm-community-bin # py IDE. Syntax-Hervorhebng, Debugging-Tools, Refactoring-Unterstützung und Integration mit Versionskontrollsystemen.
@@ -177,22 +178,23 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  evince # Document viewer
 	  drawing # Basic image editor
 	  pandoc # Convert markup formats
+	  pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
+ 	asciinema # Record terminal sessions
+ 	ascii-draw #
+ 	uni2ascii # UTF-8 to ASCII conversion
 	wget
-    libreoffice
-   pdfarranger
-    ghostscript
-    gimp-with-plugins
-    inkscape-with-extensions
+    	libreoffice
+   	pdfarranger
+    	ghostscript
+    	gimp-with-plugins
+    	inkscape-with-extensions
 
 	  # Clipboard and Text Utilities
 	  clipit # Lightweight GTK Clipboard Manager
 	  xclip # X11 clipboard manipulation
 	  emacsPackages.pbcopy # Clipboard integration for Emacs
 
- pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
- asciinema # Record terminal sessions
- ascii-draw #
- uni2ascii # UTF-8 to ASCII conversion
+ 
 # Web Browsers
 	  firefox # Web browser
 	  w3m # Terminal web browser
