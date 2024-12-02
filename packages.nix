@@ -1,16 +1,17 @@
 { config, pkgs, lib, ... }:
 
 
-let
+#let
   # Import the custom package
-  lightdm-settings = import /etc/nixos/custom-pkgs/lightdm-settings.nix { inherit pkgs; };
-in
+#  lightdm-settings = import /etc/nixos/custom-pkgs/lightdm-settings.nix { inherit pkgs; };#
+#in
  
 {
 environment.systemPackages = with pkgs; [
-   lightdm-settings
+#   lightdm-settings
    libxkbcommon # library to handle keyboard descriptions
    nixos-icons # icons of the Nix logo, in Freedesktop Icon Directory Layout
+#   rich-cli # toolbox for fancy output in the terminal
      steam
   xorg.libXrandr
   libglvnd #The GL Vendor-Neutral Dispatch library
@@ -130,6 +131,8 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  toybox # ascii bblkid blockdev bunzip2 ... uvm
 	  jq # lightweight and flexible command-line JSON processo
 	  neofetch hyfetch
+	  dotacat # Like lolcat, but fast
+	  graphviz #graph visualization tools
 	 theme-sh
 # IDEs
 	 # emacs # Powerful text editor

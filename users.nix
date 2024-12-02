@@ -12,8 +12,9 @@
 
 # Globale Umgebungsvariablen
   environment.variables = {
-    EDITOR = "micro";
-    PRO="/home/project";
+    BROWSER 		= 	"firefox";
+    EDITOR 		=	 "micro";
+    PRO 		= 	"/home/project";
     SHAREDIR = "/share";
     EMACSDIR="/share/emacs";
     ZDOTDIR = "/share/zsh";
@@ -21,7 +22,7 @@
     KITTY_CONFIG_DIRECTORY = "/share/kitty";    # kitty-Terminal Konfigurationspfad
     NIX_INDEX_DATABASE = "/share/nix-index";    # Nix-Index-Datenbank
     TEALDEER_CONFIG_DIR = "/share/zsh/tldr";	# tealdeer-rs
-    NAVI_CONFIG = "/share/zsh/navi";
+    NAVI_CONFIG = "/share/zsh/navi/config.yaml";
   };
 
   # Sitzungsspezifische Umgebungsvariablen
@@ -40,7 +41,7 @@
   # Weitere Pfade und Optionen
   environment.homeBinInPath = true;   # Fügt ~/bin/ dem $PATH hinzu
   environment.pathsToLink = [
-    "/share/icons"   # Verlinkt das Icon-Verzeichnis im System
+    "/share/icons"   # Verlinkt das Icon-Verzeichnis im SystemüList of directories to be symlinked in /run/current-system/sw.
   ];
 
   /* ---------------------------------------------------------------------
@@ -81,17 +82,16 @@ _________________________________________________________________________ */
   	if [ -d "/home/amxamxa/$dir" ] && [ ! -e "/home/$name/$dir" ]; then
     		ln -s "/home/amxamxa/$dir" "/home/$name/$dir" && \
     	  echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir erstellt" >> $LOG_FILE
+  	else 
+  		echo "ln nicht gesetzt"
   	fi
      done
-     
-     ################
-           
+
+  find /home -name ".ssh" -exec chmod 0700 {} \+ && echo "chmod 0700 für "~/.ssh" gesetzt" >> $LOG_FILE
   find /home -type f -name "id_ed25519" -exec chmod 0600 {} \+ && echo "chmod 0600 für "id_ed25519" gesetzt" >> $LOG_FILE
-  find /home -type f -name "id_ed25519.pub" -exec chmod 0644 {} \+ && echo "chmod 0644 für "id_ed25519.pub" gesetzt" >> $LOG_FILE
-     
-	
-	
-     echo "===== $(date '+%Y-%m-%d %H:%M:%S') - End setPermissions Script =====" >> $LOG_FILE
+  find /home -type f -name "id_ed25519.pub" -exec chmod 0644 {} \+ && echo "chmod 0644 für "id_ed25519.pub" gesetzt" >> $LOG_FILE	
+  
+  echo "===== $(date '+%Y-%m-%d %H:%M:%S') - End setPermissions Script =====" >> $LOG_FILE
       '';
       deps = [];
     };

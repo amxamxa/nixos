@@ -27,7 +27,7 @@ boot.loader.grub.memtest86.enable = true;
 boot.loader.grub.fsIdentifier = "label";
 boot.loader.grub.devices = [ "nodev" ];
 boot.loader.grub.useOSProber = true;
-boot.loader.grub.theme = pkgs.nixos-grub2-theme; # "/boot/grub/viv/theme.txt";
+# boot.loader.grub.theme = pkgs.nixos-grub2-theme; # "/boot/grub/viv/theme.txt";
 boot.loader.grub.backgroundColor  = "#7EBAE4";
 boot.loader.grub.splashImage ="/share/background.png";  # boot.loader.grub.splashMode = "stretch"; # oder normal
 # boot.loader.grub.font = "/boot/converted-font.pf2"; # f2 font to be used by Grub.
@@ -193,15 +193,14 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!"'';
        # If you want to use JACK applications, uncomment this
        #jack.enable = true;
        wireplumber.enable = true; # a modular session / policy manager for PipeWire   # pipewire-media-session is no longer supported, switch to `services.pipewire.wireplumber`.
-        wireplumber.extraConfig."77-no-suspend" = {
-    "context.modules" = [ {
-          args = {
-            audio.node.target = "auto";
-            audio.suspend-node.idle-timeout-seconds = 0;
-          };
-        }
-       ];
-};
+  #      wireplumber.extraConfig."77-no-suspend" = {
+  #  "context.modules" = [ {
+  #        args = {
+  #          audio.node.target = "auto";
+  #          audio.suspend-node.idle-timeout-seconds = 0;
+  #        };
+  #      }
+  #     ];  };
 
 # services.pipewire.extraConfig.pipewire."92-low-latency" = {
 #    "context.properties" = {
@@ -211,8 +210,7 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!"'';
 #      "default.clock.max-quantum" = 32;
 #    };
 #  };
-
-};
+};  # sound ende
 
 # Some programs need SUID wrappers, can be configured further or are started in user sessions.
   # programs.mtr.enable = true;
