@@ -8,10 +8,13 @@
  
 {
 environment.systemPackages = with pkgs; [
+python312Packages.markdown2 # Fast and complete Python implementation of Markdown
+python312Packages.pip # PyPA recommended tool for installing Python packages
 #   lightdm-settings
    libxkbcommon # library to handle keyboard descriptions
    nixos-icons # icons of the Nix logo, in Freedesktop Icon Directory Layout
 #   rich-cli # toolbox for fancy output in the terminal
+     vivid
      steam
   xorg.libXrandr
   libglvnd #The GL Vendor-Neutral Dispatch library
@@ -78,7 +81,7 @@ cavalier # visualize audio with CAVA
 	  terminal-colors # Display terminal colors
 	  colorpanes # Terminal pane colors
 	  sanctity # Terminal color combinations
-	  notcurses # TUIs and character graphics
+	  notcurses # c compile , TUIs and character graphics
 	  terminal-parrot # Shows colorful, animated party parrot in your terminial
 	  bat-extras.batman # scripts: batgrep, batman, batpipe (less), batwatch, batdiff, prettybat 
 # Miscellaneous
@@ -131,7 +134,7 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  toybox # ascii bblkid blockdev bunzip2 ... uvm
 	  jq # lightweight and flexible command-line JSON processo
 	  neofetch hyfetch
-	  dotacat # Like lolcat, but fast
+  dotacat # Like lolcat, but fast
 	  graphviz #graph visualization tools
 	 theme-sh
 # IDEs
@@ -151,8 +154,8 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  python312Packages.ascii-magic # Converts pictures into # ASCII art
 	 # jupyter # webbasierte interaktive Entwicklungsumgebung. Sie eignet sich hervorragend für explorative Datenanalyse und prototypisches Coden, was für die Entwicklung von Phytom-Anwendungen
 	 # Version Control
-	  git-hub # Interface to GitHub from the command line 
-        github-desktop # GUI for managing Git and GitHub. 
+#	  git-hub # Interface to GitHub from the command line 
+#        github-desktop # GUI for managing Git and GitHub. 
  gitFull # Distributed version control system	  
  gitnr # Create `.gitignore` files using templates
 	#  gitlab # GitLab Community Edition 	 	 
@@ -193,7 +196,8 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
     	inkscape-with-extensions
 
 	  # Clipboard and Text Utilities
-	  clipit # Lightweight GTK Clipboard Manager
+	  # parcellite
+	  #clipit # Lightweight GTK Clipboard Manager
 	  xclip # X11 clipboard manipulation
 	  emacsPackages.pbcopy # Clipboard integration for Emacs
 

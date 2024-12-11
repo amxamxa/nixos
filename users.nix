@@ -23,6 +23,11 @@
     NIX_INDEX_DATABASE = "/share/nix-index";    # Nix-Index-Datenbank
     TEALDEER_CONFIG_DIR = "/share/zsh/tldr";	# tealdeer-rs
     NAVI_CONFIG = "/share/zsh/navi/config.yaml";
+    GIT_CONFIG          = "/share/zsh/git/config";
+      # XAUTHORITY = "$DG_CONFIG_HOME/Xauthority";  # Kommentiert, aber bei Bedarf nutzbar
+     CARGO_HOME         = "$HOME/.config/cargo";       # Für Rust-Projekte, falls benötigt
+     WWW_HOME           = "$HOME/.config/w3m";           # w3m (Browser) Konfigurationspfad
+         # SPACESHIP_CONFIG = "$ZDOTDIR/prompt/starship.toml"; # Spaceship Prompt Konfigurationspfad
   };
 
   # Sitzungsspezifische Umgebungsvariablen
@@ -31,11 +36,6 @@
     XDG_CONFIG_HOME     = "$HOME/.config";
     XDG_DATA_HOME       = "$HOME/.local/share";
     XDG_STATE_HOME      = "$HOME/.local/state";  
-    # XAUTHORITY = "$DG_CONFIG_HOME/Xauthority";  # Kommentiert, aber bei Bedarf nutzbar
-     CARGO_HOME         = "$XDG_CONFIG_HOME/cargo";       # Für Rust-Projekte, falls benötigt
-     WWW_HOME           = "$XDG_CONFIG_HOME/w3m";           # w3m (Browser) Konfigurationspfad
-    GIT_CONFIG          = "$XDG_CONFIG_HOME/git/config";
-         # SPACESHIP_CONFIG = "$ZDOTDIR/prompt/starship.toml"; # Spaceship Prompt Konfigurationspfad
   };
 
   # Weitere Pfade und Optionen

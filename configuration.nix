@@ -4,8 +4,8 @@
   imports =
     [ # Include the results of the hardware scan.
       	./hardware-configuration.nix
-      	./gpu.nix
-	./zsh.nix
+    #  	./gpu.nix
+		./zsh.nix
       	./packages.nix
       	./users.nix
       	./docker.nix
@@ -31,7 +31,7 @@ boot.loader.grub.useOSProber = true;
 boot.loader.grub.backgroundColor  = "#7EBAE4";
 boot.loader.grub.splashImage ="/share/background.png";  # boot.loader.grub.splashMode = "stretch"; # oder normal
 # boot.loader.grub.font = "/boot/converted-font.pf2"; # f2 font to be used by Grub.
-# boot.loader.grub.fontSize = 12; # ...wird ignoriert, es sei denn, die Schriftart ist auf eine TTF- oder OTF-Schriftart eingestellt.
+boot.loader.grub.fontSize = 24; # ...wird ignoriert, es sei denn, die Schriftart ist auf eine TTF- oder OTF-Schriftart eingestellt.
 
 fileSystems."/share" =
   { device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
@@ -39,8 +39,7 @@ fileSystems."/share" =
   };
   
  hardware.cpu.intel.updateMicrocode = true; # update the CPU microcode for Intel processors.
-# networking.hostName = "github"; # Define your hostname.
-  networking.fqdn = "github.com";
+ networking.hostName = "local"; # Define your hostname.
  # Enable networking
  networking.networkmanager.enable = true;
  networking.usePredictableInterfaceNames = false; # eth0 statt ensp0
@@ -88,8 +87,8 @@ fileSystems."/share" =
   		 	
 # Enable the - d e s k t o p  m a n a g e r - Environment. # slick-greeter; | lightdm-enso-os-greeter| lightdm-tiny-greeter 
   # Include LightDM configuration if necessary
- services.xserver.displayManager.lightdm.enable = true;
- services.xserver.displayManager.lightdm.greeters.slick.enable = true;
+# services.xserver.displayManager.lightdm.enable = true;
+# services.xserver.displayManager.lightdm.greeters.slick.enable = true;
 # -------------------------------------------
 # services.xserver.displayManager = {
 #		gdm.enable = false;
@@ -100,7 +99,6 @@ fileSystems."/share" =
 #	 	lightdm.greeters.gtk.clock-format ="Es ist %A. %H:%M in TZ: %Z"; # %A:AusgeschriebenerTag  %Z:TZ-kürzel. 
 #	 	}; 
 # LightDM Slick Greeter 
-/*
 services.xserver.displayManager = {
   gdm.enable = false;
   lightdm.enable = true;
@@ -112,11 +110,11 @@ services.xserver.displayManager = {
      iconTheme.name = "Faba-Mono-Dark";
      font.package = pkgs.meslo-lgs-nf;
      font.name = "MesloLGS NF Bold 22";
-     draw-user-backgrounds= true; # steuert, ob Hintergrund des Nutzers auf Login-Bildschirm erscheint
+    # draw-user-backgrounds= true; # steuert, ob Hintergrund des Nutzers auf Login-Bildschirm erscheint
      # tshoot:  /var/log/lightdm/lightdm.log
      extraConfig = ''
     # LightDM GTK+ Configuration file format for /etc/lightdm/slick-greeter.conf
-    #    background=/etc/lightdm/lightDM-bg.png
+        background=/etc/lightdm/lightDM-bg.png
         background-color="#502962"  
         show-hostname=true  
         show-clock=true 
@@ -136,7 +134,7 @@ services.xserver.displayManager = {
         # show-keyboard=false
          '';  };
    };
- */
+
 
  services.xserver.desktopManager.cinnamon.enable = true; 	
  services.xserver.desktopManager.gnome.enable = false;
@@ -149,7 +147,6 @@ services.displayManager = {
 	# 	autoLogin.user = "mxxkee";
 		defaultSession = "cinnamon";	}; 
 
-#services.xserver.displayManager.sessionCommands = '' xcowsay "Hello World! &";	'';
 services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!"'';
 
  # Enable CUPS to print documents.
