@@ -66,7 +66,7 @@ git clone https://github.com/amxamxa/nixos/
 cp -rvi . /etc/nixos  
 
 # Aktualisiere dein System:
-sudo nixos-rebuild switch --show-trace --upgrade --profile-name "amxamx-github" -I nixos-config=/etc/nixos/configuration.nix
+sudo nixos-rebuild switch --show-trace --upgrade --profile-name "amxamxa-github" -I nixos-config=/etc/nixos/configuration.nix
 ```
 
 

@@ -11,6 +11,9 @@ environment.systemPackages = with pkgs; [
 python312Packages.markdown2 # Fast and complete Python implementation of Markdown
 python312Packages.pip # PyPA recommended tool for installing Python packages
 #   lightdm-settings
+
+hidapi # Library for communicating with USB and Bluetooth HID devices
+tecla # keyboard layout viewer.
    libxkbcommon # library to handle keyboard descriptions
    nixos-icons # icons of the Nix logo, in Freedesktop Icon Directory Layout
 #   rich-cli # toolbox for fancy output in the terminal
@@ -34,7 +37,7 @@ superTuxKart # Tux Kart
 cava # console-based Audio Visualizer for Alsa
 cavalier # visualize audio with CAVA
 	ruby # object-oriented language 
-	shunit2 #xUnit based unit test framework for bash scripts
+	shunit2 # xUnit based unit test framework for bash scripts
 	# genymotion # Fast and easy Android emulation
 	# refind
   	pantheon.elementary-wallpapers # collection of wallpapers for elementary

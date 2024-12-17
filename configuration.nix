@@ -5,7 +5,9 @@
     [ # Include the results of the hardware scan.
       	./hardware-configuration.nix
     #  	./gpu.nix
-		./zsh.nix
+    #   ./gpu-GV-N960.nix # nicht mehr drin
+	./mouse-rog.nix
+	./zsh.nix
       	./packages.nix
       	./users.nix
       	./docker.nix
