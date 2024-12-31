@@ -8,6 +8,12 @@
  
 {
 environment.systemPackages = with pkgs; [
+
+metasploit # metasploit Framework - a collection of exploits
+armitage # graphical cyber attack management tool for Metasploit
+dedup # data deduplication program
+
+
 python312Packages.markdown2 # Fast and complete Python implementation of Markdown
 python312Packages.pip # PyPA recommended tool for installing Python packages
 #   lightdm-settings
