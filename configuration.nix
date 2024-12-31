@@ -178,8 +178,8 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!"'';
 };
   
   #  Allow InsecurePackages
- nixpkgs.config.permittedInsecurePackages = [   "electron-25.9.0"     ];
-
+ nixpkgs.config.permittedInsecurePackages = [ "gradle-6.9.4" "electron-25.9.0" ];
+                
  # Enable sound with pipewire.
      sound.enable = true;
      hardware.pulseaudio.enable = false; # pipewire ist altenative zu pulseaudio
