@@ -8,7 +8,7 @@
  
 {
 environment.systemPackages = with pkgs; [
-
+postgresql # Powerful, open source object-relational database system
 metasploit # metasploit Framework - a collection of exploits
 armitage # graphical cyber attack management tool for Metasploit
 dedup # data deduplication program

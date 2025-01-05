@@ -263,6 +263,8 @@ xdg.portal.wlr.enable = true;  # Whether to enable desktop portal for wlroots-ba
   # Fix for some Java AWT applications (e.g. Android Studio), use this if they aren't displayed properly:
   export _JAVA_AWT_WM_NONREPARENTING=1
 '';  */
+services.postgresql.enable = true;
+
   services.logrotate.enable = true;
   services.logrotate.configFile = pkgs.writeText "logrotate.conf" ''
 				weekly 				
