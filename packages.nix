@@ -8,16 +8,17 @@
  
 {
 environment.systemPackages = with pkgs; [
-postgresql # Powerful, open source object-relational database system
-metasploit # metasploit Framework - a collection of exploits
-armitage # graphical cyber attack management tool for Metasploit
+# aus unstable Channel:
+ 	unstable.hugo
+ 	unstable.yt-dlp
+ 	
+# aus stable Channel: 	
+ 
+texliveTeTeX # TeX Live environment
 dedup # data deduplication program
-
-
 python312Packages.markdown2 # Fast and complete Python implementation of Markdown
 python312Packages.pip # PyPA recommended tool for installing Python packages
 #   lightdm-settings
-
 hidapi # Library for communicating with USB and Bluetooth HID devices
 tecla # keyboard layout viewer.
    libxkbcommon # library to handle keyboard descriptions
@@ -37,7 +38,7 @@ superTuxKart # Tux Kart
 	memtest86-efi # Memory testing tool
 	os-prober # Detect other OSes for GRUB
 	nixos-grub2-theme
- 	unstable.hugo
+
  	flameshot # Powerful yet simple to use screenshot software
 
 cava # console-based Audio Visualizer for Alsa

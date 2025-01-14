@@ -144,13 +144,13 @@ services.xserver.displayManager = {
         #  	lxqt.enable 	= false;
          #	xfce.enable 	= false; 
 services.displayManager = {
-		autoLogin.enable = false;
-	#	autoLogin.enable = true;
-	# 	autoLogin.user = "mxxkee";
+	#	autoLogin.enable = false;
+		autoLogin.enable = true;
+	 	autoLogin.user = "mxxkee";
 		defaultSession = "cinnamon";	}; 
 
-services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!"'';
-
+services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!
+  	/* Greeting from GUI */			     && Hi Xamxama"'';
  # Enable CUPS to print documents.
   services.printing.enable = false;
 # Enable touchpad support (enabled default in most desktopManager)
@@ -163,12 +163,11 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!"'';
   nix.settings.auto-optimise-store = true;
   nix.settings.sandbox = true;
 
-
 # Enable the Flakes feature and the accompanying new nix command-line tool
 # nixos.org/manual/nix/stable/contributing/experimental-features
   nix.settings.experimental-features = [ "nix-command" ]; /*"flakes"*/
   
-  nixpkgs = { # to install from unstable-ch.
+  nixpkgs = { # to install from unstable-channel, siehe packages.nix
     config = {
     allowUnfree = true;
     packageOverrides = pkgs: {
