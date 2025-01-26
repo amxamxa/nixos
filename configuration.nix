@@ -1,39 +1,22 @@
 { config, pkgs, lib,  ... }:
-
+let
+  backgroundColor = "#7EBAE4";
+in
 {
+
   imports =
     [ # Include the results of the hardware scan.
-      	./hardware-configuration.nix
-    #  	./gpu.nix
+      	./hardware-configuration.nix	
+      	./boot.nix
     #   ./gpu-GV-N960.nix # nicht mehr drin
 	./mouse-rog.nix
 	./zsh.nix
       	./packages.nix
       	./users.nix
       	./docker.nix
-      	# ./firefox.nix # tdo
+      	# ./firefox.nix # todo
     ];
-### Bootloader.
-## (U)EFI
-boot.loader.efi.canTouchEfiVariables = true;
-boot.loader.efi.efiSysMountPoint  =  "/boot";
-## SYSTEMD-BOOT
-boot.loader.systemd-boot.enable = false;
-## GRUB2
-#boot.loader.grub.enable = false;
-boot.loader.grub.enable = true;
-# boot.loader.grub.default = "saved"; # will make GRUB select the menu item that was used at the last boot.
-boot.loader.grub.efiSupport = true;
-# boot.loader.grub.configurationLimit = 55;
-boot.loader.grub.memtest86.enable = true;
-boot.loader.grub.fsIdentifier = "label";
-boot.loader.grub.devices = [ "nodev" ];
-boot.loader.grub.useOSProber = true;
-# boot.loader.grub.theme = pkgs.nixos-grub2-theme; # "/boot/grub/viv/theme.txt";
-boot.loader.grub.backgroundColor  = "#7EBAE4";
-boot.loader.grub.splashImage ="/share/background.png";  # boot.loader.grub.splashMode = "stretch"; # oder normal
-# boot.loader.grub.font = "/boot/converted-font.pf2"; # f2 font to be used by Grub.
-boot.loader.grub.fontSize = 24; # ...wird ignoriert, es sei denn, die Schriftart ist auf eine TTF- oder OTF-Schriftart eingestellt.
+### Bootloader. /-> boot.nix
 
 fileSystems."/share" =
   { device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
@@ -53,7 +36,7 @@ fileSystems."/share" =
 	    "194.150.168.168" # (dns.as250.net; Berlin/Frankfurt) 
 	         ];
   # networking.interfaces.enp4s0.useDHCP = true;
-#   networking.interfaces.enp4s0.name = [ "eth0" ];
+  # networking.interfaces.enp4s0.name = [ "eth0" ];
   
   # Set your time zone.
    time.timeZone = "Europe/Berlin";
@@ -62,11 +45,11 @@ fileSystems."/share" =
     keyMap = "de";  # Deutsche Tastaturbelegung in der Konsole
   };
    # Enable the X11 windowing system.
-	services.xserver.enable = true;
-	 	# Configure keymap in X11  oder "terminate:ctrl_alt_bksp"; # oder "grp:caps_toggle,grp_led:scroll"
-	services.xserver.xkb = {
-		layout = "de";
-		options = "eurosign:e,caps:escape"; 
+  services.xserver.enable = true;
+   # Configure keymap in X11  oder "terminate:ctrl_alt_bksp"; # oder "grp:caps_toggle,grp_led:scroll"
+  services.xserver.xkb = {
+	layout = "de";
+	options = "eurosign:e,caps:escape"; 
 	  			}; 
 # Select internationalisation properties.
   i18n = {
@@ -125,7 +108,8 @@ services.xserver.displayManager = {
     #    other-monitors-logo=/share/wallpaper/logo-Nihilisten.png
          xft-hintstyle="hintmedium" #  (hintnone/hintslight/hintmedium/hintfull)
         # Sets the monitor on which to show the login window, -1 means "follow the mouse"
-        only-on-monitor=DVI-I-1 
+       # only-on-monitor=DVI-I-1 
+   only-on-monitor=HDMI-1
      #   stretch-background-across-monitors=true 
         clock-format=" %d.%b.%g %H:%"
          # xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)
@@ -140,14 +124,15 @@ services.xserver.displayManager = {
 
  services.xserver.desktopManager.cinnamon.enable = true; 	
  services.xserver.desktopManager.gnome.enable = false;
-	 #	pantheon.enable = false;
-        #  	lxqt.enable 	= false;
+	 #	pantheon.enable = f/share/wallpaper/logo-aramgedon.pngalse;
+         #  	lxqt.enable 	= false;
          #	xfce.enable 	= false; 
 services.displayManager = {
 	#	autoLogin.enable = false;
 		autoLogin.enable = true;
 	 	autoLogin.user = "mxxkee";
-		defaultSession = "cinnamon";	}; 
+		defaultSession = "cinnamon";	
+		}; 
 
 services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!
   	/* Greeting from GUI */			     && Hi Xamxama"'';
@@ -177,7 +162,7 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!
 };
   
   #  Allow InsecurePackages
- nixpkgs.config.permittedInsecurePackages = [ "gradle-6.9.4" "electron-25.9.0" ];
+ nixpkgs.config.permittedInsecurePackages = [ "openssl-1.1.1w" "gradle-6.9.4" "electron-25.9.0" ];
                 
  # Enable sound with pipewire.
      sound.enable = true;

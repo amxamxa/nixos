@@ -13,7 +13,16 @@ environment.systemPackages = with pkgs; [
  	unstable.yt-dlp
  	
 # aus stable Channel: 	
- 
+ affine
+copyq
+gifsicle
+github-desktop
+#python3.12-markdown2
+#python3.12-pip
+sublime4
+yt-dlp
+ytfzf
+
 texliveTeTeX # TeX Live environment
 dedup # data deduplication program
 python312Packages.markdown2 # Fast and complete Python implementation of Markdown
