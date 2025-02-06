@@ -13,6 +13,7 @@ environment.systemPackages = with pkgs; [
  	unstable.yt-dlp
  	
 # aus stable Channel: 	
+pydf
  affine
 copyq
 gifsicle
@@ -183,10 +184,10 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	gitleaks # Scan git repos for secrets	 
 	gitlint # Linting for git commit messages
  # GNOME Utilities
-	  gnome.gnome-logs # Logs viewer
-	  gnome.dconf-editor # Configuration editor
+	  gnome-logs # Logs viewer
+	  dconf-editor # Configuration editor
 	  gnome-firmware # Firmware updater
-	  gnome.gnome-disk-utility # Disk utility
+	  gnome-disk-utility # Disk utility
 	  gnome-text-editor # Simple text editor
 # Theming and Appearance
 	  whitesur-gtk-theme # MacOS Big Sur theme for GNOME
@@ -198,7 +199,7 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  vlc # Media player
 	  imagemagick # Image manipulation tool
 	  losslesscut-bin # Lossless video/audio editor
-	  ffmpeg_5-full # Audio/video processing tool
+	  ffmpeg # Complete, cross-platform solution to record, convert and stream audio and video
 	  shotwell # Photo organizer
 	  evince # Document viewer
 	  drawing # Basic image editor
@@ -247,12 +248,12 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  pwvucontrol # PipeWire volume control
 	  helvum # GTK patchbay for PipeWire
   # Cinnamon Utilities
-	  cinnamon.nemo # File manager
+	  nemo # File manager
 	  nemo-qml-plugin-dbus # D-Bus integration for Nemo
-	  cinnamon.nemo-emblems # Emblems for Nemo
-	  cinnamon.folder-color-switcher # Folder color switcher
-	  cinnamon.nemo-fileroller # File roller integration
-	  cinnamon.nemo-python # Python extensions for Nemo
+	  nemo-emblems # Emblems for Nemo
+	  folder-color-switcher # Folder color switcher
+	  nemo-fileroller # File roller integration
+	  nemo-python # Python extensions for Nemo
   # Testing and Development
 	  shellspec # BDD unit testing framework
 	  hackertyper # Simulate hacking
@@ -290,12 +291,16 @@ fonts.enableDefaultPackages = false;  # Deaktiviert die Standard-Schriftarten
 # ~/.local/share/font + fc-cache für costume fonts
 fonts.packages = with pkgs; [ 
 	meslo-lgs-nf 
-	tt2020 	  
-	(nerdfonts.override { fonts = 
-		[  "Hack" "3270" "Agave"  # "EnvyCodeR" "Mononoki" "ProFont"
-		"Lekton" "Monofur" "ProggyClean" ];  # "Iosevka"	"FiraCode" 	"DroidSansMono" 	
-			       } )
-			      ]; 
+	tt2020 
+	#nerd-fonts.hack
+	#nerd-fonts.3270
+	#nerd-fonts.agave
+	#nerd-fonts.lekton
+        #nerd-fonts.monofur
+        #nerd-fonts.proggyclean
+        ];
+}
+/* ALT: 	(nerdfonts.override { fonts =		[  "Hack" "3270" "Agave"  # "EnvyCodeR" "Mononoki" "ProFont" "Lekton" "Monofur" "ProggyClean" ]; # "FiraCode" 	"DroidSansMono"  } ) ]; */ 
 
 #  fonts = {
 #  fontconfig.enable
@@ -305,9 +310,8 @@ fonts.packages = with pkgs; [
 #    fontconfig.defaultFonts.emoji = [ "JoyPixels" ];
 #  };
 
-environment.xfce.excludePackages = [
-	            pkgs.xfce.mousepad 	 pkgs.xfce.parole
-	            pkgs.xfce.ristretto	 pkgs.xfce.thunar 		];
+/* environment.xfce.excludePackages = [	            pkgs.xfce.mousepad 	 pkgs.xfce.parole
+	            pkgs.xfce.ristretto	 pkgs.xfce.thunar ]; 
 environment.gnome.excludePackages = [
 	   		pkgs.gnome.gnome-backgrounds pkgs.gnome.gnome-characters
 	   		pkgs.gnome.geary  pkgs.gnome.gnome-music
@@ -322,8 +326,8 @@ environment.gnome.excludePackages = [
 #	   		pkgs.cinnamon.mint-l-theme pkgs.cinnamon.mint-l-icons
 #	   		pkgs.cinnamon.xreader
  # 			];
-#		};
-
-   
+#		}; 
 }
+*/
+
 

@@ -62,47 +62,44 @@ _________________________________________________________________________ */
   system.activationScripts = {
     setPermissions = {
       text = ''
-        LOG_FILE=/var/log/setPermissions.log     
-        echo "===== $(date '+%Y-%m-%d %H:%M:%S') - Start setPermissions Script =====" >> $LOG_FILE
+ LOG_FILE=/var/log/setPermissions.log     
+ echo "===== $(date '+%Y-%m-%d %H:%M:%S') - Start setPermissions Script =====" >> $LOG_FILE
+
 # Setze Berechtigungen auf 2775 für /home
-        chmod -R 2775 /home && echo "Berechtigungen auf 2775 für /home erfolgreich gesetzt" >> $LOG_FILE
-        chown -R :mxx /home && echo "Gruppe 'mxx' für /home erfolgreich gesetzt" >> $LOG_FILE
-
+# chmod -R 2775 /home && echo "Berechtigungen auf 2775 für /home erfolgreich gesetzt" >> $LOG_FILE
+ chown -R :mxx /home && echo "Gruppe 'mxx' für /home erfolgreich gesetzt" >> $LOG_FILE
 # Setze Berechtigungen auf 2775 für /share
-        chmod -R 2775 /share && echo "Berechtigungen auf 2775 für /share erfolgreich gesetzt" >> $LOG_FILE
+        chmod -R 2760 /share && echo "Berechtigungen auf 2760 für /share erfolgreich gesetzt" >> $LOG_FILE
         chown -R :mxx /share && echo "Gruppe 'mxx' für /share erfolgreich gesetzt" >> $LOG_FILE
-
 # Setze das SGID-Bit für Verzeichnisse
         find /home /share -type d -exec chmod g+s {} + && echo "SGID-Bit für Verzeichnisse gesetzt" >> $LOG_FILE
 
 # Erstelle symbolische Links für bestimmte Verzeichnisse
-	# Setze den Namen der Zielbenutzerin
+# Setze den Namen der Zielbenutzerin
 	name="finja"
     for dir in Bilder Dokumente Video Vorlagen Musik; do
   	if [ -d "/home/amxamxa/$dir" ] && [ ! -e "/home/$name/$dir" ]; then
     		ln -s "/home/amxamxa/$dir" "/home/$name/$dir" && \
     	  echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir erstellt" >> $LOG_FILE
   	else 
-  		echo "ln nicht gesetzt"
+  		echo "ln finja nicht gesetzt"
   	fi
      done
 
   find /home -name ".ssh" -exec chmod 0700 {} \+ && echo "chmod 0700 für "~/.ssh" gesetzt" >> $LOG_FILE
   find /home -type f -name "id_ed25519" -exec chmod 0600 {} \+ && echo "chmod 0600 für "id_ed25519" gesetzt" >> $LOG_FILE
   find /home -type f -name "id_ed25519.pub" -exec chmod 0644 {} \+ && echo "chmod 0644 für "id_ed25519.pub" gesetzt" >> $LOG_FILE	
-  
-  echo "===== $(date '+%Y-%m-%d %H:%M:%S') - End setPermissions Script =====" >> $LOG_FILE
+echo "===== $(date '+%Y-%m-%d %H:%M:%S') - End setPermissions Script =====" >> $LOG_FILE
       '';
       deps = [];
     };
   };
- 
-   /* ________________________  _  ___  _   ____________________________
-                              ( )     ( )
-    _   _ ___  ___ _ __ ___  |/ _ __ |/
-   | | | / __|/ _ \ '__/ __|   | '_ \
-   | |_| \__ \  __/ |  \__ \   | | | |
-    \__,_|___/\___|_|  |___/   |_| |_|
+/* ________________________  _  ___  _   ____________________________
+                          ( )     ( )
+ _   _ ___  ___ _ __ ___  |/ _ __ |/
+| | | / __|/ _ \ '__/ __|   | '_ \
+| |_| \__ \  __/ |  \__ \   | | | |
+ \__,_|___/\___|_|  |___/   |_| |_|
       __ _ _ __ ___  _   _ _ __  ___
      / _` | '__/ _ \| | | | '_ \/ __|
     | (_| | | | (_) | |_| | |_) \__ \
@@ -172,21 +169,26 @@ security.sudo = {
     { 
       groups = ["mxx"];
       commands = [
-        { command = "${pkgs.coreutils}/sbin/df"; options = ["NOPASSWD"]; } # Dateisystemnutzung anzeigen
-        { command = "${pkgs.systemd}/bin/systemctl suspend"; options = ["NOPASSWD"]; } # System in den Standby-Modus versetzen
-        { command = "${pkgs.systemd}/bin/reboot"; options = ["NOPASSWD"]; } # System neu starten
-        { command = "${pkgs.systemd}/bin/poweroff"; options = ["NOPASSWD"]; } # System herunterfahren
-        { command = "${pkgs.systemd}/sbin/shutdown"; options = ["NOPASSWD"]; } # System ausschalten
+      # Dateisystemnutzung anzeigen
+        { command = "${pkgs.coreutils}/sbin/df"; options = ["NOPASSWD"]; } 
+      # System neu starten
+        { command = "${pkgs.systemd}/bin/reboot"; options = ["NOPASSWD"]; } 
+      # System herunterfahren
+        { command = "${pkgs.systemd}/bin/poweroff"; options = ["NOPASSWD"]; } 
+      # System ausschalten
+        { command = "${pkgs.systemd}/sbin/shutdown"; options = ["NOPASSWD"]; }
+      # System in den Standby-Modus versetzen
+        { command = "${pkgs.systemd}/bin/systemctl suspend"; options = ["NOPASSWD"]; } 
       ]; 
     }
   ];
   extraConfig = ''
-    Defaults env_reset           # Sicherheitsmaßnahme zum Zurücksetzen gefährlicher Umgebungsvariablen
-    Defaults mail_badpass        # E-Mail bei fehlgeschlagenem Passwort
+    Defaults env_reset             # Sicherheitsmaßnahme zum Zurücksetzen ENV
+    Defaults mail_badpass          # E-Mail bei fehlgeschlagenem Passwort
     # Defaults mailto="admin@example.com"   # E-Mail an diese Adresse senden
     Defaults timestamp_timeout = 50
-    Defaults logfile = /var/log/sudo.log    # Protokolliert Sudo-Aktionen
-    Defaults lecture = always     # Immer das Lecture-Skript anzeigen
+    Defaults logfile = /var/log/sudo.log # Protokolliert Sudo-Aktionen
+    Defaults lecture = always     	 # Immer das Lecture-Skript anzeigen
   '';
   };
 

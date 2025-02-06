@@ -44,6 +44,11 @@ fileSystems."/share" =
     font = "Agafari-16"; # "sun12x22"; # ls /run/current-system/sw/share/consolefonts/"Lat2-Terminus16";  # Schriftart für die Konsole
     keyMap = "de";  # Deutsche Tastaturbelegung in der Konsole
   };
+  
+    services.logind.extraConfig = '' 
+ 	 		HandlePowerKey = "poweroff";
+ 		 	HandlePowerKeyLongPress = "reboot"; '';	
+  
    # Enable the X11 windowing system.
   services.xserver.enable = true;
    # Configure keymap in X11  oder "terminate:ctrl_alt_bksp"; # oder "grp:caps_toggle,grp_led:scroll"
@@ -83,12 +88,18 @@ fileSystems."/share" =
 #	 	lightdm.greeters.gtk.theme.package = pkgs.lightdm-enso-os-greeter; 
 #	 	lightdm.greeters.gtk.clock-format ="Es ist %A. %H:%M in TZ: %Z"; # %A:AusgeschriebenerTag  %Z:TZ-kürzel. 
 #	 	}; 
+
+services.displayManager = {
+	autoLogin.enable = true;
+	autoLogin.user = "mxxkee";
+	defaultSession = "cinnamon";	
+	}; 
+	 
 # LightDM Slick Greeter 
 services.xserver.displayManager = {
   gdm.enable = false;
   lightdm.enable = true;
-  # lightdm.greeters.tiny = {   enable = true;
-   #background = "/share/wallpaper/sonstige/blitz.png"; };
+  # lightdm.greeters.tiny = {   enable = true;    #background = "/share/wallpaper/sonstige/blitz.png"; };
    lightdm.greeters.slick = {
      enable = true;
      iconTheme.package = pkgs.faba-mono-icons;
@@ -98,53 +109,42 @@ services.xserver.displayManager = {
     # draw-user-backgrounds= true; # steuert, ob Hintergrund des Nutzers auf Login-Bildschirm erscheint
      # tshoot:  /var/log/lightdm/lightdm.log
      extraConfig = ''
-    # LightDM GTK+ Configuration file format for /etc/lightdm/slick-greeter.conf
+    # LightDM GTK+ Configuration file 
+    # for /etc/lightdm/slick-greeter.conf         # stretch-background-across-monitors=true ?
+ 
+        # Sets monitor on which is login; -1 means "follow the mouse"
+        only-on-monitor=HDMI-1
         background=/etc/lightdm/lightDM-bg.png
+        logo=/etc/lightdm/logo-aramgedon.png 
+    #   other-monitors-logo=/share/wallpaper/logo-Nihilisten.png
         background-color="#502962"  
+        # show-power=false        # show-keyboard=false
         show-hostname=true  
         show-clock=true 
         show-quit=true 
-        logo=/share/wallpaper/logo-aramgedon.png 
-    #    other-monitors-logo=/share/wallpaper/logo-Nihilisten.png
-         xft-hintstyle="hintmedium" #  (hintnone/hintslight/hintmedium/hintfull)
-        # Sets the monitor on which to show the login window, -1 means "follow the mouse"
-       # only-on-monitor=DVI-I-1 
-   only-on-monitor=HDMI-1
-     #   stretch-background-across-monitors=true 
+        xft-hintstyle="hintmedium" # hintnone/hintslight/hintmedium/hintfull  
+        
+        enable-hidpi=auto # to enable HiDPI support (on/off/auto)   # xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)  # xft-antialias=Whether to antialias Xft fonts (true or false) # xft-dpi=Resolution for Xft in dots per inch
         clock-format=" %d.%b.%g %H:%"
-         # xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)
-        # enable-hidpi=Whether to enable HiDPI support (on/off/auto)
-        # xft-antialias=Whether to antialias Xft fonts (true or false)
-        # xft-dpi=Resolution for Xft in dots per inch
-	# show-power=false 
-        # show-keyboard=false
-         '';  };
+	 '';  };
    };
 
-
- services.xserver.desktopManager.cinnamon.enable = true; 	
- services.xserver.desktopManager.gnome.enable = false;
-	 #	pantheon.enable = f/share/wallpaper/logo-aramgedon.pngalse;
-         #  	lxqt.enable 	= false;
-         #	xfce.enable 	= false; 
-services.displayManager = {
-	#	autoLogin.enable = false;
-		autoLogin.enable = true;
-	 	autoLogin.user = "mxxkee";
-		defaultSession = "cinnamon";	
-		}; 
+ services.xserver.desktopManager = {
+    cinnamon.enable 	= true;
+    gnome.enable	= false;
+    pantheon.enable 	= false;
+    lxqt.enable		= false;
+    xfce.enable		= false; 
+    };
 
 services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!
   	/* Greeting from GUI */			     && Hi Xamxama"'';
- # Enable CUPS to print documents.
+
+# Enable CUPS to print documents.
   services.printing.enable = false;
 # Enable touchpad support (enabled default in most desktopManager)
   services.libinput.enable = false;
-
-  services.logind.extraConfig = '' 
- 	 		HandlePowerKey = "poweroff";
- 		 	HandlePowerKeyLongPress = "reboot"; '';	
-	   	  
+  	  
   nix.settings.auto-optimise-store = true;
   nix.settings.sandbox = true;
 
@@ -162,10 +162,13 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!
 };
   
   #  Allow InsecurePackages
- nixpkgs.config.permittedInsecurePackages = [ "openssl-1.1.1w" "gradle-6.9.4" "electron-25.9.0" ];
+ nixpkgs.config.permittedInsecurePackages = [ 
+ 	"openssl-1.1.1w" 	"gradle-6.9.4" 
+ 	"electron-25.9.0" 	
+ 	"dotnet-sdk-7.0.410" 	"dotnet-runtime-7.0.20" ];
                 
  # Enable sound with pipewire.
-     sound.enable = true;
+ # VERALTET seit 24.11    sound.enable = true;
      hardware.pulseaudio.enable = false; # pipewire ist altenative zu pulseaudio
      security.rtkit.enable = true; #ealtimeKit system service, which hands out realtime scheduling priority to user processes on demand
      

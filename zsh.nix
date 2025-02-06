@@ -17,8 +17,7 @@
     	enableBashIntegration = true;
     	enableZshIntegration = true;    
     	};
-    	
- programs.bash.enableCompletion = true; 
+ programs.bash.completion.enable = true; 
  programs.bash.enableLsColors = true; 
  programs.fzf.fuzzyCompletion = true; 
  programs.thefuck.enable = true; 
@@ -34,10 +33,8 @@ environment.shells = with pkgs; [ zsh ];
         enableBashCompletion = true;
         enableLsColors = true;
         syntaxHighlighting.enable = true;   # enable zsh-syntax-highlighting.
-
         autosuggestions.enable = true;      	# enable zsh-autosuggestions.
 #        autosuggestions.strategy = "history"; 	# "match_prev_cmd"; OneOf: "history" "completion"
-
 #   history: Chooses the most recent match from history.
 #    completion: Chooses a suggestion based on what tab-completion would suggest. (requires zpty module)
 #    match_prev_cmd: Like history, but chooses the most recent match whose preceding history item matches the most recently executed command. Note that this strategy won’t work as expected with ZSH options that don’t preserve the history order such as HIST_IGNORE_ALL_DUPS or HIST_EXPIRE_DUPS_FIRST. 
@@ -56,15 +53,15 @@ environment.shells = with pkgs; [ zsh ];
          histSize = 10000;
           histFile = "$ZDOTDIR/history/zhistory";
           setOptions = [        # see man 1 zshoptions
-            "APPEND_HISTORY"        "INC_APPEND_HISTORY"
-            "SHARE_HISTORY"         "EXTENDED_HISTORY"
-            "HIST_IGNORE_DUPS"      "HIST_IGNORE_ALL_DUPS"
-            "HIST_FIND_NO_DUPS"         "HIST_SAVE_NO_DUPS"
-            "RM_STAR_WAIT"          "PRINT_EXIT_VALUE"
-            "SH_WORD_SPLIT"         "CORRECT"
-            "NOTIFY"            "INTERACTIVE_COMMENTS"
-            "ALIAS_FUNC_DEF"        "EXTENDEDGLOB"
-            "AUTO_CD"           "NOMATCH"       #   "no_global_rcs"
+            "APPEND_HISTORY"       "INC_APPEND_HISTORY"
+            "SHARE_HISTORY"        "EXTENDED_HISTORY"
+            "HIST_IGNORE_DUPS"    "HIST_IGNORE_ALL_DUPS"
+            "HIST_FIND_NO_DUPS"   "HIST_SAVE_NO_DUPS"
+            "RM_STAR_WAIT"        "PRINT_EXIT_VALUE"
+            "SH_WORD_SPLIT"       "CORRECT"
+            "NOTIFY"          	  "INTERACTIVE_COMMENTS"
+            "ALIAS_FUNC_DEF"      "EXTENDEDGLOB"
+            "AUTO_CD"     	  "NOMATCH"       #   "no_global_rcs"
                         ]; };
 }
 
