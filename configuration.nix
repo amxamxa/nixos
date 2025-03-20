@@ -7,11 +7,11 @@ in
   imports =
     [ # Include the results of the hardware scan.
       	./hardware-configuration.nix	
-      	./boot.nix
+      	./boot.nix # grub2 & lightDM
     #   ./gpu-GV-N960.nix # nicht mehr drin
 	./mouse-rog.nix
 	./zsh.nix
-      	./packages.nix
+      	./packages.nix # env.pkgs
       	./users.nix
       	./docker.nix
       	# ./firefox.nix # todo
@@ -22,7 +22,6 @@ fileSystems."/share" =
   { device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
     fsType = "btrfs";
   };
-  
  hardware.cpu.intel.updateMicrocode = true; # update the CPU microcode for Intel processors.
  networking.hostName = "local"; # Define your hostname.
  # Enable networking
@@ -80,54 +79,12 @@ fileSystems."/share" =
 # services.xserver.displayManager.lightdm.enable = true;
 # services.xserver.displayManager.lightdm.greeters.slick.enable = true;
 # -------------------------------------------
-# services.xserver.displayManager = {
-#		gdm.enable = false;
-#	 	lightdm.enable = true;	 	
-#	 	lightdm.background = "/share/wallpaper/sonstige/blitz.png"; 
-#	 	lightdm.greeters.gtk.enable = lib.mkDefault true;
-#	 	lightdm.greeters.gtk.theme.package = pkgs.lightdm-enso-os-greeter; 
-#	 	lightdm.greeters.gtk.clock-format ="Es ist %A. %H:%M in TZ: %Z"; # %A:AusgeschriebenerTag  %Z:TZ-kürzel. 
-#	 	}; 
 
 services.displayManager = {
 	autoLogin.enable = true;
 	autoLogin.user = "mxxkee";
 	defaultSession = "cinnamon";	
 	}; 
-	 
-# LightDM Slick Greeter 
-services.xserver.displayManager = {
-  gdm.enable = false;
-  lightdm.enable = true;
-  # lightdm.greeters.tiny = {   enable = true;    #background = "/share/wallpaper/sonstige/blitz.png"; };
-   lightdm.greeters.slick = {
-     enable = true;
-     iconTheme.package = pkgs.faba-mono-icons;
-     iconTheme.name = "Faba-Mono-Dark";
-     font.package = pkgs.meslo-lgs-nf;
-     font.name = "MesloLGS NF Bold 22";
-    # draw-user-backgrounds= true; # steuert, ob Hintergrund des Nutzers auf Login-Bildschirm erscheint
-     # tshoot:  /var/log/lightdm/lightdm.log
-     extraConfig = ''
-    # LightDM GTK+ Configuration file 
-    # for /etc/lightdm/slick-greeter.conf         # stretch-background-across-monitors=true ?
- 
-        # Sets monitor on which is login; -1 means "follow the mouse"
-        only-on-monitor=HDMI-1
-        background=/etc/lightdm/lightDM-bg.png
-        logo=/etc/lightdm/logo-aramgedon.png 
-    #   other-monitors-logo=/share/wallpaper/logo-Nihilisten.png
-        background-color="#502962"  
-        # show-power=false        # show-keyboard=false
-        show-hostname=true  
-        show-clock=true 
-        show-quit=true 
-        xft-hintstyle="hintmedium" # hintnone/hintslight/hintmedium/hintfull  
-        
-        enable-hidpi=auto # to enable HiDPI support (on/off/auto)   # xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)  # xft-antialias=Whether to antialias Xft fonts (true or false) # xft-dpi=Resolution for Xft in dots per inch
-        clock-format=" %d.%b.%g %H:%"
-	 '';  };
-   };
 
  services.xserver.desktopManager = {
     cinnamon.enable 	= true;
@@ -137,8 +94,10 @@ services.xserver.displayManager = {
     xfce.enable		= false; 
     };
 
-services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!
-  	/* Greeting from GUI */			     && Hi Xamxama"'';
+services.xserver.displayManager.sessionCommands = ''xcowsay "
+	"Hello World!" this is X
+  	-- Greeting from GUI --
+  	&& Hi Xamxama"'';
 
 # Enable CUPS to print documents.
   services.printing.enable = false;
@@ -215,6 +174,13 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  # Firewall für Warpinator-Ports öffnen
+  networking.firewall = {
+   allowedTCPPorts = [ 42000 ]; # Standard-Port für Warpinator
+   allowedUDPPorts = [ 42000 ];  
+   };
+services.gvfs.enable = true;
+
 /*
 # Enable the Flatpak
   services.flatpak.enable = true;         
@@ -229,6 +195,21 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "Hello World!
  #xdg-desktop-portal-gtk 	# -> flatpak.github.io/xdg-desktop-portal/
 # Flatpak Ende     						
 */
+
+services.tor.enable = true;
+
+# Avahi für Netzwerk-Discovery aktivieren
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;           # mDNS-Unterstützung
+    publish = {
+      enable = true;
+      addresses = true;       # IP-Adresse veröffentlichen
+      userServices = true;    # Nutzerdienste sichtbar machen
+    };
+  };
+
+ services.playerctld.enable = true;   # enable the playerctld daemon.
  programs.xwayland.enable = true;            # Aktiviere XWayland
     programs.sway.enable = true;
     programs.thunar.enable = lib.mkForce false;  # Deaktiviere Thunar
@@ -252,26 +233,28 @@ xdg.portal.wlr.enable = true;  # Whether to enable desktop portal for wlroots-ba
 '';  */
 services.postgresql.enable = true;
 
+services.vnstat.enable = true; # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
+
   services.logrotate.enable = true;
   services.logrotate.configFile = pkgs.writeText "logrotate.conf" ''
-				weekly 				
-				rotate 4 		
-				create 				
-				dateext				
-				compress		
-				missingok			
-				notifempty
-				'';
+		weekly 				
+		rotate 4 		
+		create 				
+		dateext				
+		compress		
+		missingok			
+		notifempty
+	'';
 #--------------
  services.journald.extraConfig = ''
-   				SystemMaxUse=256M		
-   				SystemMaxFiles=10
-				Compress=yes			
-				MaxFileSec=1week
-	    		ForwardToSyslog=yes	  
-	    		ForwardToKMsg=yes 	
-	    		'';	
-  # Copy the NixOS configuration file and link it from the resulting system
+		SystemMaxUse=256M		
+		SystemMaxFiles=10
+		Compress=yes			
+		MaxFileSec=1week
+    		ForwardToSyslog=yes	  
+    		ForwardToKMsg=yes 	
+    		'';	
+# Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
    system.copySystemConfiguration = true;

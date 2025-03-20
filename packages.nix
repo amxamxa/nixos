@@ -12,7 +12,34 @@ environment.systemPackages = with pkgs; [
  	unstable.hugo
  	unstable.yt-dlp
  	
-# aus stable Channel: 	
+# audio editing  	##########################################
+bitwig-studio4  # Digital audio workstation
+losslesscut-bin # Swiss army knife of lossless video/audio editing
+muse       # MIDI/Audio sequencer with recording/editing
+ardour     # Multi-track hard disk recording software
+petrifoo   # MIDI controllable audio sampler
+decent-sampler   # Audio sample player
+zita-resampler   # Resample library by Fons Adriaensen	
+oxefmsynth # Open source VST 2.4 instrument plugin
+ninjas2    # sample slicer plugin
+bespokesynth-with-vst2 # sw modular synth with controllers
+zam-plugins # Collection of LV2/LADS audio plugins by ZamAudio
+lsp-plugins # Collection of open-source audio plugins
+######################################################
+
+vnstat # Console-based network statistics utility for Linux
+
+vivaldi
+gnome-online-accounts # Single sign-on framework for GNOME
+gvfs # Virtual Filesystem support library
+theme-vertex # theme for GTK 3, GTK 2, Gnome-Shell, and Cinnamon
+
+andromeda-gtk-theme # elegant dark theme for gnome, mate, budgie, cinnamon, xfce
+tor
+dwarf-fortress-packages.themes.autoreiv # theme to use for the lightdm-slick-greeter
+avahi # mDNS/DNS-SD implementation
+warpinator # share files across the LAN
+playerctl # cmd utility and lib for media players that implement MPRIS
 pydf
  affine
 copyq
@@ -26,8 +53,8 @@ ytfzf
 
 texliveTeTeX # TeX Live environment
 dedup # data deduplication program
-python312Packages.markdown2 # Fast and complete Python implementation of Markdown
-python312Packages.pip # PyPA recommended tool for installing Python packages
+ 
+
 #   lightdm-settings
 hidapi # Library for communicating with USB and Bluetooth HID devices
 tecla # keyboard layout viewer.
@@ -167,11 +194,16 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  typora 	# Markdown editor
 	  micro 	# Terminal-based text editor
 	 # marker 	# Markdown editor
-	# Python Development
+#### Python Development
 	  jetbrains.pycharm-community-bin # py IDE. Syntax-Hervorhebng, Debugging-Tools, Refactoring-Unterstützung und Integration mit Versionskontrollsystemen.
 	  python312Full # Python 3.12 interpreter
+	  python312Packages.pip # PyPA recommended tool for installing Python packages
 	  python312Packages.pygments # Syntax highlighting library
 	  python312Packages.ascii-magic # Converts pictures into # ASCII art
+	  python312Packages.speechrecognition # Speech recognition module for Python, supporting several engines and APIs, online and offline        
+	  python312Packages.pydub # Manipulate audio with a simple and easy high level interface
+	  python312Packages.markdown2 # Fast and complete Python implementation of Markdown
+	  
 	 # jupyter # webbasierte interaktive Entwicklungsumgebung. Sie eignet sich hervorragend für explorative Datenanalyse und prototypisches Coden, was für die Entwicklung von Phytom-Anwendungen
 	 # Version Control
 #	  git-hub # Interface to GitHub from the command line 
