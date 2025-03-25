@@ -12,23 +12,10 @@ environment.systemPackages = with pkgs; [
  	unstable.hugo
  	unstable.yt-dlp
  	
-# audio editing  	##########################################
-bitwig-studio4  # Digital audio workstation
-losslesscut-bin # Swiss army knife of lossless video/audio editing
-muse       # MIDI/Audio sequencer with recording/editing
-ardour     # Multi-track hard disk recording software
-petrifoo   # MIDI controllable audio sampler
-decent-sampler   # Audio sample player
-zita-resampler   # Resample library by Fons Adriaensen	
-oxefmsynth # Open source VST 2.4 instrument plugin
-ninjas2    # sample slicer plugin
-bespokesynth-with-vst2 # sw modular synth with controllers
-zam-plugins # Collection of LV2/LADS audio plugins by ZamAudio
-lsp-plugins # Collection of open-source audio plugins
+
 ######################################################
 
-vnstat # Console-based network statistics utility for Linux
-
+  losslesscut-bin # Lossless video/audio editor
 vivaldi
 gnome-online-accounts # Single sign-on framework for GNOME
 gvfs # Virtual Filesystem support library
@@ -39,17 +26,14 @@ tor
 dwarf-fortress-packages.themes.autoreiv # theme to use for the lightdm-slick-greeter
 avahi # mDNS/DNS-SD implementation
 warpinator # share files across the LAN
-playerctl # cmd utility and lib for media players that implement MPRIS
+
 pydf
  affine
 copyq
-gifsicle
-github-desktop
+
 #python3.12-markdown2
 #python3.12-pip
 sublime4
-yt-dlp
-ytfzf
 
 texliveTeTeX # TeX Live environment
 dedup # data deduplication program
@@ -62,7 +46,7 @@ tecla # keyboard layout viewer.
    nixos-icons # icons of the Nix logo, in Freedesktop Icon Directory Layout
 #   rich-cli # toolbox for fancy output in the terminal
      vivid
-     steam
+  #   steam
   xorg.libXrandr
   libglvnd #The GL Vendor-Neutral Dispatch library
 libGL #Stub bindings using libglvnd
@@ -78,8 +62,7 @@ superTuxKart # Tux Kart
 
  	flameshot # Powerful yet simple to use screenshot software
 
-cava # console-based Audio Visualizer for Alsa
-cavalier # visualize audio with CAVA
+
 	ruby # object-oriented language 
 	shunit2 # xUnit based unit test framework for bash scripts
 	# genymotion # Fast and easy Android emulation
@@ -90,7 +73,7 @@ cavalier # visualize audio with CAVA
 	lightdm-slick-greeter # slick-looking LightDM greeter
 	# eww #ElKowars wacky widgets
 	fwup fwupd fwupd-efi #    Configurable embedded Linux firmware update creator and runner
-	jp2a
+	jp2a   #jpt 2 ascii
 	# faba-icon-theme #  modern icon theme with Tango influences
 	faba-mono-icons
        # flat-remix-icon-theme # Flat remix is a pretty simple icon theme inspired on material design
@@ -139,6 +122,7 @@ cavalier # visualize audio with CAVA
 	  tealdeer # Simplified man pages
 	  neo-cowsay # ASCII art tool
 	  xcowsay # Customize cowsay with images
+	 zsh-completions # Additional completions
 	  fortune # Display random quotes
 	  clolcat # Colorize output
 	  blahaj # Fun terminal tool
@@ -184,6 +168,7 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
   dotacat # Like lolcat, but fast
 	  graphviz #graph visualization tools
 	 theme-sh
+	 pingu # Ping command implementation in Go but with colorful output and pingu ascii art
 # IDEs
 	 # emacs # Powerful text editor
 	   sublime 	# Text editor for code, markup, and prose
@@ -193,13 +178,25 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  obsidian 	# Note-taking app for networked thoughts
 	  typora 	# Markdown editor
 	  micro 	# Terminal-based text editor
-	 # marker 	# Markdown editor
+	  marker 	# Markdown editor
+# ASCII
+	asciiquarium-transparent #  Aquarium/sea animation in ASCII art 
+	ascii-image-converter # Convert images into ASCII art on the console
+	pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
+ 	asciinema # Record terminal sessions
+ 	ascii-draw #
+ 	uni2ascii # UTF-8 to ASCII conversion
+ 	artem # Small CLI program to convert images to ASCII art
+ 	gifsicle
+ 	gif-for-cli # Render gifs as ASCII art in your cli
+	python312Packages.ascii-magic # Converts pictures into # ASCII art
+	python312Packages.art # ASCII art library for Python
+
 #### Python Development
 	  jetbrains.pycharm-community-bin # py IDE. Syntax-Hervorhebng, Debugging-Tools, Refactoring-Unterstützung und Integration mit Versionskontrollsystemen.
 	  python312Full # Python 3.12 interpreter
 	  python312Packages.pip # PyPA recommended tool for installing Python packages
 	  python312Packages.pygments # Syntax highlighting library
-	  python312Packages.ascii-magic # Converts pictures into # ASCII art
 	  python312Packages.speechrecognition # Speech recognition module for Python, supporting several engines and APIs, online and offline        
 	  python312Packages.pydub # Manipulate audio with a simple and easy high level interface
 	  python312Packages.markdown2 # Fast and complete Python implementation of Markdown
@@ -227,19 +224,13 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  pop-icon-theme # Pop!_OS icon theme
 	 #  pop-gtk-theme # Pop!_OS GTK theme
 	  theme-sh # Script to set terminal theme
-# Multimedia
-	  vlc # Media player
-	  imagemagick # Image manipulation tool
-	  losslesscut-bin # Lossless video/audio editor
-	  ffmpeg # Complete, cross-platform solution to record, convert and stream audio and video
+# Multimedia, ohne audio
+	imagemagick # Image manipulation tool
 	  shotwell # Photo organizer
 	  evince # Document viewer
 	  drawing # Basic image editor
 	  pandoc # Convert markup formats
-	  pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
- 	asciinema # Record terminal sessions
- 	ascii-draw #
- 	uni2ascii # UTF-8 to ASCII conversion
+
 	wget
     	libreoffice
    	pdfarranger
@@ -248,13 +239,10 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
     	inkscape-with-extensions
 
 	  # Clipboard and Text Utilities
-	  # parcellite
-	  #clipit # Lightweight GTK Clipboard Manager
 	  xclip # X11 clipboard manipulation
 	  emacsPackages.pbcopy # Clipboard integration for Emacs
 
- 
-# Web Browsers
+ # Web Browsers
 	  firefox # Web browser
 	  w3m # Terminal web browser
 # Graphics and Visualization
@@ -273,12 +261,7 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	#  mangohud # OpenGL overlay for monitoring
 	  gcolor3 # color chooser written in GTK3
 	  libgtop # library for multicore sys monitor 
-  # Audio Tools
-	  pipewire # Audio server
-	  wireplumber # Session manager for PipeWire
-	  easyeffects # Audio effects for PipeWire
-	  pwvucontrol # PipeWire volume control
-	  helvum # GTK patchbay for PipeWire
+
   # Cinnamon Utilities
 	  nemo # File manager
 	  nemo-qml-plugin-dbus # D-Bus integration for Nemo

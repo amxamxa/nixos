@@ -8,6 +8,7 @@ in
     [ # Include the results of the hardware scan.
       	./hardware-configuration.nix	
       	./boot.nix # grub2 & lightDM
+      	./audio.nix
     #   ./gpu-GV-N960.nix # nicht mehr drin
 	./mouse-rog.nix
 	./zsh.nix
@@ -126,36 +127,6 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "
  	"electron-25.9.0" 	
  	"dotnet-sdk-7.0.410" 	"dotnet-runtime-7.0.20" ];
                 
- # Enable sound with pipewire.
- # VERALTET seit 24.11    sound.enable = true;
-     hardware.pulseaudio.enable = false; # pipewire ist altenative zu pulseaudio
-     security.rtkit.enable = true; #ealtimeKit system service, which hands out realtime scheduling priority to user processes on demand
-     
-     services.pipewire = {
-       enable = true;
-       alsa.enable = true;
-       alsa.support32Bit = true;
-       # If you want to use JACK applications, uncomment this
-       #jack.enable = true;
-       wireplumber.enable = true; # a modular session / policy manager for PipeWire   # pipewire-media-session is no longer supported, switch to `services.pipewire.wireplumber`.
-  #      wireplumber.extraConfig."77-no-suspend" = {
-  #  "context.modules" = [ {
-  #        args = {
-  #          audio.node.target = "auto";
-  #          audio.suspend-node.idle-timeout-seconds = 0;
-  #        };
-  #      }
-  #     ];  };
-
-# services.pipewire.extraConfig.pipewire."92-low-latency" = {
-#    "context.properties" = {
-#      "default.clock.rate" = 48000;
-#      "default.clock.quantum" = 32;
-#      "default.clock.min-quantum" = 32;
-#      "default.clock.max-quantum" = 32;
-#    };
-#  };
-};  # sound ende
 
 # Some programs need SUID wrappers, can be configured further or are started in user sessions.
   # programs.mtr.enable = true;
