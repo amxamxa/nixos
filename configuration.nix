@@ -15,6 +15,7 @@ in
       	./packages.nix # env.pkgs
       	./users.nix
       	./docker.nix
+      	./AdBloxx.nix
       	# ./firefox.nix # todo
     ];
 ### Bootloader. /-> boot.nix

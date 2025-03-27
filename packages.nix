@@ -96,6 +96,7 @@ superTuxKart # Tux Kart
 	unzip zip zlib
 	# unrar #unfree
 	file # specifies that a series of tests are performed on the file
+	fff # file mgr
 #___________________________________________________________
 # Backup and Recovery
 	  dedup # Deduplicating backup program
@@ -194,6 +195,9 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 
 #### Python Development
 	  jetbrains.pycharm-community-bin # py IDE. Syntax-Hervorhebng, Debugging-Tools, Refactoring-Unterstützung und Integration mit Versionskontrollsystemen.
+	  python312Packages.pip #PyPA recommended tool for installing Python packages
+	  python312Packages.feedparser # Universal feed parser
+	  python312Packages.keyrings-alt # Alternate keyring implementations
 	  python312Full # Python 3.12 interpreter
 	  python312Packages.pip # PyPA recommended tool for installing Python packages
 	  python312Packages.pygments # Syntax highlighting library
