@@ -15,7 +15,7 @@ environment.systemPackages = with pkgs; [
 
 ######################################################
 
-  losslesscut-bin # Lossless video/audio editor
+  
 vivaldi
 gnome-online-accounts # Single sign-on framework for GNOME
 gvfs # Virtual Filesystem support library
@@ -38,7 +38,7 @@ sublime4
 texliveTeTeX # TeX Live environment
 dedup # data deduplication program
  
-
+losslesscut-bin # Lossless video/audio editor
 #   lightdm-settings
 hidapi # Library for communicating with USB and Bluetooth HID devices
 tecla # keyboard layout viewer.
@@ -59,21 +59,16 @@ superTuxKart # Tux Kart
 	memtest86-efi # Memory testing tool
 	os-prober # Detect other OSes for GRUB
 	nixos-grub2-theme
-
- 	flameshot # Powerful yet simple to use screenshot software
-
-
-	ruby # object-oriented language 
-	shunit2 # xUnit based unit test framework for bash scripts
-	# genymotion # Fast and easy Android emulation
-	# refind
-  	pantheon.elementary-wallpapers # collection of wallpapers for elementary
- 	adapta-backgrounds # wallpaper collection for adapta-project
- 	deepin.deepin-wallpapers # wallpapers provides wallpapers of dde
-	lightdm-slick-greeter # slick-looking LightDM greeter
-	# eww #ElKowars wacky widgets
-	fwup fwupd fwupd-efi #    Configurable embedded Linux firmware update creator and runner
-	jp2a   #jpt 2 ascii
+	# refind # alt boot mgr
+# nix-stuff ---------------------	
+	nix-index # Quickly locate nix packages
+#	nix-tree # Interactively browse Nix store paths
+	nix-info # System information for Nix
+#	nix-diff # Compare Nix derivations
+#	nix-output-monitor # Process output of Nix commands
+	nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-github
+# ------------------------------------------------------	
+ 	
 	# faba-icon-theme #  modern icon theme with Tango influences
 	faba-mono-icons
        # flat-remix-icon-theme # Flat remix is a pretty simple icon theme inspired on material design
@@ -81,23 +76,16 @@ superTuxKart # Tux Kart
         wirelesstools # ifrename iwconfig iwevent iwgetid iwlist iwpriv iwspy
 	meld	# visual diff and merge tool
 # __________________________________________
-	xcp	# cp 2.0
-	jp2a # small utility that converts JPG images to ASCII
-	colorized-logs # Tools for logs with ANSI color
-	colorz # color scheme generator. $ colorz image -n 12
-	colorless # colorise cmd output and pipe it to less $ eval "$(colorless -as)"
-# dumm:	colorstorm # cmd line tool to generate color themes for editors (Vim, VSCode, Sublime, Atom) and terminal emulators (iTerm2, Hyper).
-	colord-gtk4 # Color Manager
-	gcolor3 #color picker
-	fd # find in go = find 2.0
-	ntfs3g # FUSE-based NTFS driver with full write support
-	curl wget openssl inetutils
-	gnupg
-	unzip zip zlib
-	# unrar #unfree
-	file # specifies that a series of tests are performed on the file
-	fff # file mgr
-#___________________________________________________________
+flameshot # Powerful yet simple to use screenshot software
+	ruby # object-oriented language 
+	shunit2 # xUnit based unit test framework for bash scripts
+	# genymotion # Fast and easy Android emulation
+	pantheon.elementary-wallpapers # collection of wallpapers for elementary
+ 	adapta-backgrounds # wallpaper collection for adapta-project
+ 	deepin.deepin-wallpapers # wallpapers provides wallpapers of dde
+	lightdm-slick-greeter # slick-looking LightDM greeter
+	# eww #ElKowars wacky widgets
+	fwup fwupd fwupd-efi #    Configurable embedded Linux firmware update creator and runner
 # Backup and Recovery
 	  dedup # Deduplicating backup program
 	  timeshift # System restore utility
@@ -127,6 +115,22 @@ superTuxKart # Tux Kart
 	  fortune # Display random quotes
 	  clolcat # Colorize output
 	  blahaj # Fun terminal tool
+	  xcp	# cp 2.0
+	colorized-logs # Tools for logs with ANSI color
+	colorz # color scheme generator. $ colorz image -n 12
+	colorless # colorise cmd output and pipe it to less $ eval "$(colorless -as)"
+# dumm:	colorstorm # cmd line tool to generate color themes for editors (Vim, VSCode, Sublime, Atom) and terminal emulators (iTerm2, Hyper).
+	colord-gtk4 # Color Manager
+	gcolor3 #color picker
+	fd # find in go = find 2.0
+	ntfs3g # FUSE-based NTFS driver with full write support
+	curl wget openssl inetutils
+	gnupg
+	unzip zip zlib
+	# unrar #unfree
+	file # specifies that a series of tests are performed on the file
+	fff # file mgr
+#___________________________________________________________
 # SHELL
 	 zsh # Shell
 	 zsh-autosuggestions # Command line suggestions
@@ -143,23 +147,18 @@ superTuxKart # Tux Kart
 	 fzf-zsh # Fzf integration for Zsh
 	 fzf-git-sh # Git utilities powered by fzf
 	 ################### 
-	  mcfly # An upgraded ctrl-r where history results make sense
+	  asciinema # Record terminal sessions
+ 	  mcfly # An upgraded ctrl-r where history results make sense
 	  mcfly-fzf # Integrate Mcfly with fzf to combine a solid command history database with a widely-loved fuzzy search UI
 	  bat
 	  zoxide
-	   zsh-forgit # Git utility tool
+	  zsh-forgit # Git utility tool
 	  # tmux # Terminal multiplexer
 	  coreutils # Core utilities expected on every OS
 	  logrotate # Rotate and compress system logs
 	  tree # Display directories as trees
    	  inxi # System information tool
 	  lshw # Detailed hardware information
-	  nix-index # Quickly locate nix packages
-#	  nix-tree # Interactively browse Nix store paths
-	  nix-info # System information for Nix
-#	  nix-diff # Compare Nix derivations
-#	  nix-output-monitor # Process output of Nix commands
-nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-github
 	  btop # Resource monitor
 	  duf # Disk usage/free utility
 	   htop # Interactive process viewer
@@ -180,21 +179,21 @@ nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-gith
 	  typora 	# Markdown editor
 	  micro 	# Terminal-based text editor
 	  marker 	# Markdown editor
-# ASCII
+# ASCII pictures
 	asciiquarium-transparent #  Aquarium/sea animation in ASCII art 
 	ascii-image-converter # Convert images into ASCII art on the console
 	pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
- 	asciinema # Record terminal sessions
  	ascii-draw #
  	uni2ascii # UTF-8 to ASCII conversion
+        jp2a # small utility that converts JPG images to ASCII
  	artem # Small CLI program to convert images to ASCII art
  	gifsicle
  	gif-for-cli # Render gifs as ASCII art in your cli
-	python312Packages.ascii-magic # Converts pictures into # ASCII art
-	python312Packages.art # ASCII art library for Python
-
+	
 #### Python Development
 	  jetbrains.pycharm-community-bin # py IDE. Syntax-Hervorhebng, Debugging-Tools, Refactoring-Unterstützung und Integration mit Versionskontrollsystemen.
+	  python312Packages.ascii-magic # Converts pictures into # ASCII art
+	  python312Packages.art # ASCII art library for Python
 	  python312Packages.pip #PyPA recommended tool for installing Python packages
 	  python312Packages.feedparser # Universal feed parser
 	  python312Packages.keyrings-alt # Alternate keyring implementations

@@ -41,6 +41,7 @@ fileSystems."/share" =
   
   # Set your time zone.
    time.timeZone = "Europe/Berlin";
+   
    console = {
     font = "Agafari-16"; # "sun12x22"; # ls /run/current-system/sw/share/consolefonts/"Lat2-Terminus16";  # Schriftart für die Konsole
     keyMap = "de";  # Deutsche Tastaturbelegung in der Konsole
@@ -52,6 +53,7 @@ fileSystems."/share" =
   
    # Enable the X11 windowing system.
   services.xserver.enable = true;
+  
    # Configure keymap in X11  oder "terminate:ctrl_alt_bksp"; # oder "grp:caps_toggle,grp_led:scroll"
   services.xserver.xkb = {
 	layout = "de";
@@ -168,7 +170,6 @@ services.gvfs.enable = true;
 # Flatpak Ende     						
 */
 
-services.tor.enable = true;
 
 # Avahi für Netzwerk-Discovery aktivieren
   services.avahi = {

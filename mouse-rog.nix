@@ -1,4 +1,4 @@
-# this config is for Gaming Mouse: ASUS ROG Gladius III
+# this config is for Gaming Mouse: ASUS ROG GX850 
 { config, pkgs, ... }:
 
 {
@@ -10,12 +10,9 @@
   '';
 
   environment.systemPackages = with pkgs; [
-    piper
+ # sensible-side-buttons #Utilize mouse side navigation buttons
     libratbag
- 
-    # openrgb
-
-    # asusctl
+    piper	
   ];
 }
 
