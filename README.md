@@ -30,17 +30,20 @@ Nixpkgs-Pfad: /nix/var/nix/profiles/per-user/root/channels/nixos
 
 | Verzeichnis/Datei                  | Status |
 | ---------------------------------- | ------ |
+| `AdBloxx.nix`    		             | OK     |
+| `audio.nix`    		             | OK     |
+| `boot.nix`    		             | OK     |
 | `configuration.nix`                | OK     |
 | `docker.nix`                       | OK     |
 | `firefox.nix`                      | TODO   |
-| `gpu.nix`                          | OK     |
+| `gpu.nix`                          | obsolet|
 | `hardware-configuration.nix`       | OK     |
 | `packages.nix`                     | OK     |
 | `users.nix`                        | OK     |
 | `README.md`                        | OK     |
 | `zsh.nix`                          | OK     |
-| `costum-pkgs/lightdm-settings.nix` | OK     |
-| `costum-pkgs/README.md`            | OK     |
+| `costum-pkgs/lightdm-settings.nix` | NOK    |
+| `costum-pkgs/README.md`            | NOK    |
 | `costum-pkgs/suru-plus.nix`        | NOK    |
 
 ## Besonderheiten
