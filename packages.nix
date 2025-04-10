@@ -14,9 +14,17 @@ environment.systemPackages = with pkgs; [
  	
 
 ######################################################
-
-  
-vivaldi
+	chafa # tool for generating colored ASCII art 
+     deja-dup # Simple and secure backup tool with a graphical interface.
+     duplicity # Encrypted backup across various protocols with incremental backups.
+     extundelete # Tool for recovering deleted files on ext3/ext4 file systems.
+     marker # tool for highlighting text in terminal output.
+     presenterm # terminal-based presentation creator.
+     testdisk # Powerful tool for partition recovery and fixing boot problems.
+     vivaldi # customizable and feature-rich web browser.
+     vnstat # console-based network traffic monitor.
+     whisper # speech-to-text system (utilizes OpenAI's Whisper model).
+     
 gnome-online-accounts # Single sign-on framework for GNOME
 gvfs # Virtual Filesystem support library
 theme-vertex # theme for GTK 3, GTK 2, Gnome-Shell, and Cinnamon
@@ -27,21 +35,10 @@ dwarf-fortress-packages.themes.autoreiv # theme to use for the lightdm-slick-gre
 avahi # mDNS/DNS-SD implementation
 warpinator # share files across the LAN
 
-pydf
- affine
-copyq
-
-#python3.12-markdown2
-#python3.12-pip
-sublime4
-
-texliveTeTeX # TeX Live environment
-dedup # data deduplication program
- 
 losslesscut-bin # Lossless video/audio editor
 #   lightdm-settings
 hidapi # Library for communicating with USB and Bluetooth HID devices
-tecla # keyboard layout viewer.
+
    libxkbcommon # library to handle keyboard descriptions
    nixos-icons # icons of the Nix logo, in Freedesktop Icon Directory Layout
 #   rich-cli # toolbox for fancy output in the terminal
@@ -49,7 +46,7 @@ tecla # keyboard layout viewer.
   #   steam
   xorg.libXrandr
   libglvnd #The GL Vendor-Neutral Dispatch library
-libGL #Stub bindings using libglvnd
+libGL # Stub bindings using libglvnd
 tuxpaint # open Source Drawing Software for Children
 gcompris # educational software suite  for Children
 superTuxKart # Tux Kart
@@ -76,7 +73,7 @@ superTuxKart # Tux Kart
         wirelesstools # ifrename iwconfig iwevent iwgetid iwlist iwpriv iwspy
 	meld	# visual diff and merge tool
 # __________________________________________
-flameshot # Powerful yet simple to use screenshot software
+	flameshot # Powerful yet simple to use screenshot software
 	ruby # object-oriented language 
 	shunit2 # xUnit based unit test framework for bash scripts
 	# genymotion # Fast and easy Android emulation
@@ -217,6 +214,7 @@ flameshot # Powerful yet simple to use screenshot software
 	gitlint # Linting for git commit messages
  # GNOME Utilities
 	  gnome-logs # Logs viewer
+	  gnome-keyring  # set of components in GNOME that store secrets, passwords, keys, certificates and make them available 
 	  dconf-editor # Configuration editor
 	  gnome-firmware # Firmware updater
 	  gnome-disk-utility # Disk utility
@@ -233,13 +231,6 @@ flameshot # Powerful yet simple to use screenshot software
 	  evince # Document viewer
 	  drawing # Basic image editor
 	  pandoc # Convert markup formats
-
-	wget
-    	libreoffice
-   	pdfarranger
-    	ghostscript
-    	gimp-with-plugins
-    	inkscape-with-extensions
 
 	  # Clipboard and Text Utilities
 	  xclip # X11 clipboard manipulation

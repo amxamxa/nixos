@@ -57,8 +57,44 @@
                                  /_/   für User, Grps, ch-Rechte, ln, ...                          
 _________________________________________________________________________ */
 
-  # Aktivierungsskripte für Benutzerrechte und symbolische Links
- 
+# Aktivierungsskripte für Benutzerrechte 
+
+system.activationScripts = {
+  setPermissions = {
+    text = ''
+    LOG_FILE=/var/log/setPermissions.log
+      echo "===== $(date '+%Y-%m-%d %H:%M:%S') - Start setPermissions Script =====" > $LOG_FILE
+
+  # Setze Berechtigungen auf 755 für /home-Verzeichnisse und 644 für Dateien
+      chown -R :mxx /home && echo "Gruppe 'mxx' für /home erfolgreich gesetzt" >> $LOG_FILE
+    
+      fd --full-path /home --type directory --exec-batch chmod -R 0755 {} \; && echo "Berechtigungen auf 0755 für /home-Verzeichnisse erfolgreich gesetzt" >> $LOG_FILE
+      fd --full-path /home --type file --exec-batch chmod 644 {} \; && echo "Berechtigungen auf 644 für /home-Dateien erfolgreich gesetzt" >> $LOG_FILE
+
+  # Setze Berechtigungen auf 2760 für /share
+      chmod -R 2760 /share && echo "Berechtigungen auf 2760 für /share erfolgreich gesetzt" >> $LOG_FILE
+      chown -R :mxx /share && echo "Gruppe 'mxx' für /share erfolgreich gesetzt" >> $LOG_FILE
+ # Erstelle symbolische Links für bestimmte Verzeichnisse
+      name="finja"
+      for dir in Bilder Dokumente Video Vorlagen Musik; do
+        if [ -d "/home/amxamxa/$dir" ] && [ ! -e "/home/$name/$dir" ]; then
+          ln -s "/home/amxamxa/$dir" "/home/$name/$dir" && echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir erstellt" >> $LOG_FILE
+        else
+          echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir NICHT erstellt" >> $LOG_FILE
+        fi
+      done
+
+ # Setze SSH-Berechtigungen
+      find /home -name ".ssh" -exec chmod 0700 {} \; && echo "chmod 0700 für ~/.ssh gesetzt" >> $LOG_FILE
+      find /home -type f -name "id_ed25519" -exec chmod 0600 {} \; && echo "chmod 0600 für id_ed25519 gesetzt" >> $LOG_FILE
+      find /home -type f -name "id_ed25519.pub" -exec chmod 0644 {} \; && echo "chmod 0644 für id_ed25519.pub gesetzt" >> $LOG_FILE
+
+      echo "===== $(date '+%Y-%m-%d %H:%M:%S') - End setPermissions Script =====" >> $LOG_FILE
+    '';
+    deps = [];
+  };
+};
+/*
   system.activationScripts = {
     setPermissions = {
       text = ''
@@ -66,13 +102,13 @@ _________________________________________________________________________ */
  echo "===== $(date '+%Y-%m-%d %H:%M:%S') - Start setPermissions Script =====" >> $LOG_FILE
 
 # Setze Berechtigungen auf 2775 für /home
-# chmod -R 2775 /home && echo "Berechtigungen auf 2775 für /home erfolgreich gesetzt" >> $LOG_FILE
  chown -R :mxx /home && echo "Gruppe 'mxx' für /home erfolgreich gesetzt" >> $LOG_FILE
+ fd /home --type directory --exec-batch chmod -v 755 {} && echo "@KI, text ergaenzen" >> $LOG_FILE
+ fd /home --type file --exec-batch chmod -v 644 {} && echo "@KI, text ergaenzen" >> $LOG_FILE
+
 # Setze Berechtigungen auf 2775 für /share
         chmod -R 2760 /share && echo "Berechtigungen auf 2760 für /share erfolgreich gesetzt" >> $LOG_FILE
         chown -R :mxx /share && echo "Gruppe 'mxx' für /share erfolgreich gesetzt" >> $LOG_FILE
-# Setze das SGID-Bit für Verzeichnisse
-        find /home /share -type d -exec chmod g+s {} + && echo "SGID-Bit für Verzeichnisse gesetzt" >> $LOG_FILE
 
 # Erstelle symbolische Links für bestimmte Verzeichnisse
 # Setze den Namen der Zielbenutzerin
@@ -80,9 +116,11 @@ _________________________________________________________________________ */
     for dir in Bilder Dokumente Video Vorlagen Musik; do
   	if [ -d "/home/amxamxa/$dir" ] && [ ! -e "/home/$name/$dir" ]; then
     		ln -s "/home/amxamxa/$dir" "/home/$name/$dir" && \
-    	  echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir erstellt" >> $LOG_FILE
-  	else 
-  		echo "ln finja nicht gesetzt"
+    	  	echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir erstellt" >> $LOG_FILE
+    	  	
+    	else 
+  		echo "ln finja nicht gesetzt" >> $LOG_FILE
+  		echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir NICHT erstellt" >> $LOG_FILE
   	fi
      done
 
@@ -94,6 +132,7 @@ echo "===== $(date '+%Y-%m-%d %H:%M:%S') - End setPermissions Script =====" >> $
       deps = [];
     };
   };
+*/
 /* ________________________  _  ___  _   ____________________________
                           ( )     ( )
  _   _ ___  ___ _ __ ___  |/ _ __ |/
@@ -113,7 +152,7 @@ echo "===== $(date '+%Y-%m-%d %H:%M:%S') - End setPermissions Script =====" >> $
   # Gruppen und Benutzer
   users.groups.mxx = {
   	gid = 1001;  # Festgelegte GID für die Gruppe "mxx"
-  	members = [ "amxamxa" "alice" ];  # Gruppenmitglieder
+  	members = [ "amxamxa" "frinja" ];  # Gruppenmitglieder
   };
   
   users.mutableUsers = false;   # Wenn true, können "useradd" und "groupadd"-Befehle verwendet werden
