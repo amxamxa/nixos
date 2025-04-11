@@ -11,8 +11,8 @@
 
   environment.systemPackages = with pkgs; [
  # sensible-side-buttons #Utilize mouse side navigation buttons
-    libratbag
-    piper	
+ #   libratbag # mouse wird nicht supported
+ #   piper	   # mouse wird nicht supported
   ];
 }
 
