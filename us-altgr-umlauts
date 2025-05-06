@@ -1,0 +1,15 @@
+partial alphanumeric_keys
+xkb_symbols "altgr_umlauts" {
+
+    include "us(basic)"
+
+    // AltGr + u/U → ü/Ü
+    key <AD07> { [ u, U, udiaeresis, Udiaeresis ] };
+
+    // AltGr + o/O → ö/Ö
+    key <AD09> { [ o, O, odiaeresis, Odiaeresis ] };
+
+    // AltGr + a/A → ä/Ä
+    key <AC01> { [ a, A, adiaeresis, Adiaeresis ] };
+};
+

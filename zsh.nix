@@ -29,11 +29,11 @@ users.defaultUserShell = pkgs.zsh;
 environment.shells = with pkgs; [ zsh ];
     programs.zsh = {
         enable  = true;
-        enableCompletion = true;        		# enable zsh completion for all interactive zsh shells.
+        enableCompletion = true;       	# enable zsh completion for all interactive zsh shells.
         enableBashCompletion = true;
         enableLsColors = true;
-        syntaxHighlighting.enable = true;   # enable zsh-syntax-highlighting.
-        autosuggestions.enable = true;      	# enable zsh-autosuggestions.
+        syntaxHighlighting.enable = true;   # enable zsh-syntax-highlighting
+        autosuggestions.enable = true;      	# enable zsh-autosuggestions
 #        autosuggestions.strategy = "history"; 	# "match_prev_cmd"; OneOf: "history" "completion"
 #   history: Chooses the most recent match from history.
 #    completion: Chooses a suggestion based on what tab-completion would suggest. (requires zpty module)
@@ -45,12 +45,12 @@ environment.shells = with pkgs; [ zsh ];
         # test -f $ZDOTDIR/zshrc.zsh && source $ZDOTDIR/zshrc.zsh
                            '';
       promptInit = ''
-￼ # [[ ! -f "$ZDOTDIR/prompt/p10k-fancy-v02.zsh" ]] || source "$ZDOTDIR/prompt/p10k-fancy-v02.zsh"
+￼  [[ ! -f "$ZDOTDIR/prompt/p10k-fancy-v02.zsh" ]] || source "$ZDOTDIR/prompt/p10k-fancy-v02.zsh"
             # /share/zsh/prompt/basic-prompt.zsh
           #   source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/internal/p10k.zsh
                     '';
 #         shellAliases = "$ZDOTDIR/aliases.zsh";
-         histSize = 10000;
+         histSize = 30000;
           histFile = "$ZDOTDIR/history/zhistory";
           setOptions = [        # see man 1 zshoptions
             "APPEND_HISTORY"       "INC_APPEND_HISTORY"

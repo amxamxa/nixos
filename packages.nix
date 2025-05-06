@@ -11,9 +11,74 @@ environment.systemPackages = with pkgs; [
 # aus unstable Channel:
  	unstable.hugo
  	unstable.yt-dlp
- 	
+ 		
+#### Python Development
+jetbrains.pycharm-community-bin # py IDE. Syntax-Hervorhebng, Debugging-Tools, Refactoring-Unterstützung und Integration mit Versionskontrollsystemen.
+python3Full # High-level dynamically-typed programming language
+ ## ➕ Eigene Python-Umgebung mit ausgewählten Paketen
+    (python312.withPackages (ps: with ps; [
+      pip                           # PyPA recommended tool for installing packages
+      setuptools                    # Build system foundation
+      wheel                         # For building wheels
+
+      openai                        # Access to OpenAI API
+      pydub                         # Audio manipulation toolkit
+      speechrecognition             # API for voice recognition
+      ascii-magic                   # Converts images to ASCII
+      art                           # ASCII Art generation
+      feedparser                   # RSS/Atom Feed Parser
+      keyrings-alt                  # Alternative keyring backends
+      pygments                      # Syntax highlighting for code
+      markdown2                     # Markdown parser in Python
+      librosa                     # Audioanalyse, FFT, Tonhöhe, Beat-Detection
+soundfile                   # Lesen/Schreiben von Audiodateien
+rich                        # Farbenfrohe Terminalausgabe (für z.B. Tools, Logs, Tabellen)
+typer                       # CLI-Tools mit Typanmerkungen (wie argparse, aber schöner)
+prompt-toolkit             # Interaktive Eingabe (z.B. Shell-artige Tools, Autovervollständigung)
+pytest                      # Erweiterter Test-Runner
+black                       # Code Formatter
+beautifulsoup4              # HTML/XML Parsing
+pdfminer                    # PDF zu Text
+    ]))
+
+  
+/*
+ 	virtualenv # Tool to create isolated Python environments
+ 	python312Packages.pip #PyPA recommended tool for installing Python packages
+ 	python312Packages.setuptools #Utilities to facilitate the installation of Python packages
+	python312Packages.openai 
+	python312Packages.pydub # Manipulate audio 
+	python312Pack 	virtualenv # Tool to create isolated Python environmentsages.speechrecognition # module supporting several engines and APIs, online and offline
+	python312Packages.ascii-magic # Converts pictures into # ASCII art
+	python312Packages.art # ASCII art library for Python
+	python312Packages.feedparser # Universal feed parser
+	python312Packages.keyrings-alt # Alternate keyring implementations
+	python312Packages.pygments # Syntax highlighting library
+	python312Packages.speechrecognition # Speech recognition module for Python, supporting several engines and APIs, online and offline        
+	python312Packages.pydub # Manipulate audio with a simple and easy high level interface
+	python312Packages.markdown2 # Fast and complete Python implementation of Markdown
+	  */
 
 ######################################################
+pdfarranger
+
+# Infinite-world block sandbox game
+minetestserver
+minetest-mapserver
+minetest
+minetestclient
+
+libreoffice
+ 
+agg # High quality rendering engine for C++
+android-tools # Android SDK platform tools
+asciinema-scenario # Create asciinema videos from a text file
+baobab # Graphical application to analyse disk usage in any GNOME environment
+mp3splt # Utility to split mp3, ogg vorbis and FLAC files without decoding
+ncdu # Disk usage analyzer with an ncurses interface
+
+scrcpy # Display and control Android devices over USB or TCP/IP
+shellcheck # Shell script analysis tool
 	chafa # tool for generating colored ASCII art 
      deja-dup # Simple and secure backup tool with a graphical interface.
      duplicity # Encrypted backup across various protocols with incremental backups.
@@ -30,7 +95,7 @@ gvfs # Virtual Filesystem support library
 theme-vertex # theme for GTK 3, GTK 2, Gnome-Shell, and Cinnamon
 
 andromeda-gtk-theme # elegant dark theme for gnome, mate, budgie, cinnamon, xfce
-tor
+
 dwarf-fortress-packages.themes.autoreiv # theme to use for the lightdm-slick-greeter
 avahi # mDNS/DNS-SD implementation
 warpinator # share files across the LAN
@@ -186,21 +251,7 @@ superTuxKart # Tux Kart
  	artem # Small CLI program to convert images to ASCII art
  	gifsicle
  	gif-for-cli # Render gifs as ASCII art in your cli
-	
-#### Python Development
-	  jetbrains.pycharm-community-bin # py IDE. Syntax-Hervorhebng, Debugging-Tools, Refactoring-Unterstützung und Integration mit Versionskontrollsystemen.
-	  python312Packages.ascii-magic # Converts pictures into # ASCII art
-	  python312Packages.art # ASCII art library for Python
-	  python312Packages.pip #PyPA recommended tool for installing Python packages
-	  python312Packages.feedparser # Universal feed parser
-	  python312Packages.keyrings-alt # Alternate keyring implementations
-	  python312Full # Python 3.12 interpreter
-	  python312Packages.pip # PyPA recommended tool for installing Python packages
-	  python312Packages.pygments # Syntax highlighting library
-	  python312Packages.speechrecognition # Speech recognition module for Python, supporting several engines and APIs, online and offline        
-	  python312Packages.pydub # Manipulate audio with a simple and easy high level interface
-	  python312Packages.markdown2 # Fast and complete Python implementation of Markdown
-	  
+
 	 # jupyter # webbasierte interaktive Entwicklungsumgebung. Sie eignet sich hervorragend für explorative Datenanalyse und prototypisches Coden, was für die Entwicklung von Phytom-Anwendungen
 	 # Version Control
 #	  git-hub # Interface to GitHub from the command line 

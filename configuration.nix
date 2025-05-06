@@ -16,6 +16,7 @@ in
       	./users.nix
       	./docker.nix
       	./AdBloxx.nix
+      	./us-altgr-umlaut.nix
       	# ./firefox.nix # todo
     ];
 ### Bootloader. /-> boot.nix
@@ -39,45 +40,13 @@ fileSystems."/share" =
   # networking.interfaces.enp4s0.useDHCP = true;
   # networking.interfaces.enp4s0.name = [ "eth0" ];
   
-  # Set your time zone.
-   time.timeZone = "Europe/Berlin";
-   
-   console = {
-    font = "Agafari-16"; # "sun12x22"; # ls /run/current-system/sw/share/consolefonts/"Lat2-Terminus16";  # Schriftart für die Konsole
-    keyMap = "de";  # Deutsche Tastaturbelegung in der Konsole
-  };
-  
     services.logind.extraConfig = '' 
  	 		HandlePowerKey = "poweroff";
  		 	HandlePowerKeyLongPress = "reboot"; '';	
   
-   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  
-   # Configure keymap in X11  oder "terminate:ctrl_alt_bksp"; # oder "grp:caps_toggle,grp_led:scroll"
-  services.xserver.xkb = {
-	layout = "de";
-	options = "eurosign:e,caps:escape"; 
-	  			}; 
-# Select internationalisation properties.
-  i18n = {
-    defaultLocale = "de_DE.UTF-8";
-    supportedLocales =      [
-      "de_DE.UTF-8/UTF-8"   # Modern, universell unterstützt große Anzahl von Zeichen
-      "en_GB.UTF-8/UTF-8"    ];
-    extraLocaleSettings = {
-    	LC_NAME = 	 "de_DE.UTF-8";
-        LC_TIME = 	 "de_DE.UTF-8";
-        LC_PAPER = 	 "de_DE.UTF-8";
-     	LC_ADDRESS =	 "de_DE.UTF-8";
-	LC_MEASUREMENT = "de_DE.UTF-8";
-      	LC_MONETARY = 	 "de_DE.UTF-8";
-       	LC_NUMERIC = 	 "de_DE.UTF-8";
-	LC_TELEPHONE = 	 "de_DE.UTF-8";
-	LC_IDENTIFICATION = "de_DE.UTF-8";
-    };
-  };
-  		 	
+  # Set your time zone.
+   time.timeZone = "Europe/Berlin";
+   
 # Enable the - d e s k t o p  m a n a g e r - Environment. # slick-greeter; | lightdm-enso-os-greeter| lightdm-tiny-greeter 
   # Include LightDM configuration if necessary
 # services.xserver.displayManager.lightdm.enable = true;
@@ -86,7 +55,7 @@ fileSystems."/share" =
 
 services.displayManager = {
 	autoLogin.enable = true;
-	autoLogin.user = "mxxkee";
+	autoLogin.user = "amxamxa";
 	defaultSession = "cinnamon";	
 	}; 
 
