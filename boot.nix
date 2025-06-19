@@ -8,9 +8,10 @@
       efiSysMountPoint = "/boot";
     };
   # SYSTEMD-BOOT
-   systemd-boot = { enable = false; };
+   systemd-boot = { enable = true; };
+   
   # GRUB2
-    grub = {
+  /*  grub = {
       enable = true;
       efiSupport = true;
       memtest86.enable = true;
@@ -48,14 +49,14 @@
 
           search --set=root --file /netboot/netboot.xyz.iso # ISO finden und Root-Device def.
           loopback loop /netboot/netboot.xyz.iso # macht die ISO als virtuelles Laufwerk verfügbar
-        
          }
          
         menuentry "Reboot" { reboot }  
 	menuentry "Poweroff" { halt }
       '';
-    };
+    }; */
   };
+
 
 # ISO-Datei bereitstellen (optional per Download)
 /*  environment.etc."netboot.xyz.iso" = {
@@ -65,51 +66,53 @@
     };
     target = "var/lib/netboot/netboot.xyz.iso";
   };
-}
-*/
+} */
 
-
-	 
 # LightDM Slick Greeter 
 services.xserver.displayManager = {
   gdm.enable = false;
   lightdm.enable = true;
   # lightdm.greeters.tiny = {   enable = true;    #background = "/share/wallpaper/sonstige/blitz.png"; };
+     #environment.etc."lightdm/lightDM-bg.png".source = ./path/to/your/image.png; #environment.etc."lightdm/logo-aramgedon.png".source = ./path/to/your/logo.png;
    lightdm.greeters.slick = {
-     enable = true;
+       enable = true;
        theme = {
-    name = "autoreiv";
-    package = pkgs.dwarf-fortress-packages.themes.autoreiv;
-           };
-     iconTheme.package = pkgs.faba-mono-icons;
-     iconTheme.name = "Faba-Mono-Dark";
-     font.package = pkgs.meslo-lgs-nf;
-     font.name = "MesloLGS NF 48";
+   		# name = "autoreiv";    		 package = pkgs.dwarf-fortress-packages.themes.autoreiv;  
+   		name = "andromeda";
+   		package = pkgs.andromeda-gtk-theme;
+   		};
+     iconTheme = {
+		name = "Faba-Mono-Dark"; 
+		package = pkgs.faba-mono-icons;
+		};
+     font  = {
+     		name = "MesloLGS NF 24";
+     		package = pkgs.meslo-lgs-nf;
+     		};
     # draw-user-backgrounds= true; # steuert, ob Hintergrund des Nutzers auf Login-Bildschirm erscheint
      # tshoot:  /var/log/lightdm/lightdm.log
      extraConfig = ''
     # LightDM GTK+ Configuration file 
     # for /etc/lightdm/slick-greeter.conf        
-    # stretch-background-across-monitors=true #?
- 
-        # Sets monitor on which is login; -1 means "follow the mouse"
-        only-on-monitor=HDMI-1
+        stretch-background-across-monitors=false # to stretch the background across multiple monitors (false by default) 
+        only-on-monitor=HDMI-1  # Sets monitor on which is login; -1 means "follow the mouse"
+        background-color="#502962"  # load before pic
         background=/etc/lightdm/lightDM-bg.png
         logo=/etc/lightdm/logo-aramgedon.png 
         other-monitors-logo=/etc/lightdm/logo-aramgedon.png 
-    #   other-monitors-logo=/share/wallpaper/logo-Nihilisten.png
-     #   background-color="#502962"  
         # show-power=false        # show-keyboard=false
         show-hostname=true  
         show-clock=true 
-        show-quit=true 
+        show-quit=true # show the quit menu in the menubar 
         xft-hintstyle="hintmedium" # hintnone/hintslight/hintmedium/hintfull  
+ clock-format=" %d.%b.%g %H:%" #  clock format to use (e.g., %H:%M or %l:%M %p)
         
-        enable-hidpi=auto # to enable HiDPI support (on/off/auto)   # xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)  # xft-antialias=Whether to antialias Xft fonts (true or false) # xft-dpi=Resolution for Xft in dots per inch
-        clock-format=" %d.%b.%g %H:%"
-	 '';  };
+        # xft-antialias=Whether to antialias Xft fonts (true or false)  # xft-dpi=Resolution for Xft in dots per inch
+	# xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)
+	 '';  
+	 };
    };
 
 
-
 }
+

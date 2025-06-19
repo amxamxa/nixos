@@ -1,19 +1,22 @@
 { config, pkgs, ... }:
+/*
+# ZIEL:   
+  Standard US-Layout:
+    Wenn du das US-Layout ausgewählt hast, funktionieren die normalen US-Tasten.
+    Zusätzlich sind die deutschen Umlaute (ä, ö, ü, Ä, Ö, Ü) über die AltGr-
+    Taste in Kombination mit a, o, u (bzw. A, O, U) eingebar.
+  Deutsches Layout: 
+    Wenn du zum deutschen Layout wechselst (mit Win + Leertaste), funktioniert 
+    das Standard-deutsche Tastaturlayout.
+  
+TSHOOT: Prüfe die X-Server-Logs auf Fehlermeldungen (/var/log/Xorg.0.log oder ähnliches).
+*/
 
-     # ZIEL:   Standard US-Layout: Wenn du das US-Layout ausgewählt hast, funktionieren die normalen US-Tasten. Zusätzlich solltest du jetzt die deutschen Umlaute (ä, ö, ü, Ä, Ö, Ü) über die AltGr-Taste in Kombination mit a, o, u (bzw. A, O, U) eingeben können.
-  #   Deutsches Layout: Wenn du zum deutschen Layout wechselst (mit Alt + Shift oder der von dir gewählten Tastenkombination), funktioniert das Standard-deutsche Tastaturlayout.
-# Prüfe die X-Server-Logs auf Fehlermeldungen (/var/log/Xorg.0.log oder ähnliches).
 # Select internationalisation properties.
  {
-
-   # Configure keymap in X11  oder "terminate:ctrl_alt_bksp"; # oder "grp:caps_toggle,grp_led:scroll"
-#  services.xserver.xkb = {
-#	layout = "de";
-#	options = "eurosign:e,caps:escape"; 	}; 
-	
-  services.xserver = {
+ services.xserver = {
     enable = true;	  # Enable the X11 windowing system.
-#    layout = "us,de";      # Definiert die verfügbaren Tastaturlayouts. Hier sind "us" (amerikanisch) und "de" (deutsch) angegeben. Die Reihenfolge ist wichtig, da das erste Layout standardmäßig verwendet wird.
+    layout = "us,de";      # Definiert die verfügbaren Tastaturlayouts. Hier sind "us" (amerikanisch) und "de" (deutsch) angegeben. Die Reihenfolge ist wichtig, da das erste Layout standardmäßig verwendet wird.
    
    #  Option, wie zwischen den Layouts wechselst. grp:alt_shift_toggle : Alt + Shift und grp_led:scroll kann die Scroll-Lock-LED verwenden, um anzuzeigen, welches Layout aktiv ist. grp:win_space_toggle (Windows-Taste + Leertaste) .
       # grp:alt_shift_toggle,grp_led:scroll

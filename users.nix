@@ -121,8 +121,8 @@ system.activationScripts = {
   
   users.mutableUsers = false;   # Wenn true, können "useradd" und "groupadd"-Befehle verwendet werden
   # Nützliche Hinweise
-  # VM enthält keine Daten des Hosts, daher werden vorhandene Benutzer nicht automatisch übernommen,
-  # außer mutableUsers = false wird gesetzt. InitialHashedPassword kann ebenfalls verwendet werden.
+  # VM enthält keine Daten des Hosts, daher werden vorhandene Benutzer nicht automatisch übernommen, außer mutableUsers = false wird gesetzt. 
+  # oder "InitialHashedPassword" kann ebenfalls verwendet werden.
 
 #______Benutzerkonfiguration_________________________________________
 #    __ __  ______ ___________  _____    ____  ____

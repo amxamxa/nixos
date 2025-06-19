@@ -66,7 +66,7 @@ services.displayManager = {
     lxqt.enable		= false;
     xfce.enable		= false; 
     };
-
+services.xserver.displayManager.startx.enable = true; # Whether to enable the dummy “startx” pseudo-display manager, which allows users to start X manually via the startx command from a virtual terminal.
 services.xserver.displayManager.sessionCommands = ''xcowsay "
 	"Hello World!" this is X
   	-- Greeting from GUI --
@@ -117,11 +117,13 @@ services.xserver.displayManager.sessionCommands = ''xcowsay "
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  
   # Firewall für Warpinator-Ports öffnen
   networking.firewall = {
    allowedTCPPorts = [ 42000 ]; # Standard-Port für Warpinator
    allowedUDPPorts = [ 42000 ];  
    };
+   
 services.gvfs.enable = true;
 
 /*
@@ -151,7 +153,7 @@ services.gvfs.enable = true;
     };
   };
 
- services.playerctld.enable = true;   # enable the playerctld daemon.
+
  programs.xwayland.enable = true;            # Aktiviere XWayland
     programs.sway.enable = true;
     programs.thunar.enable = lib.mkForce false;  # Deaktiviere Thunar
@@ -173,10 +175,36 @@ xdg.portal.wlr.enable = true;  # Whether to enable desktop portal for wlroots-ba
   # Fix for some Java AWT applications (e.g. Android Studio), use this if they aren't displayed properly:
   export _JAVA_AWT_WM_NONREPARENTING=1
 '';  */
+ 
+programs.nix-ld.enable = true;
+programs.nix-ld.libraries = with pkgs; [
+  # Grundlegende Systembibliotheken
+  stdenv.cc.cc.lib  # Enthält libstdc++, libgcc_s
+  zlib
+  openssl
+  curl
+  # Häufig benötigte Bibliotheken für Linux-Binaries
+  nss
+  nspr
+  libxml2
+  libunwind
+  icu
+  libuuid
+  libapparmor
+  alsa-lib
+  expat
+  dbus
+  systemd  # Für libsystemd
+
+  # Optional: GUI-Bibliotheken (falls benötigt)
+  # xorg.libX11
+  # gtk3
+];
 services.postgresql.enable = true;
 
 services.vnstat.enable = true; # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
 
+ services.playerctld.enable = true;   # enable the playerctld daemon.
   services.logrotate.enable = true;
   services.logrotate.configFile = pkgs.writeText "logrotate.conf" ''
 		weekly 				

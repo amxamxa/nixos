@@ -1,11 +1,8 @@
 { config, pkgs, lib, ... }:
-
-
 #let
   # Import the custom package
 #  lightdm-settings = import /etc/nixos/custom-pkgs/lightdm-settings.nix { inherit pkgs; };#
 #in
- 
 {
 environment.systemPackages = with pkgs; [
 # aus unstable Channel:
@@ -15,51 +12,36 @@ environment.systemPackages = with pkgs; [
 #### Python Development
 jetbrains.pycharm-community-bin # py IDE. Syntax-Hervorhebng, Debugging-Tools, Refactoring-Unterstützung und Integration mit Versionskontrollsystemen.
 python3Full # High-level dynamically-typed programming language
- ## ➕ Eigene Python-Umgebung mit ausgewählten Paketen
+ ## Eigene Python-Umgebung mit ausgewählten Paketen
     (python312.withPackages (ps: with ps; [
-      pip                           # PyPA recommended tool for installing packages
-      setuptools                    # Build system foundation
-      wheel                         # For building wheels
-
-      openai                        # Access to OpenAI API
-      pydub                         # Audio manipulation toolkit
-      speechrecognition             # API for voice recognition
-      ascii-magic                   # Converts images to ASCII
-      art                           # ASCII Art generation
-      feedparser                   # RSS/Atom Feed Parser
-      keyrings-alt                  # Alternative keyring backends
-      pygments                      # Syntax highlighting for code
-      markdown2                     # Markdown parser in Python
-      librosa                     # Audioanalyse, FFT, Tonhöhe, Beat-Detection
-soundfile                   # Lesen/Schreiben von Audiodateien
-rich                        # Farbenfrohe Terminalausgabe (für z.B. Tools, Logs, Tabellen)
-typer                       # CLI-Tools mit Typanmerkungen (wie argparse, aber schöner)
-prompt-toolkit             # Interaktive Eingabe (z.B. Shell-artige Tools, Autovervollständigung)
-pytest                      # Erweiterter Test-Runner
-black                       # Code Formatter
-beautifulsoup4              # HTML/XML Parsing
-pdfminer                    # PDF zu Text
+        pip                           # PyPA recommended tool for installing packages
+        setuptools                    # Build system foundation
+        wheel                         # For building wheels
+        openai                        # Access to OpenAI API
+        pydub                         # Audio manipulation toolkit
+        speechrecognition             # API for voice recognition
+        ascii-magic                   # Converts images to ASCII
+   	art                           # ASCII Art generation
+      	feedparser      
+ 	virtualenv		      # create isolated Python environments
+        keyrings-alt                  # Alternative keyrivon Tewes?ng backends
+        pygments                      # Syntax highlighting for code
+        markdown2                     # Markdown parser in Python
+        librosa                      # Audioanalyse, FFT, Tonhöhe, Beat-Detection
+        soundfile                    # Lesen/Schreiben von Audiodateien
+        rich                         # Farbenfrohe Terminalausgabe 
+        typer                        # CLI-Tools mit Typanmerkungen
+        prompt-toolkit               # shell-artige Tools, Autovervollständigung
+       pytest                       # Erweiterter Test-Runner
+       black                        # Code Formatter
+        beautifulsoup4               # HTML/XML Parsingvon Tewes?
+        pdfminer                     # PDF zu Text
     ]))
-
-  
-/*
- 	virtualenv # Tool to create isolated Python environments
- 	python312Packages.pip #PyPA recommended tool for installing Python packages
- 	python312Packages.setuptools #Utilities to facilitate the installation of Python packages
-	python312Packages.openai 
-	python312Packages.pydub # Manipulate audio 
-	python312Pack 	virtualenv # Tool to create isolated Python environmentsages.speechrecognition # module supporting several engines and APIs, online and offline
-	python312Packages.ascii-magic # Converts pictures into # ASCII art
-	python312Packages.art # ASCII art library for Python
-	python312Packages.feedparser # Universal feed parser
-	python312Packages.keyrings-alt # Alternate keyring implementations
-	python312Packages.pygments # Syntax highlighting library
-	python312Packages.speechrecognition # Speech recognition module for Python, supporting several engines and APIs, online and offline        
-	python312Packages.pydub # Manipulate audio with a simple and easy high level interface
-	python312Packages.markdown2 # Fast and complete Python implementation of Markdown
-	  */
-
+    nix-ld #Run unpatched dynamic binaries on NixOS
+    
 ######################################################
+
+    v4l-utils # V4L utils and libv4l, provide common image formats regardless of the v4l device
 pdfarranger
 
 # Infinite-world block sandbox game
@@ -76,10 +58,13 @@ asciinema-scenario # Create asciinema videos from a text file
 baobab # Graphical application to analyse disk usage in any GNOME environment
 mp3splt # Utility to split mp3, ogg vorbis and FLAC files without decoding
 ncdu # Disk usage analyzer with an ncurses interface
+gvfs # Virtual Filesystem support library
+avahi # mDNS/DNS-SD implementation
 
 scrcpy # Display and control Android devices over USB or TCP/IP
 shellcheck # Shell script analysis tool
-	chafa # tool for generating colored ASCII art 
+
+chafa # tool for generating colored ASCII art 
      deja-dup # Simple and secure backup tool with a graphical interface.
      duplicity # Encrypted backup across various protocols with incremental backups.
      extundelete # Tool for recovering deleted files on ext3/ext4 file systems.
@@ -91,17 +76,23 @@ shellcheck # Shell script analysis tool
      whisper # speech-to-text system (utilizes OpenAI's Whisper model).
      
 gnome-online-accounts # Single sign-on framework for GNOME
-gvfs # Virtual Filesystem support library
-theme-vertex # theme for GTK 3, GTK 2, Gnome-Shell, and Cinnamon
 
-andromeda-gtk-theme # elegant dark theme for gnome, mate, budgie, cinnamon, xfce
-
-dwarf-fortress-packages.themes.autoreiv # theme to use for the lightdm-slick-greeter
-avahi # mDNS/DNS-SD implementation
+# Theming and Appearance
+	lightdm-slick-greeter # slick-looking LightDM greeter
+	  whitesur-gtk-theme # MacOS Big Sur theme for GNOME
+	  numix-cursor-theme # Cursor theme
+	  pop-icon-theme # Pop!_OS icon theme
+	 #  pop-gtk-theme # Pop!_OS GTK theme
+	 theme-vertex # theme for GTK 3, GTK 2, Gnome-Shell, and Cinnamon
+	 andromeda-gtk-theme # elegant dark theme for gnome, mate, budgie, cinnamon, xfce
+	 dwarf-fortress-packages.themes.autoreiv # theme to use for the lightdm-slick-greeter
+pantheon.elementary-wallpapers # collection of wallpapers for elementary
+ 	adapta-backgrounds # wallpaper collection for adapta-project
+ 	deepin.deepin-wallpapers # wallpapers provides wallpapers of dde
+	
 warpinator # share files across the LAN
 
 losslesscut-bin # Lossless video/audio editor
-#   lightdm-settings
 hidapi # Library for communicating with USB and Bluetooth HID devices
 
    libxkbcommon # library to handle keyboard descriptions
@@ -130,7 +121,6 @@ superTuxKart # Tux Kart
 #	nix-output-monitor # Process output of Nix commands
 	nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-github
 # ------------------------------------------------------	
- 	
 	# faba-icon-theme #  modern icon theme with Tango influences
 	faba-mono-icons
        # flat-remix-icon-theme # Flat remix is a pretty simple icon theme inspired on material design
@@ -138,14 +128,11 @@ superTuxKart # Tux Kart
         wirelesstools # ifrename iwconfig iwevent iwgetid iwlist iwpriv iwspy
 	meld	# visual diff and merge tool
 # __________________________________________
-	flameshot # Powerful yet simple to use screenshot software
-	ruby # object-oriented language 
+
 	shunit2 # xUnit based unit test framework for bash scripts
 	# genymotion # Fast and easy Android emulation
-	pantheon.elementary-wallpapers # collection of wallpapers for elementary
- 	adapta-backgrounds # wallpaper collection for adapta-project
- 	deepin.deepin-wallpapers # wallpapers provides wallpapers of dde
-	lightdm-slick-greeter # slick-looking LightDM greeter
+
+	
 	# eww #ElKowars wacky widgets
 	fwup fwupd fwupd-efi #    Configurable embedded Linux firmware update creator and runner
 # Backup and Recovery
@@ -192,6 +179,8 @@ superTuxKart # Tux Kart
 	# unrar #unfree
 	file # specifies that a series of tests are performed on the file
 	fff # file mgr
+	flameshot # Powerful yet simple to use screenshot software
+	ruby # object-oriented language 
 #___________________________________________________________
 # SHELL
 	 zsh # Shell
@@ -210,10 +199,14 @@ superTuxKart # Tux Kart
 	 fzf-git-sh # Git utilities powered by fzf
 	 ################### 
 	  asciinema # Record terminal sessions
- 	  mcfly # An upgraded ctrl-r where history results make sense
-	  mcfly-fzf # Integrate Mcfly with fzf to combine a solid command history database with a widely-loved fuzzy search UI
+ 	# mcfly # An upgraded ctrl-r where history results make sense
+	 #  mcfly-fzf # Integrate Mcfly with fzf to combine a solid command history database with a widely-loved fuzzy search UI
 	  bat
 	  zoxide
+	  figlet
+	  banner # Print large banners to ASCII terminals
+	  calligraphy # GTK tool turning text into ASCII banners
+	  figlet # Program for making large letters out of ordinary text
 	  zsh-forgit # Git utility tool
 	  # tmux # Terminal multiplexer
 	  coreutils # Core utilities expected on every OS
@@ -227,10 +220,10 @@ superTuxKart # Tux Kart
 	  toybox # ascii bblkid blockdev bunzip2 ... uvm
 	  jq # lightweight and flexible command-line JSON processo
 	  neofetch hyfetch
-  dotacat # Like lolcat, but fast
+	  dotacat # Like lolcat, but fast
 	  graphviz #graph visualization tools
 	 theme-sh
-	 pingu # Ping command implementation in Go but with colorful output and pingu ascii art
+	#BROKEN: pingu # Ping command implementation in Go but with colorful output and pingu ascii art
 # IDEs
 	 # emacs # Powerful text editor
 	   sublime 	# Text editor for code, markup, and prose
@@ -270,12 +263,6 @@ superTuxKart # Tux Kart
 	  gnome-firmware # Firmware updater
 	  gnome-disk-utility # Disk utility
 	  gnome-text-editor # Simple text editor
-# Theming and Appearance
-	  whitesur-gtk-theme # MacOS Big Sur theme for GNOME
-	  numix-cursor-theme # Cursor theme
-	  pop-icon-theme # Pop!_OS icon theme
-	 #  pop-gtk-theme # Pop!_OS GTK theme
-	  theme-sh # Script to set terminal theme
 # Multimedia, ohne audio
 	imagemagick # Image manipulation tool
 	  shotwell # Photo organizer
@@ -322,7 +309,7 @@ superTuxKart # Tux Kart
 	qemu
 OVMFFull # Sample UEFI firmware for QEMU and KVM
 qtemu # Qt-based front-end for QEMU emulator
-vscode-with-extensions # Open source source code editor developed by Microsoft for Windows, Linux and macOS 
+# vscode-with-extensions # Open source source code editor developed by Microsoft for Windows, Linux and macOS 
 # Web Development
         go # G o Programming language
 	nodejs # JavaScript runtime
@@ -341,24 +328,52 @@ vscode-with-extensions # Open source source code editor developed by Microsoft f
 	#  redis # In-memory data structure store
 	#  mongodb # NoSQL database
  # Fonts and Typography
-	  nerdfonts # Patched fonts for developers
+ # nerdfonts # Patched fonts for developers
 	  meslo-lgs-nf # Meslo Nerd Font for Powerlevel10k
 	#  lalezar-fonts # Decorative Arabic/Persian font
-	  tt2020 # open source, hyperrealistic typewriter font
+		  tt2020 # open source, hyperrealistic typewriter font
+];
+
+programs.nix-ld.enable = true;
+programs.nix-ld.libraries = with pkgs; [
+  # Grundlegende Systembibliotheken
+  stdenv.cc.cc.lib  # Enthält libstdc++, libgcc_s
+  zlib
+  openssl
+  curl
+
+  # Häufig benötigte Bibliotheken für Linux-Binaries
+  nss
+  nspr
+  libxml2
+  libunwind
+  icu
+  libuuid
+  libapparmor
+  alsa-lib
+  expat
+  dbus
+  systemd  # Für libsystemd
+
+  # Optional: GUI-Bibliotheken (falls benötigt)
+  # xorg.libX11
+  # gtk3
 ];
 
 fonts.enableDefaultPackages = false;  # Deaktiviert die Standard-Schriftarten
 # ~/.local/share/font + fc-cache für costume fonts
+/*
 fonts.packages = with pkgs; [ 
-	meslo-lgs-nf 
-	tt2020 
-	#nerd-fonts.hack
-	#nerd-fonts.3270
-	#nerd-fonts.agave
-	#nerd-fonts.lekton
-        #nerd-fonts.monofur
-        #nerd-fonts.proggyclean
+	nerd-fonts.hack
+	nerd-fonts.3270
+	nerd-fonts.agave
+	nerd-fonts.lekton
+        nerd-fonts.monofur
+        nerd-fonts.proggy-clean-tt
+        meslo-lgs-nf 
+        tt2020
         ];
+        */
 }
 /* ALT: 	(nerdfonts.override { fonts =		[  "Hack" "3270" "Agave"  # "EnvyCodeR" "Mononoki" "ProFont" "Lekton" "Monofur" "ProggyClean" ]; # "FiraCode" 	"DroidSansMono"  } ) ]; */ 
 
