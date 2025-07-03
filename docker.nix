@@ -21,15 +21,17 @@
   virtualisation.docker = {
   enable = true;
   rootless = {
-    enable = true;  # Docker ohne Root-Rechte betreiben (sicherer)
-    setSocketVariable = true;  # Setzt Umgebungsvariable für Docker Socket
-   };
+    	enable = true;  # Docker ohne Root-Rechte betreiben (sicherer)
+    	setSocketVariable = true;  # Setzt Umgebungsvariable für Docker Socket
+  	 };
    daemon.settings = {
-     data-root = "/docker";
-     experimental = true;
-     # userland-proxy = false;
-     #   metrics-addr = "0.0.0.0:9323";
-     storage-driver = "overlay2";     # overlay2 ist der empfohlene Treiber für ext4-Dateisysteme. Für bessere Performance auf ext4
+    	data-root = "/docker";
+     	experimental = true;
+     	# userland-proxy = false;
+     	#   metrics-addr = "0.0.0.0:9323";
+     	storage-driver = "overlay2";     # overlay2 ist der empfohlene Treiber für ext4-Dateisysteme. 
+     	# KONFIGURATION FÜR DOCKER-BRIDGE IP fur docker0
+     	"bip" = "172.17.0.0/16";
    };
 };
   # Umgebungsvariablen für Docker

@@ -12,19 +12,19 @@
 
 # Globale Umgebungsvariablen
   environment.variables = {
-    BROWSER 		= 	"firefox";
-    EDITOR 		=	 "micro";
-    PRO 		= 	"/home/project";
-    SHAREDIR 		= 	"/share";
-    EMACSDIR		=	"/share/emacs";
-    ZDOTDIR 		= 	"/share/zsh";
-    BAT_CONFIG_FILE	= 	"/share/bat/config.toml";
-    KITTY_CONFIG_DIRECTORY = 	"/share/kitty";    # kitty-Terminal Konfigurationspfad
-    NIX_INDEX_DATABASE 	= 	"/share/nix-index";    # Nix-Index-Datenbank
+    BROWSER 			  = 	"firefox";
+    EDITOR 			  =	 "micro";
+    PRO 				  = 	"/home/project";
+    SHAREDIR 			  = 	"/share";
+    EMACSDIR			  =	"/share/emacs";
+    ZDOTDIR 			  = 	"/share/zsh";
     TEALDEER_CONFIG_DIR = 	"/share/zsh/tldr";	# tealdeer-rs
-    NAVI_CONFIG 	= 	"/share/zsh/navi/config.yaml";
-    GIT_CONFIG          = 	"/share/zsh/git/config";
+    NAVI_CONFIG 		  = 	"/share/zsh/navi/config.yaml";
+    GIT_CONFIG          	  = 	"/share/zsh/git/config";
   
+    BAT_CONFIG_FILE		= 	"/share/bat/config.toml";
+    KITTY_CONFIG_DIRECTORY  = 	"/share/kitty";    # kitty-Terminal Konfigurationspfad
+    NIX_INDEX_DATABASE 	= 	"/share/nix-index";    # Nix-Index-Datenbank
          # SPACESHIP_CONFIG = "$ZDOTDIR/prompt/starship.toml"; # Spaceship Prompt Konfigurationspfad
   };
 

@@ -2,6 +2,7 @@
 let
   backgroundColor = "#7EBAE4";
 in
+
 {
 
   imports =
@@ -9,6 +10,8 @@ in
       	./hardware-configuration.nix	
       	./boot.nix # grub2 & lightDM
       	./audio.nix
+      	./ld.nix
+      	  	./fonts.nix
     #   ./gpu-GV-N960.nix # nicht mehr drin
 	./mouse-rog.nix
 	./zsh.nix
@@ -19,7 +22,7 @@ in
       	./us-altgr-umlaut.nix
       	# ./firefox.nix # todo
     ];
-### Bootloader. /-> boot.nix
+
 
 fileSystems."/share" =
   { device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
@@ -30,6 +33,13 @@ fileSystems."/share" =
  # Enable networking
  networking.networkmanager.enable = true;
  networking.usePredictableInterfaceNames = false; # eth0 statt ensp0
+ networking.nameservers = [
+	# www.ccc.de/censorship/dns-howto
+	    "5.9.164.112" # (digitalcourage, Informationsseite)
+	    "204.152.184.76" # (f.6to4-servers.net, ISC, USA)
+	    "2001:4f8:0:2::14" # (f.6to4-servers.net, IPv6, ISC)
+	    "194.150.168.168" # (dns.as250.net; Berlin/Frankfurt) 
+	         ];
  networking.networkmanager.appendNameservers = [
 	# www.ccc.de/censorship/dns-howto
 	    "5.9.164.112" # (digitalcourage, Informationsseite)
@@ -37,12 +47,14 @@ fileSystems."/share" =
 	    "2001:4f8:0:2::14" # (f.6to4-servers.net, IPv6, ISC)
 	    "194.150.168.168" # (dns.as250.net; Berlin/Frankfurt) 
 	         ];
+  networking.networkmanager.dns = "default"; # default", "dnsmasq", "systemd-resolved", "none"
   # networking.interfaces.enp4s0.useDHCP = true;
   # networking.interfaces.enp4s0.name = [ "eth0" ];
   
     services.logind.extraConfig = '' 
- 	 		HandlePowerKey = "poweroff";
- 		 	HandlePowerKeyLongPress = "reboot"; '';	
+HandlePowerKey = poweroff;
+HandlePowerKeyLongPress = reboot; 
+'';	
   
   # Set your time zone.
    time.timeZone = "Europe/Berlin";
@@ -176,35 +188,13 @@ xdg.portal.wlr.enable = true;  # Whether to enable desktop portal for wlroots-ba
   export _JAVA_AWT_WM_NONREPARENTING=1
 '';  */
  
-programs.nix-ld.enable = true;
-programs.nix-ld.libraries = with pkgs; [
-  # Grundlegende Systembibliotheken
-  stdenv.cc.cc.lib  # Enthält libstdc++, libgcc_s
-  zlib
-  openssl
-  curl
-  # Häufig benötigte Bibliotheken für Linux-Binaries
-  nss
-  nspr
-  libxml2
-  libunwind
-  icu
-  libuuid
-  libapparmor
-  alsa-lib
-  expat
-  dbus
-  systemd  # Für libsystemd
-
-  # Optional: GUI-Bibliotheken (falls benötigt)
-  # xorg.libX11
-  # gtk3
-];
 services.postgresql.enable = true;
 
 services.vnstat.enable = true; # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
-
+ 
  services.playerctld.enable = true;   # enable the playerctld daemon.
+ 
+ 
   services.logrotate.enable = true;
   services.logrotate.configFile = pkgs.writeText "logrotate.conf" ''
 		weekly 				
@@ -224,6 +214,17 @@ services.vnstat.enable = true; # Aktivieren `vnstat`-Dienst für "Console-based 
     		ForwardToSyslog=yes	  
     		ForwardToKMsg=yes 	
     		'';	
+ 
+ # Enable NixOS-specific documentation, including the NixOS manual
+  documentation.nixos.enable = true;
+  # Enable system-wide man pages. This uses man-db by default.
+  documentation.man.enable = true;
+  # Crucially, enable the generation of the 'whatis' database cache.
+  # This is required for search functionality like 'man -k' and our fzf widget.
+  documentation.man.generateCaches = true;
+  documentation.man.man-db.enable = true;
+  
+  
 # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.

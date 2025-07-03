@@ -8,10 +8,10 @@
       efiSysMountPoint = "/boot";
     };
   # SYSTEMD-BOOT
-   systemd-boot = { enable = true; };
+ #  systemd-boot = { enable = true; };
    
   # GRUB2
-  /*  grub = {
+    grub = {
       enable = true;
       efiSupport = true;
       memtest86.enable = true;
@@ -29,32 +29,13 @@
         search --set=root --file /netboot/netboot.xyz.efi
         chainloader /netboot/netboot.xyz.efi
     }
-    menuentry "lkrn-iso-netboot.xyz" {
-          insmod fat
-          insmod loopback
-          insmod chain
-          insmod iso9660  # Für ISO-Container
-          insmod linux
-
-          search --set=root --file /netboot/netboot.xyz.iso # ISO finden und Root-Device def.
-        linux /netboot/netboot.xyz.lkrn
-        
-         }
-    menuentry "iso-netboot.xyz" {
-          insmod fat
-          insmod loopback
-          insmod chain
-          insmod iso9660  # Für ISO-Container
-          insmod linux
-
-          search --set=root --file /netboot/netboot.xyz.iso # ISO finden und Root-Device def.
-          loopback loop /netboot/netboot.xyz.iso # macht die ISO als virtuelles Laufwerk verfügbar
-         }
+ 
          
         menuentry "Reboot" { reboot }  
 	menuentry "Poweroff" { halt }
       '';
-    }; */
+    }; 
+    
   };
 
 

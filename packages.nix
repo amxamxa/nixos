@@ -40,7 +40,12 @@ python3Full # High-level dynamically-typed programming language
     nix-ld #Run unpatched dynamic binaries on NixOS
     
 ######################################################
-
+agg #  High quality rendering engine for C++
+android-tools #  Android SDK platform tools
+asciinema-scenario #  Create asciinema videos from a text file
+baobab #  Graphical application to analyse disk usage in any GNOME environment
+mp3splt #  Utility to split mp3, ogg vorbis and FLAC files without decoding
+ncdu #  Disk usage analyzer with an ncurses interface
     v4l-utils # V4L utils and libv4l, provide common image formats regardless of the v4l device
 pdfarranger
 
@@ -327,63 +332,11 @@ qtemu # Qt-based front-end for QEMU emulator
 	#  sqlite # Lightweight database
 	#  redis # In-memory data structure store
 	#  mongodb # NoSQL database
- # Fonts and Typography
- # nerdfonts # Patched fonts for developers
-	  meslo-lgs-nf # Meslo Nerd Font for Powerlevel10k
-	#  lalezar-fonts # Decorative Arabic/Persian font
-		  tt2020 # open source, hyperrealistic typewriter font
-];
+ 
+ # Fonts and Typography ---> fonts.nix
 
-programs.nix-ld.enable = true;
-programs.nix-ld.libraries = with pkgs; [
-  # Grundlegende Systembibliotheken
-  stdenv.cc.cc.lib  # Enthält libstdc++, libgcc_s
-  zlib
-  openssl
-  curl
-
-  # Häufig benötigte Bibliotheken für Linux-Binaries
-  nss
-  nspr
-  libxml2
-  libunwind
-  icu
-  libuuid
-  libapparmor
-  alsa-lib
-  expat
-  dbus
-  systemd  # Für libsystemd
-
-  # Optional: GUI-Bibliotheken (falls benötigt)
-  # xorg.libX11
-  # gtk3
-];
-
-fonts.enableDefaultPackages = false;  # Deaktiviert die Standard-Schriftarten
-# ~/.local/share/font + fc-cache für costume fonts
-/*
-fonts.packages = with pkgs; [ 
-	nerd-fonts.hack
-	nerd-fonts.3270
-	nerd-fonts.agave
-	nerd-fonts.lekton
-        nerd-fonts.monofur
-        nerd-fonts.proggy-clean-tt
-        meslo-lgs-nf 
-        tt2020
-        ];
-        */
-}
-/* ALT: 	(nerdfonts.override { fonts =		[  "Hack" "3270" "Agave"  # "EnvyCodeR" "Mononoki" "ProFont" "Lekton" "Monofur" "ProggyClean" ]; # "FiraCode" 	"DroidSansMono"  } ) ]; */ 
-
-#  fonts = {
-#  fontconfig.enable
-#    fontconfig.defaultFonts.sansSerif = [ "Exo 2" "Symbols Nerd Font" ];
-#    fontconfig.defaultFonts.serif = [ "Tinos" "Symbols Nerd Font" ];
-#   fontconfig.defaultFonts.monospace = [ "Cascadia Code PL" "Symbols Nerd Font" ];
-#    fontconfig.defaultFonts.emoji = [ "JoyPixels" ];
-#  };
+]; 
+#########
 
 /* environment.xfce.excludePackages = [	            pkgs.xfce.mousepad 	 pkgs.xfce.parole
 	            pkgs.xfce.ristretto	 pkgs.xfce.thunar ]; 
@@ -401,8 +354,9 @@ environment.gnome.excludePackages = [
 #	   		pkgs.cinnamon.mint-l-theme pkgs.cinnamon.mint-l-icons
 #	   		pkgs.cinnamon.xreader
  # 			];
-#		}; 
+#		}; */
+
 }
-*/
+
 
 

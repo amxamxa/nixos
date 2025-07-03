@@ -22,17 +22,17 @@ boot.kernel.sysctl = { # Verbessert die Audio-Performance und speicherbezogene L
    # Option ist VERALTET seit 24.11 # sound.enable = true;  
  services.jack.jackd.enable = false; # PipeWire based JACK emulation doesn't use the JACK service. This option requires `services.jack.jackd.enable` to be set to false. PipeWire ersetzt jackd
 
- hardware.pulseaudio.enable = false; # pipewire ist alternative zu pulseaudio
-# hardware.pulseaudio.package = pkgs.pulseaudio.override { jackaudioSupport = true; }; # Unnötig, weil du Pulseaudio deaktiviert hast.
+# service.pulseaudio.enable = false; # pipewire ist alternative zu pulseaudio
+ hardware.pulseaudio.package = pkgs.pulseaudio.override { jackaudioSupport = true; }; # Unnötig, weil du Pulseaudio deaktiviert hast.
  security.rtkit.enable = true; # realtimeKit system service, which hands out realtime scheduling priority to user processes on demand
 
  systemd.user.services.set-volume = {
-  description = "Set volume to 99% at startup";
+  description = "Set volume to 75% at startup";
   wantedBy = [ "default.target" ];
   after = [ "wireplumber.service" ]; 
   serviceConfig = {
   #wpctl set-volume @DEFAULT_AUDIO_SINK@ 80% 
-    ExecStart = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 99%";
+    ExecStart = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 75%";
     Restart = "on-failure";
       StandardOutput = "journal";
     StandardError = "journal";
