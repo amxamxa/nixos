@@ -5,7 +5,7 @@
   # dynamically linked ELF binaries that were built outside of Nix/Nixpkgs.
   # It provides a fallback dynamic linker and library path for such binaries.
   programs.nix-ld.enable = true;
-
+ 
   # Define the shared libraries that nix-ld should make available
   # to foreign dynamically linked binaries. This is crucial for running
   # precompiled Linux software (e.g., from GitHub, vendor tarballs)

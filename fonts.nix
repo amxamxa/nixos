@@ -65,7 +65,7 @@
           <family>Symbols Nerd Font</family>
         </prefer>
       </alias>
-
+ 
       <alias>
         <family>monospace</family>
         <prefer>
