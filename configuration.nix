@@ -10,7 +10,7 @@ in
       	./hardware-configuration.nix	
       	./boot.nix # grub2 & lightDM
       	./audio.nix
-      	./ld.nix
+      	./python.nix # ehem.	./ld.nix
       	  	./fonts.nix
     #   ./gpu-GV-N960.nix # nicht mehr drin
 	./mouse-rog.nix
@@ -18,7 +18,7 @@ in
       	./packages.nix # env.pkgs
       	./users.nix
       	./docker.nix
-      	./AdBloxx.nix
+      	./adBloxx.nix # ehem. ./AdBloxx.nix
       	./us-altgr-umlaut.nix
       	# ./firefox.nix # todo
     ];

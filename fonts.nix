@@ -45,50 +45,50 @@
         
         
       localConf = ''
-    <?xml version="1.0"?>
-    <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-    <fontconfig>
-      <alias>
-        <family>sans-serif</family>
-        <prefer>
-          <family>Open Sans</family>
-          <family>DejaVu Sans</family>
-          <family>Symbols Nerd Font</family>
-        </prefer>
-      </alias>
+	    <?xml version="1.0"?>
+	    <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+	    <fontconfig>
+	      <alias>
+		<family>sans-serif</family>
+		<prefer>
+		  <family>Open Sans</family>
+		  <family>DejaVu Sans</family>
+		  <family>Symbols Nerd Font</family>
+		</prefer>
+	      </alias>
 
-      <alias>
-        <family>serif</family>
-        <prefer>
-          <family>Tinos Nerd Font</family>
-          <family>DejaVu Serif</family>
-          <family>Symbols Nerd Font</family>
-        </prefer>
-      </alias>
- 
-      <alias>
-        <family>monospace</family>
-        <prefer>
-          <family>Hack Nerd Font</family>
-          <family>3270 Nerd Font</family>
-          <family>Lekton Nerd Font</family>
-          <family>Monofur Nerd Font</family>
-          <family>ProggyClean Nerd Font</family>
-          <family>MesloLGS Nerd Font</family>
-          <family>TT2020</family>
-          <family>Agave Nerd Font</family>
-          <family>Symbols Nerd Font</family>
-        </prefer>
-      </alias>
-      
-      <alias>
-        <family>emoji</family>
-        <prefer>
-          <family>openmoji-color</family>
-        </prefer>
-      </alias>
-    </fontconfig>
-  '';
+	      <alias>
+		<family>serif</family>
+		<prefer>
+		  <family>Tinos Nerd Font</family>
+		  <family>DejaVu Serif</family>
+		  <family>Symbols Nerd Font</family>
+		</prefer>
+	      </alias>
+	 
+	      <alias>
+		<family>monospace</family>
+		<prefer>
+		  <family>Hack Nerd Font</family>
+		  <family>3270 Nerd Font</family>
+		  <family>Lekton Nerd Font</family>
+		  <family>Monofur Nerd Font</family>
+		  <family>ProggyClean Nerd Font</family>
+		  <family>MesloLGS Nerd Font</family>
+		  <family>TT2020</family>
+		  <family>Agave Nerd Font</family>
+		  <family>Symbols Nerd Font</family>
+		</prefer>
+	      </alias>
+	      
+	      <alias>
+		<family>emoji</family>
+		<prefer>
+		  <family>openmoji-color</family>
+		</prefer>
+	      </alias>
+	    </fontconfig>
+	  '';
   
       # Set default fonts by type
    /*   defaultFonts = {
@@ -106,6 +106,6 @@
     };
   };
 }
-
+MesloLGS
 
 
