@@ -14,7 +14,7 @@
   environment.variables = {
     BROWSER 			  = 	"firefox";
     EDITOR 			  =	 "micro";
-    PRO 				  = 	"/home/project";
+    PRO 			  = 	"/home/project";
     SHAREDIR 			  = 	"/share";
     EMACSDIR			  =	"/share/emacs";
     ZDOTDIR 			  = 	"/share/zsh";

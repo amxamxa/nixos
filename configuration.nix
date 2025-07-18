@@ -11,7 +11,7 @@ in
       	./boot.nix # grub2 & lightDM
       	./audio.nix
       	./python.nix # ehem.	./ld.nix
-      	  	./fonts.nix
+      	./fonts.nix
     #   ./gpu-GV-N960.nix # nicht mehr drin
 	./mouse-rog.nix
 	./zsh.nix
@@ -56,6 +56,9 @@ HandlePowerKey = poweroff;
 HandlePowerKeyLongPress = reboot; 
 '';	
   
+  # Wipe /tmp on boot.
+  boot.tmp.cleanOnBoot  = true;
+
   # Set your time zone.
    time.timeZone = "Europe/Berlin";
    
@@ -73,16 +76,13 @@ services.displayManager = {
 
  services.xserver.desktopManager = {
     cinnamon.enable 	= true;
-    gnome.enable	= false;
+    gnome.enable		= false;
     pantheon.enable 	= false;
     lxqt.enable		= false;
     xfce.enable		= false; 
     };
 services.xserver.displayManager.startx.enable = true; # Whether to enable the dummy “startx” pseudo-display manager, which allows users to start X manually via the startx command from a virtual terminal.
-services.xserver.displayManager.sessionCommands = ''xcowsay "
-	"Hello World!" this is X
-  	-- Greeting from GUI --
-  	&& Hi Xamxama"'';
+services.xserver.displayManager.sessionCommands = ''xcowsay " \n "Hello World!" this is \n  	-- Greeting from GUI -- \n  	&& Hi Xamxama"'';
 
 # Enable CUPS to print documents.
   services.printing.enable = false;

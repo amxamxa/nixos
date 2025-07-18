@@ -1,10 +1,13 @@
 # zsh.nix
 { config, pkgs, ... }:
 {
-
+#     
+#   STARSHIP PROMPT:
+# """"""""""""""""""""""
  #   programs.starship = {      enable = true;      settings = {        add_newline = true;        format = "$line_break$package$character"; # CLI-Anzeigeformat       scan_timeout = 20;      };      interactiveOnly = true;      # presets = ./path/to starship.toml; # Optional: Externe Preset-Datei    };
 #   -----------------------------------------------------------------
 #       Z  S  H
+# """"""""""""""""""""""
  programs.command-not-found.enable = false;
  # programs.zsh.interactiveShellInit = ''
  #	source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh '';
@@ -41,27 +44,28 @@ environment.shells = with pkgs; [ zsh ];
     interactiveShellInit = ''
         # wird bei Initialisierung einer interaktiven Zsh-Shell ausgeführt.
         source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-        # ?? das ist hier aber nicht nötig, da alles über die $ZDOTDIR/zshrc.zsh gesourct wird!
+        
+        # das ist hier aber nicht nötig, da alles über die $ZDOTDIR/zshrc.zsh gesourct wird!
         # test -f $ZDOTDIR/zshrc.zsh && source $ZDOTDIR/zshrc.zsh
                            '';
       promptInit = ''
-￼  [[ ! -f "$ZDOTDIR/prompt/p10k-fancy-v02.zsh" ]] || source "$ZDOTDIR/prompt/p10k-fancy-v02.zsh"
-            # /share/zsh/prompt/basic-prompt.zsh
+  [[ ! -f "$ZDOTDIR/prompt/p10k-fancy-v02.zsh" ]] || source "$ZDOTDIR/prompt/p10k-fancy-v02.zsh"
+          # /share/zsh/prompt/basic-prompt.zsh
           #   source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/internal/p10k.zsh
                     '';
 #         shellAliases = "$ZDOTDIR/aliases.zsh";
          histSize = 30000;
-          histFile = "$ZDOTDIR/history/zhistory";
-          setOptions = [        # see man 1 zshoptions
+         histFile = "$ZDOTDIR/history/zhistory";
+         setOptions = [        # see man 1 zshoptions
             "APPEND_HISTORY"       "INC_APPEND_HISTORY"
             "SHARE_HISTORY"        "EXTENDED_HISTORY"
-            "HIST_IGNORE_DUPS"    "HIST_IGNORE_ALL_DUPS"
-            "HIST_FIND_NO_DUPS"   "HIST_SAVE_NO_DUPS"
-            "RM_STAR_WAIT"        "PRINT_EXIT_VALUE"
-            "SH_WORD_SPLIT"       "CORRECT"
-            "NOTIFY"          	  "INTERACTIVE_COMMENTS"
-            "ALIAS_FUNC_DEF"      "EXTENDEDGLOB"
-            "AUTO_CD"     	  "NOMATCH"       #   "no_global_rcs"
+            "HIST_IGNORE_DUPS"     "HIST_IGNORE_ALL_DUPS"
+            "HIST_FIND_NO_DUPS"    "HIST_SAVE_NO_DUPS"
+            "RM_STAR_WAIT"         "PRINT_EXIT_VALUE"
+            "SH_WORD_SPLIT"        "CORRECT"
+            "NOTIFY"          	   "INTERACTIVE_COMMENTS"
+            "ALIAS_FUNC_DEF"       "EXTENDEDGLOB"
+            "AUTO_CD"     	   "NOMATCH"       #   "no_global_rcs"
                         ]; };
 }
 

@@ -31,7 +31,7 @@ TSHOOT: Prüfe die X-Server-Logs auf Fehlermeldungen (/var/log/Xorg.0.log oder �
 system.activationScripts.xkb-symbols = pkgs.writeShellScript "xkb-symbols" ''
     mkdir -p /etc/X11/xkb/symbols
     cp /etc/nixos/us-altgr-umlauts /etc/X11/xkb/symbols/altgr_umlauts
-  '';
+  '';  
  #  system.activationScripts.xkb-symbols.after = [ "fileSystems./etc/X11/xkb/symbols.mount" ];
 
  */
@@ -39,7 +39,7 @@ system.activationScripts.xkb-symbols = pkgs.writeShellScript "xkb-symbols" ''
 i18n = {
     defaultLocale = "de_DE.UTF-8";
     supportedLocales =      [ "de_DE.UTF-8/UTF-8"   # Modern, universell unterstützt große Anzahl von Zeichen
-     					    "en_US.UTF-8/UTF-8"    ];   # Sprache auf Deutsch/Englisch begrenzen
+     		"en_US.UTF-8/UTF-8"    ];   # Sprache auf Deutsch/Englisch begrenzen
     extraLocaleSettings = {
     	LC_NAME = 		  "de_DE.UTF-8";
         LC_TIME = 		  "de_DE.UTF-8";
@@ -56,7 +56,7 @@ i18n = {
  fonts.packages = with pkgs; [ terminus_font ];
 
    console = {
-    font = "Agafari-16"; # "sun12x22"; # ls /run/current-system/sw/share/consolefonts/"Lat2-Terminus16";  # Schriftart für die Konsole
+    font = "GohaClassic-16"; #   Agafari-16"; # "sun12x22"; # ls /run/current-system/sw/share/consolefonts/"Lat2-Terminus16";  # Schriftart für die Konsole
   #  keyMap = "us,de";  # Deutsche Tastaturbelegung in der Konsole
   };
     

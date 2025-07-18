@@ -10,44 +10,21 @@ environment.systemPackages = with pkgs; [
  	unstable.yt-dlp
  		
 #### Python Development
-jetbrains.pycharm-community-bin # py IDE. Syntax-Hervorhebng, Debugging-Tools, Refactoring-Unterstützung und Integration mit Versionskontrollsystemen.
-python3Full # High-level dynamically-typed programming language
- ## Eigene Python-Umgebung mit ausgewählten Paketen
-    (python312.withPackages (ps: with ps; [
-        pip                           # PyPA recommended tool for installing packages
-        setuptools                    # Build system foundation
-        wheel                         # For building wheels
-        openai                        # Access to OpenAI API
-        pydub                         # Audio manipulation toolkit
-        speechrecognition             # API for voice recognition
-        ascii-magic                   # Converts images to ASCII
-   	art                           # ASCII Art generation
-      	feedparser      
- 	virtualenv		      # create isolated Python environments
-        keyrings-alt                  # Alternative keyrivon Tewes?ng backends
-        pygments                      # Syntax highlighting for code
-        markdown2                     # Markdown parser in Python
-        librosa                      # Audioanalyse, FFT, Tonhöhe, Beat-Detection
-        soundfile                    # Lesen/Schreiben von Audiodateien
-        rich                         # Farbenfrohe Terminalausgabe 
-        typer                        # CLI-Tools mit Typanmerkungen
-        prompt-toolkit               # shell-artige Tools, Autovervollständigung
-       pytest                       # Erweiterter Test-Runner
-       black                        # Code Formatter
-        beautifulsoup4               # HTML/XML Parsingvon Tewes?
-        pdfminer                     # PDF zu Text
-    ]))
-    nix-ld #Run unpatched dynamic binaries on NixOS
+# siehe python.nix
     
 ######################################################
 agg #  High quality rendering engine for C++
 android-tools #  Android SDK platform tools
+    libmtp #    Implementation of Microsoft's Media Transfer Protocol
+jmtpfs # Erstellt ein mountbares Laufwerk (~/android-mount)
 asciinema-scenario #  Create asciinema videos from a text file
 baobab #  Graphical application to analyse disk usage in any GNOME environment
 mp3splt #  Utility to split mp3, ogg vorbis and FLAC files without decoding
 ncdu #  Disk usage analyzer with an ncurses interface
     v4l-utils # V4L utils and libv4l, provide common image formats regardless of the v4l device
 pdfarranger
+wmctrl # CLI tool to interact with EWMH/NetWM compatible X Window Managers
+ausweisapp # Official authentication app for German ID card and residence permit
 
 # Infinite-world block sandbox game
 minetestserver
@@ -62,10 +39,11 @@ android-tools # Android SDK platform tools
 asciinema-scenario # Create asciinema videos from a text file
 baobab # Graphical application to analyse disk usage in any GNOME environment
 mp3splt # Utility to split mp3, ogg vorbis and FLAC files without decoding
+spotdl # Download your Spotify playlists and songs along with album art and metadata
 ncdu # Disk usage analyzer with an ncurses interface
 gvfs # Virtual Filesystem support library
 avahi # mDNS/DNS-SD implementation
-
+dmidecode # Tool that reads information about your system's hardware from the BIOS according to the SMBIOS/DMI standard
 scrcpy # Display and control Android devices over USB or TCP/IP
 shellcheck # Shell script analysis tool
 
