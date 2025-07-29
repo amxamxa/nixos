@@ -38,8 +38,21 @@
     CARGO_HOME         = 	"$HOME/.config/cargo";       # Für Rust-Projekte, falls benötigt
     WWW_HOME           = 	"$HOME/.config/w3m";           # w3m (Browser) Konfigurationspfad
     PYTHONPATH = "${pkgs.python3Full}/${pkgs.python3Full.sitePackages}";
-
   };
+
+  environment.etc."xdg/user-dirs.defaults".text = ''
+   #  DESKTOP=desktop
+   #  DOCUMENTS=dokumente
+   #  DOWNLOAD=downloads
+   # MUSIC=musik
+    # PICTURES=bilder
+    PUBLICSHARE=public
+    TEMPLATES=tmp
+#    VIDEOS=videos
+  '';
+  # Locale-Einstellungen für korrekte Zeichendarstellung
+  i18n.defaultLocale = "de_DE.UTF-8";
+  
 
   # Weitere Pfade und Optionen
   environment.homeBinInPath = true;   # Fügt ~/bin/ dem $PATH hinzu

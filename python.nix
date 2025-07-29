@@ -1,39 +1,53 @@
- { config, pkgs, ... }:
+# python.nix
+{ config, pkgs, ... }:
 
+let
+  # Definieren einer einzigen, benutzerdefinierten Python-Umgebung
+  # mit allen notwendigen Paketen.
+  python-env = (pkgs.python312.withPackages (ps: with ps; [
+    # Werkzeuge für Paketmanagement und Builds
+    pip                           # PyPA recommended tool for installing packages
+    setuptools                    # Build system foundation
+    wheel                         # For building wheels [cite: 3]
+    virtualenv                    # create isolated Python environments
+    # API- und Web-Bibliotheken
+    openai                        # Access to OpenAI API
+    feedparser                    # Universal feed parser [cite: 5]
+    beautifulsoup4                # HTML/XML Parsing
+    # Audio- und Sprachverarbeitung
+    pydub                         # Audio manipulation toolkit [cite: 4]
+    speechrecognition             # API for voice recognition
+    librosa                       # Audioanalyse, FFT, Tonhöhe, Beat-Detection [cite: 6]
+    soundfile                     # Lesen/Schreiben von Audiodateien [cite: 6]
+    # Bildverarbeitung und ASCII-Art
+    pillow                        # (PIL Fork) - Für Bildverarbeitung [cite: 9]
+    numpy                         # Für effiziente Pixelmanipulation [cite: 9]
+    ascii-magic                   # Converts images to ASCII
+    art                           # ASCII Art generation
+    # CLI- und Terminal-Werkzeuge
+    rich                          # Farbenfrohe Terminalausgabe [cite: 7]
+    typer                         # CLI-Tools mit Typanmerkungen [cite: 7]
+    prompt-toolkit                # shell-artige Tools, Autovervollständigung
+    # Entwicklung und Testen
+    pytest                        # Erweiterter Test-Runner [cite: 8]
+    black                         # Code Formatter [cite: 8]
+    # Sonstige Werkzeuge
+    pygments                      # Syntax highlighting for code
+    markdown2                     # Markdown parser in Python [cite: 6]
+    pdfminer                      # PDF zu Text [cite: 9]
+    keyrings-alt                  # Alternative keyring backends
+  ]));
+
+in
 {
+  # Installieren Sie NUR die oben definierte, angepasste Python-Umgebung.
+  environment.systemPackages = with pkgs; [
+    python-env # Diese Umgebung enthält Python 3.12 und alle Pakete
+    jetbrains.pycharm-community-bin # py IDE.
+    nix-ld # Run unpatched dynamic binaries on NixOS
+  ];
 
-environment.systemPackages = with pkgs; [
 
-#### Python Development
-jetbrains.pycharm-community-bin # py IDE. Syntax-Hervorhebng, Debugging-Tools, Refactoring-Unterstützung und Integration mit Versionskontrollsystemen.
-python3Full # High-level dynamically-typed programming language
- ## Eigene Python-Umgebung mit ausgewählten Paketen
-    (python312.withPackages (ps: with ps; [
-        pip                           # PyPA recommended tool for installing packages
-        setuptools                    # Build system foundation
-        wheel                         # For building wheels
-        openai                        # Access to OpenAI API
-        pydub                         # Audio manipulation toolkit
-        speechrecognition             # API for voice recognition
-        ascii-magic                   # Converts images to ASCII
-   	art                           # ASCII Art generation
-      	feedparser      
- 	virtualenv		      # create isolated Python environments
-        keyrings-alt                  # Alternative keyrivon Tewes?ng backends
-        pygments                      # Syntax highlighting for code
-        markdown2                     # Markdown parser in Python
-        librosa                      # Audioanalyse, FFT, Tonhöhe, Beat-Detection
-        soundfile                    # Lesen/Schreiben von Audiodateien
-        rich                         # Farbenfrohe Terminalausgabe 
-        typer                        # CLI-Tools mit Typanmerkungen
-        prompt-toolkit               # shell-artige Tools, Autovervollständigung
-       pytest                       # Erweiterter Test-Runner
-       black                        # Code Formatter
-        beautifulsoup4               # HTML/XML Parsingvon Tewes?
-        pdfminer                     # PDF zu Text
-    ]))
-    nix-ld #Run unpatched dynamic binaries on NixOS
-    ];
 # Enable nix-ld, a compatibility tool that allows executing
   # dynamically linked ELF binaries that were built outside of Nix/Nixpkgs.
   # It provides a fallback dynamic linker and library path for such binaries.

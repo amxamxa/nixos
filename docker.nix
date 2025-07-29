@@ -11,6 +11,10 @@
  # hardware.nvidia-container-toolkit.enable = true;
   environment.systemPackages = with pkgs; [ 
   		docker 
+# Rootless-Modus kann Docker nicht auf das normale veth-Networking (wie mit Root) zugreifen. Ermöglicht Netzwerk-Namespaces im User-Space durch Port-Forwarding und NAT.
+  		slirp4netns
+  		# Docker overlay2 als Storage-Treiber, aber dieser benötigt Root-Rechte. fuse-overlayfs ist eine FUSE-basierte (User-Space) Alternative zu OverlayFS.
+  		fuse-overlayfs
   		docker-compose  # Docker CLI plugin to run multi-container applications
   		docui 		# TUI Client for Docker
   		lazydocker 	# A simple terminal UI for both docker and docker-compose
@@ -19,40 +23,42 @@
   
   users.users.amxamxa.extraGroups = [ "docker" ];
   
+  # Benötigt für Rootless-Modus
+  programs.fuse.userAllowOther = true;
+  
   virtualisation.docker = {
-    enable = true;
-    enableOnBoot = true;  # When enabled dockerd is started on boot. required for containers with --restart=always' flag. 
+    enable = false; # da rootless docker
+    enableOnBoot = false;  # When enabled dockerd is started on boot. required for containers with --restart=always' flag. 
     # If disabled, docker might be started on demand by socket activation.
    rootless = {
     	enable = true;  # Podman socket avail Docker ohne Root-Rechte betreiben (sicherer)
     	setSocketVariable = true;  # Setzt Umgebungsvariable für Docker Socket
-    	daemon.settings = {
-  		# fixed-cidr-v6 = "fd00::/80";
+  	 };
+    daemon.settings = {
+      # Die data-root Konfiguration gehört hierher für den rootless-Modus.
+      # Docker speichert die Daten dann unter ~/.local/share/docker
+      # Ein systemweiter Pfad wie /docker ist hier nicht ohne Weiteres möglich und auch nicht sinnvoll.
+      data-root = "/home/amxamxa/.local/share/docker"; # Beispielhafter Pfad im Home-Verzeichnis
+ #     storage-driver = "overlay2";
+      experimental = true;
+      # KONFIGURATION FÜR DOCKER-BRIDGE IP fur docker0
+      #	"bip" = "172.17.0.0/16";  # "bip" und andere Netzwerkeinstellungen sind im rootless-Modus anders zu handhaben.
+ 	# fixed-cidr-v6 = "fd00::/80";
  		# ipv6 = true;
 		}; # These attributes are serialized to JSON used as daemon.conf.
 		# See https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file
-  	 };
-
-	autoPrune.enable = true; # periodically prune/empty Docker resources.
-   # systemd timer will run docker system prune -f as specified by the dates option.
+        autoPrune.enable = true; # periodically prune/empty Docker resources.
+         # systemd timer will run docker system prune -f as specified by the dates option.
 	autoPrune.dates = "weekly";
 	autoPrune.flags = [
  	# "--all" # Any additional flags passed to docker system prune.
 	 ];
-   daemon.settings = {
-    	data-root = "/docker";
-     	experimental = true;
-     	# userland-proxy = false;
-     	#   metrics-addr = "0.0.0.0:9323";
-     	storage-driver = "overlay2";     # overlay2 ist der empfohlene Treiber für ext4-Dateisysteme. 
-     	# KONFIGURATION FÜR DOCKER-BRIDGE IP fur docker0
-     	"bip" = "172.17.0.0/16";
    };
-};
-  # Umgebungsvariablen für Docker
-  environment.sessionVariables = {
-    DOCKER_HOST = "unix://$XDG_RUNTIME_DIR/docker.sock";  # Socket für rootless Docker
-  };
+
+  # Umgebungsvariablen für Docker, Socket für rootless Docker
+  # environment.sessionVariables = {
+  #  DOCKER_HOST = "unix://$XDG_RUNTIME_DIR/docker.sock";   };
+
 
   virtualisation.containers.registries.search = [ "docker.io" ];
 
@@ -69,7 +75,7 @@
 Script used to obtain source hashes for dockerTools.pullImage [ "8083:80" ]; # Port-Weiterleitung 8083→80
       volumes = [
         {
-          source = pkgs.writeText "index.html" "Man, SCREW WORLD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+          source = pkgs.writeText "index.html" "Man, SCREW WORLD"
           target = "/usr/share/nginx/html/index.html";
         }
         {

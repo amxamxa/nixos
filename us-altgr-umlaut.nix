@@ -44,20 +44,12 @@ i18n = {
     	LC_NAME = 		  "de_DE.UTF-8";
         LC_TIME = 		  "de_DE.UTF-8";
         LC_PAPER = 		  "de_DE.UTF-8";
-     	LC_ADDRESS =	  "de_DE.UTF-8";
-	LC_MEASUREMENT = "de_DE.UTF-8";
-      	LC_MONETARY = 	  "de_DE.UTF-8";
-       	LC_NUMERIC =          "de_DE.UTF-8";
-	LC_TELEPHONE = 	  "de_DE.UTF-8";
-	LC_IDENTIFICATION = "de_DE.UTF-8";
+     	LC_ADDRESS =		  "de_DE.UTF-8";
+	LC_MEASUREMENT = 	  "de_DE.UTF-8";
+      	LC_MONETARY = 	 	  "de_DE.UTF-8";
+       	LC_NUMERIC =              "de_DE.UTF-8";
+	LC_TELEPHONE = 	 	  "de_DE.UTF-8";
+	LC_IDENTIFICATION =	  "de_DE.UTF-8";
     };
  };
- 
- fonts.packages = with pkgs; [ terminus_font ];
-
-   console = {
-    font = "GohaClassic-16"; #   Agafari-16"; # "sun12x22"; # ls /run/current-system/sw/share/consolefonts/"Lat2-Terminus16";  # Schriftart für die Konsole
-  #  keyMap = "us,de";  # Deutsche Tastaturbelegung in der Konsole
-  };
-    
 }

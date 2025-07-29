@@ -8,19 +8,19 @@ in
   imports =
     [ # Include the results of the hardware scan.
       	./hardware-configuration.nix	
-      	./boot.nix # grub2 & lightDM
+      	./adBloxx.nix # ehem. ./AdBloxx.nix
       	./audio.nix
-      	./python.nix # ehem.	./ld.nix
+      	./boot.nix # grub2 & lightDM
+      	./docker.nix
       	./fonts.nix
     #   ./gpu-GV-N960.nix # nicht mehr drin
 	./mouse-rog.nix
-	./zsh.nix
       	./packages.nix # env.pkgs
+      	./python.nix # ehem.	./ld.nix
       	./users.nix
-      	./docker.nix
-      	./adBloxx.nix # ehem. ./AdBloxx.nix
       	./us-altgr-umlaut.nix
       	# ./firefox.nix # todo
+      	./zsh.nix
     ];
 
 
@@ -68,6 +68,51 @@ HandlePowerKeyLongPress = reboot;
 # services.xserver.displayManager.lightdm.greeters.slick.enable = true;
 # -------------------------------------------
 
+# LightDM Slick Greeter 
+services.xserver.displayManager = {
+  gdm.enable = false;
+  lightdm.enable = true;
+  # lightdm.greeters.tiny = {   enable = true;    #background = "/share/wallpaper/sonstige/blitz.png"; };
+     #environment.etc."lightdm/lightDM-bg.png".source = ./path/to/your/image.png; #environment.etc."lightdm/logo-aramgedon.png".source = ./path/to/your/logo.png;
+   lightdm.greeters.slick = {
+       enable = true;
+       theme = {
+   		# name = "autoreiv";    		 package = pkgs.dwarf-fortress-packages.themes.autoreiv;  
+   		name = "andromeda";
+   		package = pkgs.andromeda-gtk-theme;
+   		};
+     iconTheme = {
+		name = "Faba-Mono-Dark"; 
+		package = pkgs.faba-mono-icons;
+		};
+     font  = {
+     		name = "MesloLGS NF 24";
+     		package = pkgs.meslo-lgs-nf;
+     		};
+    # draw-user-backgrounds= true; # steuert, ob Hintergrund des Nutzers auf Login-Bildschirm erscheint
+     # tshoot:  /var/log/lightdm/lightdm.log
+     extraConfig = ''
+    # LightDM GTK+ Configuration file 
+    # for /etc/lightdm/slick-greeter.conf        
+        stretch-background-across-monitors=false # to stretch the background across multiple monitors (false by default) 
+        only-on-monitor=HDMI-1  # Sets monitor on which is login; -1 means "follow the mouse"
+        background-color="#502962"  # load before pic
+        background=/etc/lightdm/lightDM-bg.png
+        logo=/etc/lightdm/logo-aramgedon.png 
+        other-monitors-logo=/etc/lightdm/logo-aramgedon.png 
+        # show-power=false        # show-keyboard=false
+        show-hostname=true  
+        show-clock=true 
+        show-quit=true # show the quit menu in the menubar 
+        xft-hintstyle="hintmedium" # hintnone/hintslight/hintmedium/hintfull  
+	clock-format=" %d.%b.%g %H:%" #  clock format to use (e.g., %H:%M or %l:%M %p)
+        
+        # xft-antialias=Whether to antialias Xft fonts (true or false)  # xft-dpi=Resolution for Xft in dots per inch
+	# xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)
+	 '';  
+	 };
+   };
+
 services.displayManager = {
 	autoLogin.enable = true;
 	autoLogin.user = "amxamxa";
@@ -76,7 +121,7 @@ services.displayManager = {
 
  services.xserver.desktopManager = {
     cinnamon.enable 	= true;
-    gnome.enable		= false;
+    gnome.enable	= false;
     pantheon.enable 	= false;
     lxqt.enable		= false;
     xfce.enable		= false; 
@@ -165,8 +210,7 @@ services.gvfs.enable = true;
     };
   };
 
-
- programs.xwayland.enable = true;            # Aktiviere XWayland
+    programs.xwayland.enable = true;            # Aktiviere XWayland
     programs.sway.enable = true;
     programs.thunar.enable = lib.mkForce false;  # Deaktiviere Thunar
     programs.traceroute.enable = true;          # Aktiviere Traceroute
@@ -188,13 +232,9 @@ xdg.portal.wlr.enable = true;  # Whether to enable desktop portal for wlroots-ba
   export _JAVA_AWT_WM_NONREPARENTING=1
 '';  */
  
-services.postgresql.enable = true;
-
-services.vnstat.enable = true; # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
- 
+ services.postgresql.enable = true;
+ services.vnstat.enable = true; # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
  services.playerctld.enable = true;   # enable the playerctld daemon.
- 
- 
   services.logrotate.enable = true;
   services.logrotate.configFile = pkgs.writeText "logrotate.conf" ''
 		weekly 				

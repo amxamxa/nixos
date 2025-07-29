@@ -104,8 +104,8 @@ environment.systemPackages = with pkgs; [
 # DAWs und Audio-Editoren
   vlc # Media player
   ardour      # Multi-track hard disk recording software
-  reaper      # Professional digital audio workstation (DAW)
-  bitwig-studio4  # Digital audio workstation
+  # reaper      # Professional digital audio workstation (DAW)
+  # bitwig-studio4  # Digital audio workstation
 
   # MIDI- Drum-, Loop-Machines,  MIDI-Sequencing und virtuelle Instrumente
  # mamba # Virtual MIDI keyboard for Jack Audio Connection Kit

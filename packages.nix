@@ -5,26 +5,36 @@
 #in
 {
 environment.systemPackages = with pkgs; [
+
 # aus unstable Channel:
  	unstable.hugo
  	unstable.yt-dlp
  		
 #### Python Development
 # siehe python.nix
+
+
+### Video prod
+  asciinema # Record terminal sessions
+  asciinema-scenario # Create asciinema videos from a text file
+  asciinema-scenario #  Create asciinema videos from a text file
+  asciinema-agg # Command-line tool for generating animated GIF files from asciicast v2 files produced by asciinema terminal recorder
+  agg # : High quality rendering engine for C++
+  obs-studio # : Free and open source software for video recording and live streaming  
     
 ######################################################
 agg #  High quality rendering engine for C++
 android-tools #  Android SDK platform tools
     libmtp #    Implementation of Microsoft's Media Transfer Protocol
 jmtpfs # Erstellt ein mountbares Laufwerk (~/android-mount)
-asciinema-scenario #  Create asciinema videos from a text file
+
 baobab #  Graphical application to analyse disk usage in any GNOME environment
-mp3splt #  Utility to split mp3, ogg vorbis and FLAC files without decoding
+
 ncdu #  Disk usage analyzer with an ncurses interface
     v4l-utils # V4L utils and libv4l, provide common image formats regardless of the v4l device
 pdfarranger
 wmctrl # CLI tool to interact with EWMH/NetWM compatible X Window Managers
-ausweisapp # Official authentication app for German ID card and residence permit
+# ausweisapp # Official authentication app for German ID card and residence permit
 
 # Infinite-world block sandbox game
 minetestserver
@@ -34,13 +44,11 @@ minetestclient
 
 libreoffice
  
-agg # High quality rendering engine for C++
+
 android-tools # Android SDK platform tools
-asciinema-scenario # Create asciinema videos from a text file
+
 baobab # Graphical application to analyse disk usage in any GNOME environment
 mp3splt # Utility to split mp3, ogg vorbis and FLAC files without decoding
-spotdl # Download your Spotify playlists and songs along with album art and metadata
-ncdu # Disk usage analyzer with an ncurses interface
 gvfs # Virtual Filesystem support library
 avahi # mDNS/DNS-SD implementation
 dmidecode # Tool that reads information about your system's hardware from the BIOS according to the SMBIOS/DMI standard
@@ -84,6 +92,7 @@ hidapi # Library for communicating with USB and Bluetooth HID devices
      vivid
   #   steam
   xorg.libXrandr
+  xorg.xhost # fuer docker
   libglvnd #The GL Vendor-Neutral Dispatch library
 libGL # Stub bindings using libglvnd
 tuxpaint # open Source Drawing Software for Children
@@ -111,101 +120,15 @@ superTuxKart # Tux Kart
         wirelesstools # ifrename iwconfig iwevent iwgetid iwlist iwpriv iwspy
 	meld	# visual diff and merge tool
 # __________________________________________
-
-	shunit2 # xUnit based unit test framework for bash scripts
 	# genymotion # Fast and easy Android emulation
 
-	
 	# eww #ElKowars wacky widgets
 	fwup fwupd fwupd-efi #    Configurable embedded Linux firmware update creator and runner
 # Backup and Recovery
 	  dedup # Deduplicating backup program
 	  timeshift # System restore utility
 	  gparted # Partition editor
-# Terminal and Shell Utilities
-	  kitty # Terminal emulator
-	  lsd # Modern ls command
-	  eza # Improved ls replacement
-	  colordiff # Colored diff tool
-	  lscolors # Colorize paths using LS_COLORS
-	  lcms # Color management engine
-	  terminal-colors # Display terminal colors
-	  colorpanes # Terminal pane colors
-	  sanctity # Terminal color combinations
-	  notcurses # c compile , TUIs and character graphics
-	  terminal-parrot # Shows colorful, animated party parrot in your terminial
-	  bat-extras.batman # scripts: batgrep, batman, batpipe (less), batwatch, batdiff, prettybat 
-# Miscellaneous
-	  thefuck # Corrects previous console commands
-	  ripgrep # Fast search tool
-	  banner # Text banner tool
-	  toilet # Text banner tool
-	  tealdeer # Simplified man pages
-	  neo-cowsay # ASCII art tool
-	  xcowsay # Customize cowsay with images
-	 zsh-completions # Additional completions
-	  fortune # Display random quotes
-	  clolcat # Colorize output
-	  blahaj # Fun terminal tool
-	  xcp	# cp 2.0
-	colorized-logs # Tools for logs with ANSI color
-	colorz # color scheme generator. $ colorz image -n 12
-	colorless # colorise cmd output and pipe it to less $ eval "$(colorless -as)"
-# dumm:	colorstorm # cmd line tool to generate color themes for editors (Vim, VSCode, Sublime, Atom) and terminal emulators (iTerm2, Hyper).
-	colord-gtk4 # Color Manager
-	gcolor3 #color picker
-	fd # find in go = find 2.0
-	ntfs3g # FUSE-based NTFS driver with full write support
-	curl wget openssl inetutils
-	gnupg
-	unzip zip zlib
-	# unrar #unfree
-	file # specifies that a series of tests are performed on the file
-	fff # file mgr
-	flameshot # Powerful yet simple to use screenshot software
-	ruby # object-oriented language 
-#___________________________________________________________
-# SHELL
-	 zsh # Shell
-	 zsh-autosuggestions # Command line suggestions
-	 zsh-autocomplete # Autocomplete for Zsh
-	 zsh-syntax-highlighting # Syntax highlighting
-	 zsh-completions # Additional completions
-#	 zsh-powerlevel9k # Zsh theme
-#	 zsh-powerlevel10k # Enhanced Zsh theme
-         starship #minimal, blazing-fast, and infinitely customizable prompt
-	 zsh-nix-shell # Use Zsh in nix-shell
-	 nix-zsh-completions # Nix completions for Zsh
-         navi cheat
-	 fzf # Command-line fuzzy finder
-	 fzf-zsh # Fzf integration for Zsh
-	 fzf-git-sh # Git utilities powered by fzf
-	 ################### 
-	  asciinema # Record terminal sessions
- 	# mcfly # An upgraded ctrl-r where history results make sense
-	 #  mcfly-fzf # Integrate Mcfly with fzf to combine a solid command history database with a widely-loved fuzzy search UI
-	  bat
-	  zoxide
-	  figlet
-	  banner # Print large banners to ASCII terminals
-	  calligraphy # GTK tool turning text into ASCII banners
-	  figlet # Program for making large letters out of ordinary text
-	  zsh-forgit # Git utility tool
-	  # tmux # Terminal multiplexer
-	  coreutils # Core utilities expected on every OS
-	  logrotate # Rotate and compress system logs
-	  tree # Display directories as trees
-   	  inxi # System information tool
-	  lshw # Detailed hardware information
-	  btop # Resource monitor
-	  duf # Disk usage/free utility
-	   htop # Interactive process viewer
-	  toybox # ascii bblkid blockdev bunzip2 ... uvm
-	  jq # lightweight and flexible command-line JSON processo
-	  neofetch hyfetch
-	  dotacat # Like lolcat, but fast
-	  graphviz #graph visualization tools
-	 theme-sh
+
 	#BROKEN: pingu # Ping command implementation in Go but with colorful output and pingu ascii art
 # IDEs
 	 # emacs # Powerful text editor
@@ -256,7 +179,9 @@ superTuxKart # Tux Kart
 	  # Clipboard and Text Utilities
 	  xclip # X11 clipboard manipulation
 	  emacsPackages.pbcopy # Clipboard integration for Emacs
-
+	flameshot # Powerful yet simple to use screenshot software
+	ruby # object-oriented language 
+	ntfs3g # FUSE-based NTFS driver with full write support
  # Web Browsers
 	  firefox # Web browser
 	  w3m # Terminal web browser
