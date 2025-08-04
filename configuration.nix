@@ -173,13 +173,13 @@ services.xserver.displayManager.sessionCommands = ''xcowsay " \n "Hello World!" 
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
   
   # Firewall für Warpinator-Ports öffnen
-  networking.firewall = {
-   allowedTCPPorts = [ 42000 ]; # Standard-Port für Warpinator
-   allowedUDPPorts = [ 42000 ];  
-   };
+  #networking.firewall = {
+   #allowedTCPPorts = [ 42000 ]; # Standard-Port für Warpinator
+   #allowedUDPPorts = [ 42000 ];  
+   #};
    
 services.gvfs.enable = true;
 
