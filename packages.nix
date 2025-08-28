@@ -12,7 +12,7 @@ environment.systemPackages = with pkgs; [
  		
 #### Python Development
 # siehe python.nix
-
+fontpreview
 
 ### Video prod
   asciinema # Record terminal sessions

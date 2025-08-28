@@ -8,7 +8,7 @@
       efiSysMountPoint = "/boot";
     };
   # SYSTEMD-BOOT
- #  systemd-boot = { enable = true; };
+   systemd-boot = { enable = false; };
    
   # GRUB2
     grub = {
@@ -20,10 +20,35 @@
       useOSProber = true;
       splashImage = "/share/background.png";
       backgroundColor = "#7EBAE4";
-    configurationLimit = 77;
+      configurationLimit = 77;
+      # font = "/share/cfont.pf2";
       fontSize = 14;
-      gfxmodeEfi = "1920x1080";
-      extraConfig = '' set timeout_style=hidden '';
+   #   gfxmodeEfi = "1920x1080";
+      extraConfig = ''
+     	insmod all_video             # Alle verfügbaren Videotreiber laden
+ 	set gfxmode=1920x1080,auto   # GRUB-Auflösung setzen
+	set gfxpayload=keep          # Auflösung an den Kernel durchreichen
+      	set timeout_style=hidden
+      	set timeout=10
+      	set color_normal=green/black 
+      	set color_highlight=yellow/blue
+      	
+      	### --- Fallback auf Textmodus, falls Grafik scheitert ---
+  	if ! gfxterm; then
+    		terminal_output console
+  	fi
+  
+ 	 ### --- Sicherheit ---
+ 	# set superusers="admin"
+  	# Passwort-Hash mit "grub-mkpasswd-pbkdf2" erzeugen:
+ 	 # password_pbkdf2 admin <hash>
+  	# Beispiel: password_pbkdf2 admin grub.pbkdf2.sha512.10000.ABCDEF123...
+  	#lock  # Menü sperren, wenn Passwort nötig
+
+	### --- Debugging---
+	 set debug=all
+  
+      '';
       extraEntriesBeforeNixOS = false;
       extraEntries = ''
          menuentry "Netboot.xyz (UEFI)" {
@@ -32,7 +57,6 @@
          search --no-floppy --fs-uuid ED08-2B0B --set=root
          chainloader ($root)/netboot/netboot.xyz.efi
          }
-       
         menuentry "Reboot" { reboot }  
 	menuentry "Poweroff" { halt }
       '';
