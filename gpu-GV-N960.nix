@@ -9,6 +9,8 @@
    #       ╚██████╔╝██║     ╚██████╔╝
    #        ╚═════╝ ╚═╝      ╚═════╝ 
    #---ansi shadow-----------------------
+# NICHT AKTIV
+
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.nvidia.acceptLicense = true;

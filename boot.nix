@@ -24,7 +24,7 @@
       # font = "/share/cfont.pf2";
       fontSize = 14;
    #   gfxmodeEfi = "1920x1080";
-      extraConfig = ''
+      /*
      	insmod all_video             # Alle verfügbaren Videotreiber laden
  	set gfxmode=1920x1080,auto   # GRUB-Auflösung setzen
 	set gfxpayload=keep          # Auflösung an den Kernel durchreichen
@@ -32,12 +32,7 @@
       	set timeout=10
       	set color_normal=green/black 
       	set color_highlight=yellow/blue
-      	
-      	### --- Fallback auf Textmodus, falls Grafik scheitert ---
-  	if ! gfxterm; then
-    		terminal_output console
-  	fi
-  
+      
  	 ### --- Sicherheit ---
  	# set superusers="admin"
   	# Passwort-Hash mit "grub-mkpasswd-pbkdf2" erzeugen:
@@ -46,17 +41,27 @@
   	#lock  # Menü sperren, wenn Passwort nötig
 
 	### --- Debugging---
-	 set debug=all
+	 # set debug=all
+  
+  */
+  
+      extraConfig = ''
+      	
+      	### --- Fallback auf Textmodus, falls Grafik scheitert ---
+  	if ! gfxterm; then
+    		terminal_output console
+  	fi
   
       '';
       extraEntriesBeforeNixOS = false;
+      
       extraEntries = ''
-         menuentry "Netboot.xyz (UEFI)" {
-         insmod part_gpt
-         insmod fat
-         search --no-floppy --fs-uuid ED08-2B0B --set=root
-         chainloader ($root)/netboot/netboot.xyz.efi
-         }
+      #   menuentry "Netboot.xyz (UEFI)" {
+       #  insmod part_gpt
+        # insmod fat
+         #search --no-floppy --fs-uuid ED08-2B0B --set=root
+        # chainloader ($root)/netboot/netboot.xyz.efi
+        # }
         menuentry "Reboot" { reboot }  
 	menuentry "Poweroff" { halt }
       '';

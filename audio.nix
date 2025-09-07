@@ -23,21 +23,8 @@ boot.kernel.sysctl = { # Verbessert die Audio-Performance und speicherbezogene L
  services.jack.jackd.enable = false; # PipeWire based JACK emulation doesn't use the JACK service. This option requires `services.jack.jackd.enable` to be set to false. PipeWire ersetzt jackd
 
 # service.pulseaudio.enable = false; # pipewire ist alternative zu pulseaudio
- hardware.pulseaudio.package = pkgs.pulseaudio.override { jackaudioSupport = true; }; # Unnötig, weil du Pulseaudio deaktiviert hast.
+ hardware.pulseaudio.package = pkgs.pulseaudio.override { jackaudioSupport = true; }; # Unnötig, weil du Pulseaudio deaktiviert isr.
  security.rtkit.enable = true; # realtimeKit system service, which hands out realtime scheduling priority to user processes on demand
-
- systemd.user.services.set-volume = {
-  description = "Set volume to 75% at startup";
-  wantedBy = [ "default.target" ];
-  after = [ "wireplumber.service" ]; 
-  serviceConfig = {
-  #wpctl set-volume @DEFAULT_AUDIO_SINK@ 80% 
-    ExecStart = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 75%";
-    Restart = "on-failure";
-      StandardOutput = "journal";
-    StandardError = "journal";
-  };
-};
 
  services.pipewire = {
        enable = true;
@@ -77,29 +64,51 @@ boot.kernel.sysctl = { # Verbessert die Audio-Performance und speicherbezogene L
     JACK_NO_AUDIO_RESERVATION = "1";
   };
 
-environment.systemPackages = with pkgs; [
+ systemd.user.services.set-volume = {
+  description = "Set volume to 75% at startup";
+  wantedBy = [ "default.target" ];
+  after = [ "wireplumber.service" ]; 
+  serviceConfig = {
+  #wpctl set-volume @DEFAULT_AUDIO_SINK@ 80% 
+    ExecStart = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 75%";
+    Restart = "on-failure";
+    StandardOutput = "journal";
+    StandardError = "journal";
+  };
+};
 
-# audio driver  	##########################################
+environment.systemPackages = with pkgs; [
+# audio driver  	
   pipewire # Audio server:     pipewire und wireplumber sind kompatibel und arbeiten gut zusammen. 
   wireplumber # Session manager for PipeWire
   alsa-firmware # Soundcard firmwares from the alsa project
+  qmidinet # MIDI network gateway application that sends and receives MIDI data (ALSA Sequencer and/or JACK MIDI) over the network 
+  alsa-utils # ALSA, the Advanced Linux Sound Architecture utils'aconnect -l'
   alsa-scarlett-gui # GUI for alsa controls presented by Focusrite Scarlett Gen 2/3/4 Mixer Driver
   ffmpeg # Complete, cross-platform solution to record, convert and stream audio and video
-   pwvucontrol # PipeWire volume control
+  pwvucontrol # PipeWire volume control
   # pavucontrol # pulseaudio controls the volume (per-sink and per-app basis. entfernt, da es für PulseAudio ist und nicht mit PipeWire kompatibel 
 
-# JACK und Audio-Routing 
- jack2 # JACK audio connection kit, version 2 with jackdbus
- jamin # JACK Audio Mastering interface
+# JACK und Audio-Routing
+ jack2		# JACK audio connection kit, version 2 with jackdbus
+ jamin 		# JACK Audio Mastering interface
  # jack_rack # An effects "rack" for the JACK low latency audio API
  jackmix # Matrix-Mixer for the Jack-Audio-connection-Kit
-  meterbridge # Audio metering tools for JACK
+ meterbridge # Audio metering tools for JACK
  # ALT: jackmeter   # Simple level meter for JACK
-#  carla # Audio plugin hostQjackCtl
+ xtuner # Tuner for Jack Audio Connection Kit
+
+# FIREWIRE
+  ffado 		# FireWire audio drivers
+  ffado-mixer
+  jujuutils 	# Utilities around FireWire devices connected to a Linux computer
+  dvgrab 		# Receive and store audio & video over IEEE1394
+
+# PATCHFELD  
+  # helvum # GTK patchbay for PipeWire
+  carla # komplexere Alternative zu Helvum
 #  patchage # Modular patch bay for Jack and ALSA systems
 #  qjackctl  # application to control the JACK sound server daemon
-  xtuner # Tuner for Jack Audio Connection Kit
-  helvum # GTK patchbay for PipeWire
  
 # DAWs und Audio-Editoren
   vlc # Media player
@@ -107,8 +116,8 @@ environment.systemPackages = with pkgs; [
   # reaper      # Professional digital audio workstation (DAW)
   # bitwig-studio4  # Digital audio workstation
 
-  # MIDI- Drum-, Loop-Machines,  MIDI-Sequencing und virtuelle Instrumente
- # mamba # Virtual MIDI keyboard for Jack Audio Connection Kit
+# MIDI- Drum-, Loop-Machines,  MIDI-Sequencing und virtuelle Instrumente
+  # mamba # Virtual MIDI keyboard for Jack Audio Connection Kit
   hydrogen    # Advanced drum machine for beat production
   drumgizmo   # Drum sampler with high-quality samples
   decent-sampler   # Audio sample player
@@ -116,26 +125,27 @@ environment.systemPackages = with pkgs; [
   sooperlooper # Live looping tool for performances
   # oxefmsynth # Open source VST 2.4 instrument plugin
   ninjas2    # sample slicer plugin
- 
- # qtractor    # MIDI/Audio sequencer with recording/editing
+  # qtractor    # MIDI/Audio sequencer with recording/editing
   helm        # Polyphonic synthesizer with a powerful interface
   #  zynaddsubfx # Advanced software synthesizer
   muse       # MIDI/Audio sequencer with recording/editing
   petrifoo   # MIDI controllable audio sampler
   # bespokesynth-with-vst2 # sw modular synth with controllers
-  japa # 'perceptual' or 'psychoacoustic' audio spectrum analyser for JACK and ALSA
   decent-sampler   # Audio sample player
   zita-resampler   # Resample library by Fons Adriaensen	
   sooperlooper # Live looping tool for performances
- 
+
+# EFFETCS 
   guitarix # Virtual guitar amplifier for Linux running with JACK
   calf        # Collection of high-quality audio plugins (EQ, compressor, etc.)
   rakarrack   # Guitar effects processor
   lsp-plugins # Collection of open-source audio plugins
   zam-plugins # Collection of LV2/LADS audio plugins by ZamAudio
   dragonfly-reverb # High-quality reverb effects
-   # easyeffects # Audio effects for PipeWire, ntfernt, da es für PulseAudio entwickelt wurde und nicht direkt mit PipeWire kompatibel ist.
-   
+  japa # 'perceptual' or 'psychoacoustic' audio spectrum analyser for JACK and ALSA
+   # easyeffects # Audio effects for PipeWire, Entfernt, da es für PulseAudio entwickelt wurde und nicht direkt mit PipeWire kompatibel ist.
+
+# SONSTIGES   
   cava # console-based Audio Visualizer for Alsa
   cavalier # visualize audio with CAVA
   playerctl # cmd utility and lib for media players that implement MPRIS

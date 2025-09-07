@@ -18,7 +18,7 @@ in
       	./packages.nix # env.pkgs
       	./python.nix # ehem.	./ld.nix
       	./users.nix
-      	./us-altgr-umlaut.nix
+        #	./us-altgr-umlaut.nix  # Tastatur Konfig hier integriert
       	# ./firefox.nix # todo
       	./zsh.nix
     ];
@@ -28,6 +28,7 @@ fileSystems."/share" =
   { device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
     fsType = "btrfs";
   };
+  
  hardware.cpu.intel.updateMicrocode = true; # update the CPU microcode for Intel processors.
  networking.hostName = "local"; # Define your hostname.
  # Enable networking
@@ -52,9 +53,9 @@ fileSystems."/share" =
   # networking.interfaces.enp4s0.name = [ "eth0" ];
   
     services.logind.extraConfig = '' 
-HandlePowerKey = poweroff;
-HandlePowerKeyLongPress = reboot; 
-'';	
+    	HandlePowerKey = poweroff;
+    	HandlePowerKeyLongPress = reboot; 
+	'';	
   
   # Wipe /tmp on boot.
   boot.tmp.cleanOnBoot  = true;
@@ -73,42 +74,23 @@ services.xserver.displayManager = {
   gdm.enable = false;
   lightdm.enable = true;
   # lightdm.greeters.tiny = {   enable = true;    #background = "/share/wallpaper/sonstige/blitz.png"; };
-     #environment.etc."lightdm/lightDM-bg.png".source = ./path/to/your/image.png; #environment.etc."lightdm/logo-aramgedon.png".source = ./path/to/your/logo.png;
    lightdm.greeters.slick = {
-       enable = true;
-       theme = {
-   		# name = "autoreiv";    		 package = pkgs.dwarf-fortress-packages.themes.autoreiv;  
-   		name = "andromeda";
-   		package = pkgs.andromeda-gtk-theme;
-   		};
-     iconTheme = {
-		name = "Faba-Mono-Dark"; 
-		package = pkgs.faba-mono-icons;
-		};
-     font  = {
-     		name = "MesloLGS NF 24";
-     		package = pkgs.meslo-lgs-nf;
-     		};
-    # draw-user-backgrounds= true; # steuert, ob Hintergrund des Nutzers auf Login-Bildschirm erscheint
+     enable = true;
+     theme = 	 { name = "andromeda"; package = pkgs.andromeda-gtk-theme; };
+     iconTheme = { name = "Faba-Mono-Dark"; package = pkgs.faba-mono-icons; };
+     font  = 	 { name = "MesloLGS NF 24"; package = pkgs.meslo-lgs-nf;	};
+     draw-user-backgrounds= true; # steuert, ob Hintergrund des Nutzers auf Login-Bildschirm erscheint
      # tshoot:  /var/log/lightdm/lightdm.log
      extraConfig = ''
-    # LightDM GTK+ Configuration file 
-    # for /etc/lightdm/slick-greeter.conf        
-        stretch-background-across-monitors=false # to stretch the background across multiple monitors (false by default) 
+    # LightDM GTK+ Configuration file for /etc/lightdm/slick-greeter.conf        
+        stretch-background-across-monitors=false # to stretch the background across multiple monitors
         only-on-monitor=HDMI-1  # Sets monitor on which is login; -1 means "follow the mouse"
-        background-color="#502962"  # load before pic
         background=/etc/lightdm/lightDM-bg.png
-        logo=/etc/lightdm/logo-aramgedon.png 
-        other-monitors-logo=/etc/lightdm/logo-aramgedon.png 
-        # show-power=false        # show-keyboard=false
-        show-hostname=true  
-        show-clock=true 
-        show-quit=true # show the quit menu in the menubar 
+# logo=/etc/lightdm/logo-aramgedon.png         other-monitors-logo=/etc/lightdm/logo-aramgedon.png          show-power=false        # show-keyboard=false         show-hostname=true        show-clock=true        show-quit=true # show the quit menu in the menubar 
         xft-hintstyle="hintmedium" # hintnone/hintslight/hintmedium/hintfull  
 	clock-format=" %d.%b.%g %H:%" #  clock format to use (e.g., %H:%M or %l:%M %p)
-        
-        # xft-antialias=Whether to antialias Xft fonts (true or false)  # xft-dpi=Resolution for Xft in dots per inch
-	# xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)
+# xft-antialias=Whether to antialias Xft fonts (true or false)  # xft-dpi=Resolution for Xft in dots per inch
+# xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)
 	 '';  
 	 };
    };
@@ -117,7 +99,7 @@ services.displayManager = {
 	autoLogin.enable = true;
 	autoLogin.user = "amxamxa";
 	defaultSession = "cinnamon";	
-	}; 
+	};    
 
  services.xserver.desktopManager = {
     cinnamon.enable 	= true;
@@ -127,8 +109,43 @@ services.displayManager = {
     xfce.enable		= false; 
     };
 services.xserver.displayManager.startx.enable = true; # Whether to enable the dummy “startx” pseudo-display manager, which allows users to start X manually via the startx command from a virtual terminal.
+
+services.xserver = {
+    enable = true;	  # Enable the X11 windowing system. Die Reihenfolge ist wichtig, da das erste Layout standardmäßig verwendet wird.
+     xkb.layout = "de";  
+     xkb.variant = "";
+     xkb.options = "lv3:ralt_switch"; # Option zum Umschalten der Layouts, # AltGr als Level-3-Taste (für Sonderzeichen)
+  };
+  
+  services.xserver.exportConfiguration = true; # Makes it so the above mentioned xkb directory (and the xorg.conf file) gets exported to /etc/X11/xkb
+ 
 services.xserver.displayManager.sessionCommands = ''xcowsay " \n "Hello World!" this is \n  	-- Greeting from GUI -- \n  	&& Hi Xamxama"'';
 
+services.xserver.desktopManager.runXdgAutostartIfNone = true; # whether to run XDG autostart files for sessions without a desktop manager (with only a window manager), these sessions usually don’t handle XDG autostart files by defaul
+ 
+ console.enable = true;
+ console.font = "Lat2-Terminus16"; # Beispiel  # ls  $(nix-shell -p kbd --run "ls \$out/share/kbd/consolefonts/")
+ console.useXkbConfig = true; # Makes it so the tty console has about the same layout as the one configured in the services.xserver options.
+  console.keyMap = lib.mkForce "de"; # keyboard mapping table for the virtual consoles.
+
+  i18n = {
+    defaultLocale = "de_DE.UTF-8";
+ #   extraLocales = [ "en_US.UTF-8" ];
+    extraLocaleSettings = {
+    	LC_NAME = 		  "de_DE.utf8";
+        LC_TIME = 		  "de_DE.utf8";
+        LC_PAPER = 		  "de_DE.utf8";
+     	LC_ADDRESS =		  "de_DE.utf8";
+	LC_MEASUREMENT = 	  "de_DE.utf8";
+      	LC_MONETARY = 	 	  "de_DE.utf8";
+       	LC_NUMERIC =              "de_DE.utf8";
+	LC_TELEPHONE = 	 	  "de_DE.utf8";
+	LC_IDENTIFICATION =	  "de_DE.utf8";
+    };
+  };
+  # de_DE/ISO-8859-1  en_US.UTF-8/UTF-8 en_US/ISO-8859-1  de_DE.UTF-8/UTF-8 de_DE/ISO-8859-1 \de_DE@euro/ISO-8859-15 
+  
+  
 # Enable CUPS to print documents.
   services.printing.enable = false;
 # Enable touchpad support (enabled default in most desktopManager)
@@ -139,22 +156,32 @@ services.xserver.displayManager.sessionCommands = ''xcowsay " \n "Hello World!" 
 
 # Enable the Flakes feature and the accompanying new nix command-line tool
 # nixos.org/manual/nix/stable/contributing/experimental-features
-  nix.settings.experimental-features = [ "nix-command" ]; /*"flakes"*/
-  
-  nixpkgs = { # to install from unstable-channel, siehe packages.nix
-    config = {
-    allowUnfree = true;
+ # "flakes"
+ nix.settings.experimental-features = [ "nix-command" ];  
+  # to install from unstable-channel, siehe packages.nix
+  nixpkgs.config = { 
+    allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+             "vivaldi"  
+             "vagrant"  
+             "memtest86-efi"
+             "sublimetext" "obsidian" "typora"
+             "decent-sampler"
+           ];
+    allowUnfree = false;
+    
     packageOverrides = pkgs: {
-    unstable = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
+     unstable = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
     };
   };
-};
-  
+
   #  Allow InsecurePackages
  nixpkgs.config.permittedInsecurePackages = [ 
- 	"openssl-1.1.1w" 	"gradle-6.9.4" 
+ 	"openssl-1.1.1w" 	
+ 	"gradle-6.9.4" 
  	"electron-25.9.0" 	
- 	"dotnet-sdk-7.0.410" 	"dotnet-runtime-7.0.20" ];
+ 	# "dotnet-sdk-7.0.410"
+ 	# "dotnet-runtime-7.0.20"
+ 	];
                 
 
 # Some programs need SUID wrappers, can be configured further or are started in user sessions.
@@ -211,7 +238,7 @@ services.gvfs.enable = true;
   };
 
     programs.xwayland.enable = true;            # Aktiviere XWayland
-    programs.sway.enable = true;
+    # programs.sway.enable = true;
     programs.thunar.enable = lib.mkForce false;  # Deaktiviere Thunar
     programs.traceroute.enable = true;          # Aktiviere Traceroute
     programs.file-roller.enable = true;         # Aktiviere File Roller
@@ -220,18 +247,7 @@ services.gvfs.enable = true;
       enable = true;
       prompt.enable = true;            # Git-Prompt aktivieren
     };
-xdg.portal.wlr.enable = true;  # Whether to enable desktop portal for wlroots-based desktops. This will add the xdg-desktop-portal-wlr package into the xdg.portal.extraPortals option, and provide the configuration file .
-
-/* programs.sway.enable = true; #  launch Sway by executing “exec sway” on a TTY. Copy /etc/sway/config to ~/.config/sway/config to modify the default configuration. See https://github.com/swaywm/sway/wiki and “man 5 sway” for more information.
-  programs.waybar.enable = true;
- programs.sway.extraSessionCommands = ''
-  export SDL_VIDEODRIVER=wayland 
-  # QT (needs qt5.qtwayland in systemPackages):
-   export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
-  # Fix for some Java AWT applications (e.g. Android Studio), use this if they aren't displayed properly:
-  export _JAVA_AWT_WM_NONREPARENTING=1
-'';  */
- 
+    
  services.postgresql.enable = true;
  services.vnstat.enable = true; # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
  services.playerctld.enable = true;   # enable the playerctld daemon.
@@ -264,16 +280,23 @@ xdg.portal.wlr.enable = true;  # Whether to enable desktop portal for wlroots-ba
   documentation.man.generateCaches = true;
   documentation.man.man-db.enable = true;
   
-  
-# Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you accidentally delete configuration.nix.
    system.copySystemConfiguration = true;
 
-  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
-  # and migrated your data accordingly.
-  #
-  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+# xdg.portal.wlr.enable = true;  # Whether to enable desktop portal for wlroots-based desktops SWAY, HYPRLAND, .... This will add the xdg-desktop-portal-wlr package into the xdg.portal.extraPortals option, and provide the configuration file .
+
+/* programs.sway.enable = true; #  launch Sway by executing “exec sway” on a TTY. Copy /etc/sway/config to ~/.config/sway/config to modify the default configuration. See https://github.com/swaywm/sway/wiki and “man 5 sway” for more information.
+  programs.waybar.enable = true;
+ programs.sway.extraSessionCommands = ''
+  export SDL_VIDEODRIVER=wayland 
+  # QT (needs qt5.qtwayland in systemPackages):
+   export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+  # Fix for some Java AWT applications (e.g. Android Studio), use this if they aren't displayed properly:
+  export _JAVA_AWT_WM_NONREPARENTING=1
+'';  */
+ 
+  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration, 
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }

@@ -1,11 +1,7 @@
 # zsh.nix
 { config, pkgs, ... }:
-{
-#     
-#   STARSHIP PROMPT:
-# """"""""""""""""""""""
- #   programs.starship = {      enable = true;      settings = {        add_newline = true;        format = "$line_break$package$character"; # CLI-Anzeigeformat       scan_timeout = 20;      };      interactiveOnly = true;      # presets = ./path/to starship.toml; # Optional: Externe Preset-Datei    };
-#   -----------------------------------------------------------------
+{  
+#  ----------------------
 #       Z  S  H
 # """"""""""""""""""""""
  programs.command-not-found.enable = false;
@@ -58,22 +54,38 @@
          histSize = 30000;
          histFile = "$ZDOTDIR/history/zhistory";
          setOptions = [        # see man 1 zshoptions
-            "APPEND_HISTORY"       "INC_APPEND_HISTORY"
-            "SHARE_HISTORY"        "EXTENDED_HISTORY"
-            "HIST_IGNORE_DUPS"     "HIST_IGNORE_ALL_DUPS"
-            "HIST_FIND_NO_DUPS"    "HIST_SAVE_NO_DUPS"
-            "RM_STAR_WAIT"         "PRINT_EXIT_VALUE"
-            "SH_WORD_SPLIT"        "CORRECT"
-            "NOTIFY"          	   "INTERACTIVE_COMMENTS"
-            "ALIAS_FUNC_DEF"       "EXTENDEDGLOB"
-            "AUTO_CD"     	   "NOMATCH"       #   "no_global_rcs"
-                        ]; 
+		 "BANG_HIST"                 # Treat the '!' character specially during expansion.
+		 "EXTENDED_HISTORY"          # Write the history file in the ':start:elapsed;command' format.
+		 "INC_APPEND_HISTORY"        # Write to the history file immediately, not when the shell exits.
+		 "SHARE_HISTORY"             # Share history between all sessions.
+		 "HIST_EXPIRE_DUPS_FIRST"    # Expire duplicate entries first when trimming history.
+		 "HIST_IGNORE_DUPS"          # Don't record an entry that was just recorded again.
+		 "HIST_IGNORE_ALL_DUPS"      # Delete old recorded entry if new entry is a duplicate.
+		 "HIST_FIND_NO_DUPS"         # Do not display a line previously found.
+		 "HIST_IGNORE_SPACE"         # Don't record an entry starting with a space.
+		 "HIST_SAVE_NO_DUPS"         # Don't write duplicate entries in the history file.
+		 "HIST_REDUCE_BLANKS"        # Remove superfluous blanks before recording entry.
+		 "HIST_VERIFY"               # Do not execute immediately upon history expansian
+		 "RM_STAR_WAIT"           	# beware of rm errors
+		 "PRINT_EXIT_VALUE"        # Print the exit value of programs that return a non-zero status.
+		 "SH_WORD_SPLIT"           # Perform word splitting on unquoted parameters (similar to Bourne shell behavior).
+		 "CORRECT"                 # Attempt to correct spelling errors in commands.
+		 "NOTIFY"                  # Report immediately when background jobs complete.
+		 "INTERACTIVE_COMMENTS"    # Allow comments (#) in interactive shells.
+		 "ALIAS_FUNC_DEF"          # Allow aliases to be used in function definitions.
+		 "EXTENDEDGLOB"            # Enable extended globbing patterns (e.g., ** for recursive matching).
+		 "AUTO_CD"                 # Automatically change directory if a command is just a directory path.
+		 "NOMATCH"                 # Print an error if no matches are found for a pattern 
+		#   "no_global_rcs"	#  # Prevent reading of the global startup files (~/.zshrc, /etc/zshrc, etc.) for non-login shells.
+				        ]; 
         };
   
-environment.etc = {     "aliases.zsh".source = "/share/zsh/aliases.zsh";   };
+
+
+environment.etc = { "aliases.zsh".source = "/share/zsh/aliases.zsh";   };
 
 environment.systemPackages = with pkgs; [
-
+bar # cli progress
 	spotdl # Download your Spotify playlists and songs along with album art and metadata
 	ncdu # Disk usage analyzer with an ncurses interface
 # Terminal and Shell Utilities
@@ -157,7 +169,35 @@ environment.systemPackages = with pkgs; [
 	  dotacat # Like lolcat, but fast
 	  graphviz #graph visualization tools
 	 theme-sh
+	 
+	 # ASCII pictures
+	asciiquarium-transparent #  Aquarium/sea animation in ASCII art 
+	ascii-image-converter # Convert images into ASCII art on the console
+	pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
+ 	ascii-draw #
+ 	uni2ascii # UTF-8 to ASCII conversion
+        jp2a # small utility that converts JPG images to ASCII
+ 	artem # Small CLI program to convert images to ASCII art
+ 	gifsicle
+ 	gif-for-cli # Render gifs as ASCII art in your cli
+
+	 # jupyter # webbasierte interaktive Entwicklungsumgebung. Sie eignet sich hervorragend für explorative Datenanalyse und prototypisches Coden, was für die Entwicklung von Phytom-Anwendungen
+	 # Version Control
+#	  git-hub # Interface to GitHub from the command line 
+#        github-desktop # GUI for managing Git and GitHub. 
+ gitFull # Distributed version control system	  
+ gitnr # Create `.gitignore` files using templates
+	#  gitlab # GitLab Community Edition 	 	 
+	git-doc # Git documentation 	  
+	gitstats # Generate statistics from Git repositories  g
+	gitleaks # Scan git repos for secrets	 
+	gitlint # Linting for git commit messages
 	 ];
+
+
+#   STARSHIP PROMPT:
+# """"""""""""""""""""""
+ #   programs.starship = {      enable = true;      settings = {        add_newline = true;        format = "$line_break$package$character"; # CLI-Anzeigeformat       scan_timeout = 20;      };      interactiveOnly = true;      # presets = ./path/to starship.toml; # Optional: Externe Preset-Datei    };
 	 
 }
 

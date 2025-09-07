@@ -62,7 +62,7 @@ chafa # tool for generating colored ASCII art
      marker # tool for highlighting text in terminal output.
      presenterm # terminal-based presentation creator.
      testdisk # Powerful tool for partition recovery and fixing boot problems.
-     vivaldi # customizable and feature-rich web browser.
+# UNFREE     vivaldi # customizable and feature-rich web browser.
      vnstat # console-based network traffic monitor.
      whisper # speech-to-text system (utilizes OpenAI's Whisper model).
      
@@ -76,7 +76,6 @@ gnome-online-accounts # Single sign-on framework for GNOME
 	 #  pop-gtk-theme # Pop!_OS GTK theme
 	 theme-vertex # theme for GTK 3, GTK 2, Gnome-Shell, and Cinnamon
 	 andromeda-gtk-theme # elegant dark theme for gnome, mate, budgie, cinnamon, xfce
-	 dwarf-fortress-packages.themes.autoreiv # theme to use for the lightdm-slick-greeter
 pantheon.elementary-wallpapers # collection of wallpapers for elementary
  	adapta-backgrounds # wallpaper collection for adapta-project
  	deepin.deepin-wallpapers # wallpapers provides wallpapers of dde
@@ -85,12 +84,12 @@ warpinator # share files across the LAN
 
 losslesscut-bin # Lossless video/audio editor
 hidapi # Library for communicating with USB and Bluetooth HID devices
-
    libxkbcommon # library to handle keyboard descriptions
    nixos-icons # icons of the Nix logo, in Freedesktop Icon Directory Layout
 #   rich-cli # toolbox for fancy output in the terminal
      vivid
   #   steam
+xorg.xwininfo 
   xorg.libXrandr
   xorg.xhost # fuer docker
   libglvnd #The GL Vendor-Neutral Dispatch library
@@ -107,7 +106,8 @@ superTuxKart # Tux Kart
 	# refind # alt boot mgr
 # nix-stuff ---------------------	
 	nix-index # Quickly locate nix packages
-#	nix-tree # Interactively browse Nix store paths
+	nvd #Nix/NixOS package version diff tool
+	nix-tree # Interactively browse Nix store paths
 	nix-info # System information for Nix
 #	nix-diff # Compare Nix derivations
 #	nix-output-monitor # Process output of Nix commands
@@ -140,28 +140,7 @@ superTuxKart # Tux Kart
 	  typora 	# Markdown editor
 	  micro 	# Terminal-based text editor
 	  marker 	# Markdown editor
-# ASCII pictures
-	asciiquarium-transparent #  Aquarium/sea animation in ASCII art 
-	ascii-image-converter # Convert images into ASCII art on the console
-	pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
- 	ascii-draw #
- 	uni2ascii # UTF-8 to ASCII conversion
-        jp2a # small utility that converts JPG images to ASCII
- 	artem # Small CLI program to convert images to ASCII art
- 	gifsicle
- 	gif-for-cli # Render gifs as ASCII art in your cli
 
-	 # jupyter # webbasierte interaktive Entwicklungsumgebung. Sie eignet sich hervorragend für explorative Datenanalyse und prototypisches Coden, was für die Entwicklung von Phytom-Anwendungen
-	 # Version Control
-#	  git-hub # Interface to GitHub from the command line 
-#        github-desktop # GUI for managing Git and GitHub. 
- gitFull # Distributed version control system	  
- gitnr # Create `.gitignore` files using templates
-	#  gitlab # GitLab Community Edition 	 	 
-	git-doc # Git documentation 	  
-	gitstats # Generate statistics from Git repositories  g
-	gitleaks # Scan git repos for secrets	 
-	gitlint # Linting for git commit messages
  # GNOME Utilities
 	  gnome-logs # Logs viewer
 	  gnome-keyring  # set of components in GNOME that store secrets, passwords, keys, certificates and make them available 
@@ -169,7 +148,7 @@ superTuxKart # Tux Kart
 	  gnome-firmware # Firmware updater
 	  gnome-disk-utility # Disk utility
 	  gnome-text-editor # Simple text editor
-# Multimedia, ohne audio
+# Multimedia, ohne audioxwininfo
 	imagemagick # Image manipulation tool
 	  shotwell # Photo organizer
 	  evince # Document viewer

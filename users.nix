@@ -9,20 +9,26 @@
 { config, pkgs, ... }:
 
 {
+#    ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+system.activationScripts.diff = {
+  supportsDryActivation = true;
+  text = ''
+  	  ${pkgs.nvd}/bin/nvd --color auto --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+    '';
+};
 
 # Globale Umgebungsvariablen
   environment.variables = {
-    BROWSER 			  = 	"firefox";
-    EDITOR 			  =	 "micro";
-    PRO 			  = 	"/home/project";
-    SHAREDIR 			  = 	"/share";
-    EMACSDIR			  =	"/share/emacs";
-    ZDOTDIR 			  = 	"/share/zsh";
+    BROWSER 		  = 	"firefox";
+    EDITOR 		  =	 "micro";
+    PRO 		  = 	"/home/project";
+    SHAREDIR 		  = 	"/share";
+    EMACSDIR		  =	"/share/emacs";
+    ZDOTDIR 		  = 	"/share/zsh";
     TEALDEER_CONFIG_DIR = 	"/share/zsh/tldr";	# tealdeer-rs
-    NAVI_CONFIG 		  = 	"/share/zsh/navi/config.yaml";
-    GIT_CONFIG          	  = 	"/share/zsh/git/config";
-  
-    BAT_CONFIG_FILE		= 	"/share/bat/config.toml";
+    NAVI_CONFIG 	  = 	"/share/zsh/navi/config.yaml";
+    GIT_CONFIG            = 	"/share/zsh/git/config";
+    BAT_CONFIG_FILE	    = 	"/share/bat/config.toml";
     KITTY_CONFIG_DIRECTORY  = 	"/share/kitty";    # kitty-Terminal Konfigurationspfad
     NIX_INDEX_DATABASE 	= 	"/share/nix-index";    # Nix-Index-Datenbank
          # SPACESHIP_CONFIG = "$ZDOTDIR/prompt/starship.toml"; # Spaceship Prompt Konfigurationspfad
@@ -42,17 +48,14 @@
 
   environment.etc."xdg/user-dirs.defaults".text = ''
    #  DESKTOP=desktop
-   #  DOCUMENTS=dokumente
-   #  DOWNLOAD=downloads
+   DOCUMENTS=dokumente
+   DOWNLOAD=downloads
    # MUSIC=musik
-    # PICTURES=bilder
+     PICTURES=bilder
     PUBLICSHARE=public
     TEMPLATES=tmp
 #    VIDEOS=videos
   '';
-  # Locale-Einstellungen für korrekte Zeichendarstellung
-  i18n.defaultLocale = "de_DE.UTF-8";
-  
 
   # Weitere Pfade und Optionen
   environment.homeBinInPath = true;   # Fügt ~/bin/ dem $PATH hinzu
@@ -83,11 +86,11 @@ system.activationScripts = {
   # Setze Berechtigungen auf 755 für /home-Verzeichnisse und 644 für Dateien
       chown -R :mxx /home && echo "Gruppe 'mxx' für /home erfolgreich gesetzt" >> $LOG_FILE
     
-      fd --full-path /home --type directory --exec-batch chmod -R 0755 {} \; && echo "Berechtigungen auf 0755 für /home-Verzeichnisse erfolgreich gesetzt" >> $LOG_FILE
-      fd --full-path /home --type file --exec-batch chmod 644 {} \; && echo "Berechtigungen auf 644 für /home-Dateien erfolgreich gesetzt" >> $LOG_FILE
+     # fd --full-path /home --type directory --exec-batch chmod -R 0755 {} \; && echo "Berechtigungen auf 0755 für /home-Verzeichnisse erfolgreich gesetzt" >> $LOG_FILE
+     # fd --full-path /home --type file --exec-batch chmod 644 {} \; && echo "Berechtigungen auf 644 für /home-Dateien erfolgreich gesetzt" >> $LOG_FILE
 
   # Setze Berechtigungen auf 2760 für /share
-      chmod -R 2760 /share && echo "Berechtigungen auf 2760 für /share erfolgreich gesetzt" >> $LOG_FILE
+      chmod -R 0755 /share && echo "Berechtigungen auf 2760 für /share erfolgreich gesetzt" >> $LOG_FILE
       chown -R :mxx /share && echo "Gruppe 'mxx' für /share erfolgreich gesetzt" >> $LOG_FILE
  # Erstelle symbolische Links für bestimmte Verzeichnisse
       name="finja"
