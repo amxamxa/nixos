@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+ { config, pkgs, lib, ... }:
 #let
   # Import the custom package
 #  lightdm-settings = import /etc/nixos/custom-pkgs/lightdm-settings.nix { inherit pkgs; };#
@@ -9,11 +9,23 @@ environment.systemPackages = with pkgs; [
 # aus unstable Channel:
  	unstable.hugo
  	unstable.yt-dlp
- 		
+#+############################ 	
+ 	
+ 	
+ 	linearicons-free # linearicons.com/free	
+ 	icon-library # Symbolic icons for your apps
+ 	pantheon.elementary-icon-theme  # Named, vector icons for elementary OS
+ 	pantheon.elementary-iconbrowser # Browse and find system icons
+ 	xfce.xfce4-icon-theme # Icons for Xfce
+ 	material-design-icons # 7000+ Material Design Icons from the Community
+ 	material-black-colors # Material Black Colors icons
+ 	sweet-folders # Folders icons for Sweet GTK theme
+ 	candy-icons # Icon theme colored with sweet gradients
+ 	
 #### Python Development
 # siehe python.nix
 fontpreview
-
+efibootmgr
 ### Video prod
   asciinema # Record terminal sessions
   asciinema-scenario # Create asciinema videos from a text file
@@ -21,7 +33,7 @@ fontpreview
   asciinema-agg # Command-line tool for generating animated GIF files from asciicast v2 files produced by asciinema terminal recorder
   agg # : High quality rendering engine for C++
   obs-studio # : Free and open source software for video recording and live streaming  
-    
+    gettext # Well integrated
 ######################################################
 agg #  High quality rendering engine for C++
 android-tools #  Android SDK platform tools
@@ -42,8 +54,7 @@ minetest-mapserver
 minetest
 minetestclient
 
-libreoffice
- 
+libreoffice  
 
 android-tools # Android SDK platform tools
 

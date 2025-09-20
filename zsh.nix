@@ -1,5 +1,5 @@
 # zsh.nix
-{ config, pkgs, ... }:
+{ config, pkgs, ... }:NIXoi
 {  
 #  ----------------------
 #       Z  S  H

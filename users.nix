@@ -20,10 +20,10 @@ system.activationScripts.diff = {
 # Globale Umgebungsvariablen
   environment.variables = {
     BROWSER 		  = 	"firefox";
-    EDITOR 		  =	 "micro";
+    EDITOR 		  =	"micro";
     PRO 		  = 	"/home/project";
     SHAREDIR 		  = 	"/share";
-    EMACSDIR		  =	"/share/emacs";
+    # EMACSDIR		  =	"/share/emacs";
     ZDOTDIR 		  = 	"/share/zsh";
     TEALDEER_CONFIG_DIR = 	"/share/zsh/tldr";	# tealdeer-rs
     NAVI_CONFIG 	  = 	"/share/zsh/navi/config.yaml";
@@ -47,20 +47,20 @@ system.activationScripts.diff = {
   };
 
   environment.etc."xdg/user-dirs.defaults".text = ''
-   #  DESKTOP=desktop
-   DOCUMENTS=dokumente
-   DOWNLOAD=downloads
-   # MUSIC=musik
-     PICTURES=bilder
-    PUBLICSHARE=public
-    TEMPLATES=tmp
-#    VIDEOS=videos
+  	DESKTOP=desktop
+   	DOCUMENTS=dokumente
+   	DOWNLOAD=downloads
+   	MUSIC=music
+   	PICTURES=bilder
+   	PUBLICSHARE=public
+   	TEMPLATES=vorlagen
+ 	VIDEOS=videos
   '';
 
   # Weitere Pfade und Optionen
   environment.homeBinInPath = true;   # Fügt ~/bin/ dem $PATH hinzu
   environment.pathsToLink = [
-    "/share/icons"   # Verlinkt das Icon-Verzeichnis im SystemüList of directories to be symlinked in /run/current-system/sw.
+    "/share/icons"   # Verlinkt das Icon-Verzeichnis im System List of directories to be symlinked in /run/current-system/sw.
   ];
 
   /* ---------------------------------------------------------------------
@@ -82,6 +82,7 @@ system.activationScripts = {
     text = ''
     LOG_FILE=/var/log/setPermissions.log
       echo "===== $(date '+%Y-%m-%d %H:%M:%S') - Start setPermissions Script =====" > $LOG_FILE
+/*
 
   # Setze Berechtigungen auf 755 für /home-Verzeichnisse und 644 für Dateien
       chown -R :mxx /home && echo "Gruppe 'mxx' für /home erfolgreich gesetzt" >> $LOG_FILE
@@ -101,6 +102,8 @@ system.activationScripts = {
           echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir NICHT erstellt" >> $LOG_FILE
         fi
       done
+      ##
+*/
 
  # Setze SSH-Berechtigungen
       find /home -name ".ssh" -exec chmod 0700 {} \; && echo "chmod 0700 für ~/.ssh gesetzt" >> $LOG_FILE
@@ -132,13 +135,11 @@ system.activationScripts = {
   # Gruppen und Benutzer
   users.groups.mxx = {
   	gid = 1001;  # Festgelegte GID für die Gruppe "mxx"
-  	members = [ "amxamxa" "frinja" ];  # Gruppenmitglieder
+  	members = [ "amxamxa" "finja" ];  # Gruppenmitglieder
   };
   
   users.mutableUsers = false;   # Wenn true, können "useradd" und "groupadd"-Befehle verwendet werden
-  # Nützliche Hinweise
-  # VM enthält keine Daten des Hosts, daher werden vorhandene Benutzer nicht automatisch übernommen, außer mutableUsers = false wird gesetzt. 
-  # oder "InitialHashedPassword" kann ebenfalls verwendet werden.
+  # ACHTUNG: Bei VM: enthält keine Daten des Hosts, daher werden vorhandene Benutzer nicht automatisch übernommen, außer mutableUsers = false wird gesetzt. ODER "InitialHashedPassword" kann ebenfalls verwendet werden.
 
 #______Benutzerkonfiguration_________________________________________
 #    __ __  ______ ___________  _____    ____  ____

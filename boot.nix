@@ -8,11 +8,11 @@
       efiSysMountPoint = "/boot";
     };
   # SYSTEMD-BOOT
-   systemd-boot = { enable = false; };
+   systemd-boot = { enable = true; };
    
   # GRUB2
     grub = {
-      enable = true;
+      enable = false;
       efiSupport = true;
       memtest86.enable = true;
       fsIdentifier = "label";
@@ -45,16 +45,14 @@
   
   */
   
-      extraConfig = ''
-      	
+      extraConfig = ''    	
       	### --- Fallback auf Textmodus, falls Grafik scheitert ---
   	if ! gfxterm; then
     		terminal_output console
   	fi
-  
       '';
       extraEntriesBeforeNixOS = false;
-      
+      #extraInstallCommands = ''          ${pkgs.grub2}/bin/grub-install --target=x86_64-efi --efi-directory=/boot/efi '';
       extraEntries = ''
       #   menuentry "Netboot.xyz (UEFI)" {
        #  insmod part_gpt

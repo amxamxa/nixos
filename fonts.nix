@@ -25,12 +25,12 @@ in zusammenhängende Symbole umgewandelt (z. B. ≠, ≥, ≡).
       nerd-fonts.iosevka-term-slab #   Nice as Iosevka but WITH SERIFs
       nerd-fonts.lekton # very light and thin characters, sharp m's, `0` and `O`
   #    nerd-fonts.monofur # Dotted zeros, slightly exaggerated curvy characters, compact chWSSWWDA@!aracters 
-      nerd-fonts.meslo-lg #  Slashed zeros, customized version of Apple's Menl
+     #nerd-fonts.meslo-lg #  Slashed zeros, customized version of Apple's Menl
       nerd-fonts.proggy-clean-tt
       nerd-fonts.tinos
      # nerd-fonts.terminess-ttf
       nerd-fonts.shure-tech-mono #   Dotted zeros, distinguishable 1 and l, curved and straight character lines
-      nerd-fonts.symbols-only  # Fallback symbols for patched fonts
+ #     nerd-fonts.symbols-only  # Fallback symbols for patched fonts
     
     # o t h e r   f o n t s 
        tt2020            # Terminal Typewriter 2020 font
@@ -42,6 +42,7 @@ in zusammenhängende Symbole umgewandelt (z. B. ≠, ≥, ≡).
     #  open-sans         # Sans-serif UI font
       # noto-fonts       # Optionally enable Google's Noto family
       # dejavu_fonts      # Popular fallback serif/sans fonts
+      redhat-official-fonts
     ];
 
   # --- 2. Allgemeine Schriftarten-Einstellungen ---
@@ -77,294 +78,125 @@ defaultFonts = {
         monospace = [    "Envy Code R"  "Symbols Nerd Font"   ];   };        */
 
 localConf = ''
+
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
 <fontconfig>
   <selectfont>
+       <acceptfont>
+       <match target="pattern">
+              <test name="family" compare="contains">
+              <string>Nerd Font Mono</string>
+            </test>
+           </match>
+        </acceptfont>
     <rejectfont>
-       <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>BigBlueTerm Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>Tinos Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>0xProto Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>3270 Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>0xProto Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>3270 Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>Agave Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>Agave Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>BigBlueTerm437 Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>BigBlueTerm437 Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>BigBlueTermPlus Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>BigBlueTermPlus Nerd Font Mono</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>BigBlueTermPlus Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>DejaVu Sans</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>DepartureMono Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>DepartureMono Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>EnvyCodeR Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>EnvyCodeR Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>Hack Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>Hack Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>Hurmit Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>Hurmit Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>IosevkaTermSlab Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>IosevkaTermSlab Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>Lekton Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>Lekton Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGLDZ Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGL Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGL Nerd Font Mono</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGL Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGMDZ Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGMDZ Nerd Font Mono</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGMDZ Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGM Nerd Font Mono</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGM Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGM Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGSDZ Nerd Font Mono</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGSDZ Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGS Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGS Nerd Font Mono</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGLDZ Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGS NF</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>MesloLGS Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>ProggyClean CE Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>ProggyClean CE Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>ProggyClean Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>ProggyClean Nerd Font Mono</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>ProggyClean Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>ProggyCleanSZ Nerd Font Mono</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>ProggyCleanSZ Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>ShureTechMono Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>ShureTechMono Nerd Font Propo</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>Symbols Nerd Font</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>TT2020 Style F</string>
-        </edit>
-      </pattern>
-      <pattern>
-        <edit name="family" mode="assign" binding="strong">
-          <string>TT2020 Style G</string>
-        </edit>
-      </pattern>
-    </rejectfont>
-  </selectfont>
+     <match target="pattern">
+          <test name="family" compare="contains">
+          <string>Nerd Font</string>
+        </test>
+       </match>
+
+       <match target="pattern">
+          <test name="style" compare="contains">
+              <string>Bold</string>
+              <string>bold</string>
+              <string>Bold Oblique</string>
+              <string>Oblique</string>
+              <string>Bold Italic</string>
+              <string>Obl</string>
+              <string>Light</string>
+              <string>Condesed</string>
+              <string>Propo</string>
+          </test>
+       </match>
+       </rejectfont>  
+      </selectfont>
 </fontconfig>
 '';
 };
+ 
+/*
+
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+<fontconfig>
+  <selectfont>
+    <!-- Nerd Fonts ablehnen (außer Mono) -->
+    <rejectfont>
+      <match target="pattern">
+        <test name="family" compare="contains">
+          <string>Nerd Font</string>
+        </test>
+      </match>
+    </rejectfont>
+    
+    <!-- Nerd Font Mono akzeptieren -->
+    <acceptfont>
+      <match target="pattern">
+        <test name="family" compare="contains">
+          <string>Nerd Font Mono</string>
+        </test>
+      </match>
+    </acceptfont>
+
+    <!-- Fette und kursive Fonts ablehnen -->
+    <rejectfont>
+      <match target="pattern">
+        <test name="weight" compare="more">
+          <int>200</int>  <!-- Bold -->
+        </test>
+        <test name="slant" compare="eq">
+          <int>100</int>  <!-- Italic -->
+        </test>
+      </match>
+    </rejectfont>
+
+    <!-- Fonts mit spezifischen Eigenschaften ablehnen -->
+    <rejectfont>
+      <match target="pattern">
+        <test name="weight" compare="more">
+          <int>180</int>
+        </test>
+        <test name="slant" compare="more">
+          <int>10</int>
+        </test>
+        <test name="width" compare="more">
+          <int>110</int>
+        </test>
+        <test name="spacing" compare="more">
+          <int>110</int>
+        </test>
+      </match>
+    </rejectfont>
+
+    <!-- Dieselben Fonts gezielt akzeptieren -->
+    <acceptfont>
+      <match target="pattern">
+        <test name="weight" compare="more">
+          <int>80</int>
+        </test>
+        <test name="weight" compare="less">
+          <int>110</int>
+        </test>
+        <test name="slant" compare="less">
+          <int>10</int>
+        </test>
+        <test name="width" compare="eq">
+          <int>100</int>
+        </test>
+        <test name="spacing" compare="eq">
+          <int>100</int>
+        </test>
+      </match>
+    </acceptfont>
+  </selectfont>
+</fontconfig>
+
+
+
+
+*/
 
 }
-
-  
-
 

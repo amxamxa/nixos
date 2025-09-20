@@ -23,11 +23,16 @@ in
       	./zsh.nix
     ];
 
-
 fileSystems."/share" =
   { device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
     fsType = "btrfs";
   };
+  
+fileSystems."/home/project/AUDIO/samples+" =
+  { device = "/dev/disk/by-uuid/4d274de6-7e6b-4f01-ab6a-696ea91abec8";
+    fsType = "ext4";
+  };
+  
   
  hardware.cpu.intel.updateMicrocode = true; # update the CPU microcode for Intel processors.
  networking.hostName = "local"; # Define your hostname.
@@ -51,18 +56,21 @@ fileSystems."/share" =
   networking.networkmanager.dns = "default"; # default", "dnsmasq", "systemd-resolved", "none"
   # networking.interfaces.enp4s0.useDHCP = true;
   # networking.interfaces.enp4s0.name = [ "eth0" ];
-  
+  hardware.usb-modeswitch.enable  = false; # to support certain USB WLAN and WWAN adapters.  These network adapters initial present themselves as Flash Drives containing their drivers. This option enables automatic switching to the networking mode
     services.logind.extraConfig = '' 
     	HandlePowerKey = poweroff;
     	HandlePowerKeyLongPress = reboot; 
 	'';	
-  
-  # Wipe /tmp on boot.
-  boot.tmp.cleanOnBoot  = true;
+  security.polkit.enable = true; # Framework, um privilegierte Aktionen auszuführen
+services.udisks2.enable = true; # Daemon, der Festplatten, USB-Sticks, SD-Karten und andere Wechselmedien verwaltet
+  services.upower.enable= true; #    Daemon, der Informationen über die Energieversorgung sammelt und bereitstellt. Für Akku-Betrieb
+  services.power-profiles-daemon.enable = false;
+services.tlp.enable = true; # Energieoptimierung, CPU-freq, Aktivitäts-Timeouts für Festplatten und USB-Ports
+  boot.tmp.cleanOnBoot = true;   # Wipe /tmp on boot.
 
   # Set your time zone.
    time.timeZone = "Europe/Berlin";
-   
+   hardware.ksm.enable = true; # Aktiviert den Kernel Samepage Merging (KSM)-Dienst, durchsucht den RAM nach identischen Speicherseiten (Pages), spart Speicher, aber CPU-Last. Für Virtualisierungsumgebungen mit  ähnlichen VMs ... oder redundanten Speicher allozieren
 # Enable the - d e s k t o p  m a n a g e r - Environment. # slick-greeter; | lightdm-enso-os-greeter| lightdm-tiny-greeter 
   # Include LightDM configuration if necessary
 # services.xserver.displayManager.lightdm.enable = true;
@@ -99,7 +107,7 @@ services.displayManager = {
 	autoLogin.enable = true;
 	autoLogin.user = "amxamxa";
 	defaultSession = "cinnamon";	
-	};    
+	};   
 
  services.xserver.desktopManager = {
     cinnamon.enable 	= true;
@@ -161,24 +169,24 @@ services.xserver.desktopManager.runXdgAutostartIfNone = true; # whether to run X
   # to install from unstable-channel, siehe packages.nix
   nixpkgs.config = { 
     allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-             "vivaldi"  
-             "vagrant"  
-             "memtest86-efi"
-             "sublimetext" "obsidian" "typora"
+             "vivaldi"               "vagrant"  
+             "memtest86-efi"         "sublimetext" 
+             "obsidian" 	     "typora"
              "decent-sampler"
            ];
     allowUnfree = false;
-    
+   
     packageOverrides = pkgs: {
      unstable = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
-    };
+    }; 
+        
   };
 
   #  Allow InsecurePackages
  nixpkgs.config.permittedInsecurePackages = [ 
- 	"openssl-1.1.1w" 	
- 	"gradle-6.9.4" 
- 	"electron-25.9.0" 	
+ 	#"openssl-1.1.1w" 	
+ 	#"gradle-6.9.4" 
+ 	# "electron-25.9.0" 	
  	# "dotnet-sdk-7.0.410"
  	# "dotnet-runtime-7.0.20"
  	];
@@ -224,8 +232,6 @@ services.gvfs.enable = true;
  #xdg-desktop-portal-gtk 	# -> flatpak.github.io/xdg-desktop-portal/
 # Flatpak Ende     						
 */
-
-
 # Avahi für Netzwerk-Discovery aktivieren
   services.avahi = {
     enable = true;
@@ -236,7 +242,11 @@ services.gvfs.enable = true;
       userServices = true;    # Nutzerdienste sichtbar machen
     };
   };
-
+  /*
+services.samba.enable = true;
+services.samba.package = pkgs.sambaFull; # Statt des minimalen `samba`
+services.samba.nsswins = true;
+services.samba-wsdd.enable = true;
     programs.xwayland.enable = true;            # Aktiviere XWayland
     # programs.sway.enable = true;
     programs.thunar.enable = lib.mkForce false;  # Deaktiviere Thunar
@@ -247,7 +257,8 @@ services.gvfs.enable = true;
       enable = true;
       prompt.enable = true;            # Git-Prompt aktivieren
     };
-    
+   */
+   
  services.postgresql.enable = true;
  services.vnstat.enable = true; # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
  services.playerctld.enable = true;   # enable the playerctld daemon.
@@ -282,7 +293,7 @@ services.gvfs.enable = true;
   
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you accidentally delete configuration.nix.
-   system.copySystemConfiguration = true;
+
 
 # xdg.portal.wlr.enable = true;  # Whether to enable desktop portal for wlroots-based desktops SWAY, HYPRLAND, .... This will add the xdg-desktop-portal-wlr package into the xdg.portal.extraPortals option, and provide the configuration file .
 

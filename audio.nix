@@ -15,8 +15,6 @@ boot.kernel.sysctl = { # Verbessert die Audio-Performance und speicherbezogene L
   "vm.swappiness" = 10;
 };
 
-
-
 # Enable sound with pipewire.
  hardware.firmware = [ pkgs.alsa-firmware ];
    # Option ist VERALTET seit 24.11 # sound.enable = true;  
@@ -143,7 +141,8 @@ environment.systemPackages = with pkgs; [
   zam-plugins # Collection of LV2/LADS audio plugins by ZamAudio
   dragonfly-reverb # High-quality reverb effects
   japa # 'perceptual' or 'psychoacoustic' audio spectrum analyser for JACK and ALSA
-   # easyeffects # Audio effects for PipeWire, Entfernt, da es für PulseAudio entwickelt wurde und nicht direkt mit PipeWire kompatibel ist.
+   # easyeffects # Audio effects for PipeWire, Entfernt, für PulseAudio entwickelt, nicht mit PipeWire kompatibel ist. 
+  jamesdsp # mit native PipeWire
 
 # SONSTIGES   
   cava # console-based Audio Visualizer for Alsa
@@ -152,9 +151,7 @@ environment.systemPackages = with pkgs; [
   
   yt-dlp
   ytfzf
-tuxguitar   # Guitar tablature and score editor
-	 ];
-
+];
 
 }
   
