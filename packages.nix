@@ -229,9 +229,17 @@ qtemu # Qt-based front-end for QEMU emulator
  # Fonts and Typography ---> fonts.nix
 
 ]; 
-#########
 
-/* environment.xfce.excludePackages = [	            pkgs.xfce.mousepad 	 pkgs.xfce.parole
+/* 
+######### Packages die im Standartd der jeweiligen WM inkludiert sind, abwählen, per:
+ environment.packageOverrides = pkgs: {
+	removePackages = pkgs.lib.removeDerivations [ 
+		pkgs.onboard 
+ 		pkgs.cinnamon.mint-x-icons pkgs.cinnamon.mint-l-theme pkgs.cinnamon.mint-l-icons
+	   	pkgs.cinnamon.xreader
+ 			];
+		}; 
+environment.xfce.excludePackages = [	            pkgs.xfce.mousepad 	 pkgs.xfce.parole
 	            pkgs.xfce.ristretto	 pkgs.xfce.thunar ]; 
 environment.gnome.excludePackages = [
 	   		pkgs.gnome.gnome-backgrounds pkgs.gnome.gnome-characters
@@ -239,16 +247,7 @@ environment.gnome.excludePackages = [
 	   		pkgs.gnome-photos pkgs.gnome.nautilus
 	   		pkgs.gnome.totem  pkgs.gnome.yelp
 	   		pkgs.gnome.cheese     	 ];
-	   		
-# environment.packageOverrides = pkgs: { # environment.cinnamon.Packages gibts nicht
-  #		removePackages = pkgs.lib.removeDerivations [ 
-  #			pkgs.onboard 
- # 			pkgs.cinnamon.mint-x-icons
-#	   		pkgs.cinnamon.mint-l-theme pkgs.cinnamon.mint-l-icons
-#	   		pkgs.cinnamon.xreader
- # 			];
-#		}; */
-
+	   		*/
 }
 
 

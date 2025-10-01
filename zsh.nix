@@ -1,5 +1,5 @@
 # zsh.nix
-{ config, pkgs, ... }:NIXoi
+{ config, pkgs, ... }:
 {  
 #  ----------------------
 #       Z  S  H
@@ -50,44 +50,41 @@
         # Shell script code used to initialise the zsh prompt.
         [[ ! -f "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme" ]] || source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
                     '';
-#         shellAliases = "$ZDOTDIR/aliases.zsh";
-         histSize = 30000;
-         histFile = "$ZDOTDIR/history/zhistory";
-         setOptions = [        # see man 1 zshoptions
-		 "BANG_HIST"                 # Treat the '!' character specially during expansion.
-		 "EXTENDED_HISTORY"          # Write the history file in the ':start:elapsed;command' format.
-		 "INC_APPEND_HISTORY"        # Write to the history file immediately, not when the shell exits.
-		 "SHARE_HISTORY"             # Share history between all sessions.
-		 "HIST_EXPIRE_DUPS_FIRST"    # Expire duplicate entries first when trimming history.
-		 "HIST_IGNORE_DUPS"          # Don't record an entry that was just recorded again.
-		 "HIST_IGNORE_ALL_DUPS"      # Delete old recorded entry if new entry is a duplicate.
-		 "HIST_FIND_NO_DUPS"         # Do not display a line previously found.
-		 "HIST_IGNORE_SPACE"         # Don't record an entry starting with a space.
-		 "HIST_SAVE_NO_DUPS"         # Don't write duplicate entries in the history file.
-		 "HIST_REDUCE_BLANKS"        # Remove superfluous blanks before recording entry.
-		 "HIST_VERIFY"               # Do not execute immediately upon history expansian
-		 "RM_STAR_WAIT"           	# beware of rm errors
-		 "PRINT_EXIT_VALUE"        # Print the exit value of programs that return a non-zero status.
-		 "SH_WORD_SPLIT"           # Perform word splitting on unquoted parameters (similar to Bourne shell behavior).
-		 "CORRECT"                 # Attempt to correct spelling errors in commands.
-		 "NOTIFY"                  # Report immediately when background jobs complete.
-		 "INTERACTIVE_COMMENTS"    # Allow comments (#) in interactive shells.
-		 "ALIAS_FUNC_DEF"          # Allow aliases to be used in function definitions.
-		 "EXTENDEDGLOB"            # Enable extended globbing patterns (e.g., ** for recursive matching).
-		 "AUTO_CD"                 # Automatically change directory if a command is just a directory path.
-		 "NOMATCH"                 # Print an error if no matches are found for a pattern 
+ histSize = 30000;
+ histFile = "$ZDOTDIR/history/zhistory";
+ setOptions = [        # see man 1 zshoptions
+	 "BANG_HIST"                 # Treat the '!' character specially during expansion.
+	 "EXTENDED_HISTORY"          # Write the history file in the ':start:elapsed;command' format.
+	 "INC_APPEND_HISTORY"        # Write to the history file immediately, not when the shell exits.
+	 "SHARE_HISTORY"             # Share history between all sessions.
+	 "HIST_EXPIRE_DUPS_FIRST"    # Expire duplicate entries first when trimming history.
+	 "HIST_IGNORE_DUPS"          # Don't record an entry that was just recorded again.
+	 "HIST_IGNORE_ALL_DUPS"      # Delete old recorded entry if new entry is a duplicate.
+	 "HIST_FIND_NO_DUPS"         # Do not display a line previously found.
+	 "HIST_IGNORE_SPACE"         # Don't record an entry starting with a space.
+	 "HIST_SAVE_NO_DUPS"         # Don't write duplicate entries in the history file.
+	 "HIST_REDUCE_BLANKS"        # Remove superfluous blanks before recording entry.
+	 "HIST_VERIFY"               # Do not execute immediately upon history expansian
+	 "RM_STAR_WAIT"           	# beware of rm errors
+	 "PRINT_EXIT_VALUE"        # Print the exit value of programs that return a non-zero status.
+	 "SH_WORD_SPLIT"           # Perform word splitting on unquoted parameters (similar to Bourne shell behavior).
+	 "CORRECT"                 # Attempt to correct spelling errors in commands.
+	 "NOTIFY"                  # Report immediately when background jobs complete.
+	 "INTERACTIVE_COMMENTS"    # Allow comments (#) in interactive shells.
+	 "ALIAS_FUNC_DEF"          # Allow aliases to be used in function definitions.
+	 "EXTENDEDGLOB"            # Enable extended globbing patterns (e.g., ** for recursive matching).
+	 "AUTO_CD"                 # Automatically change directory if a command is just a directory path.
+	 "NOMATCH"                 # Print an error if no matches are found for a pattern 
 		#   "no_global_rcs"	#  # Prevent reading of the global startup files (~/.zshrc, /etc/zshrc, etc.) for non-login shells.
-				        ]; 
+			        ]; 
         };
   
-
-
 environment.etc = { "aliases.zsh".source = "/share/zsh/aliases.zsh";   };
 
 environment.systemPackages = with pkgs; [
-bar # cli progress
-	spotdl # Download your Spotify playlists and songs along with album art and metadata
-	ncdu # Disk usage analyzer with an ncurses interface
+ bar # cli progress
+ spotdl # Download your Spotify playlists and songs along with album art and metadata
+ ncdu # Disk usage analyzer with an ncurses interface
 # Terminal and Shell Utilities
 	  kitty # Terminal emulator
 	  lsd # Modern ls command
@@ -119,7 +116,7 @@ bar # cli progress
 	colorless # colorise cmd output and pipe it to less $ eval "$(colorless -as)"
 # dumm:	colorstorm # cmd line tool to generate color themes for editors (Vim, VSCode, Sublime, Atom) and terminal emulators (iTerm2, Hyper).
 	colord-gtk4 # Color Manager
-	gcolor3 #color picker
+	gcolor3 #colorsanctity picker
 	shunit2 # xUnit based unit test framework for bash scripts
 	fd # find in go = find 2.0
 	curl wget openssl inetutils

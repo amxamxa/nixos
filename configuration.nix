@@ -127,7 +127,9 @@ services.xserver = {
   
   services.xserver.exportConfiguration = true; # Makes it so the above mentioned xkb directory (and the xorg.conf file) gets exported to /etc/X11/xkb
  
-services.xserver.displayManager.sessionCommands = ''xcowsay " \n "Hello World!" this is \n  	-- Greeting from GUI -- \n  	&& Hi Xamxama"'';
+services.xserver.displayManager.sessionCommands = ''xcowsay " 
+"Hello World!" 
+      this is - Greetings from GUI - & Xamxama"'';
 
 services.xserver.desktopManager.runXdgAutostartIfNone = true; # whether to run XDG autostart files for sessions without a desktop manager (with only a window manager), these sessions usually don’t handle XDG autostart files by defaul
  
