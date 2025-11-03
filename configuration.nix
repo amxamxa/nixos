@@ -125,18 +125,12 @@ services.xserver = {
      xkb.options = "lv3:ralt_switch"; # Option zum Umschalten der Layouts, # AltGr als Level-3-Taste (für Sonderzeichen)
   };
   
-  services.xserver.exportConfiguration = true; # Makes it so the above mentioned xkb directory (and the xorg.conf file) gets exported to /etc/X11/xkb
- 
-services.xserver.displayManager.sessionCommands = ''xcowsay " 
-"Hello World!" 
-      this is - Greetings from GUI - & Xamxama"'';
-
-services.xserver.desktopManager.runXdgAutostartIfNone = true; # whether to run XDG autostart files for sessions without a desktop manager (with only a window manager), these sessions usually don’t handle XDG autostart files by defaul
- 
- console.enable = true;
- console.font = "Lat2-Terminus16"; # Beispiel  # ls  $(nix-shell -p kbd --run "ls \$out/share/kbd/consolefonts/")
- console.useXkbConfig = true; # Makes it so the tty console has about the same layout as the one configured in the services.xserver options.
-  console.keyMap = lib.mkForce "de"; # keyboard mapping table for the virtual consoles.
+ console = {
+ 	enable = true;
+ 	font = "Lat2-Terminus16"; # Beispiel  # ls  $(nix-shell -p kbd --run "ls \$out/share/kbd/consolefonts/")
+ 	useXkbConfig = true; # Makes it so the tty console has about the same layout as the one configured in the services.xserver options.
+ 	keyMap = lib.mkForce "de"; # keyboard mapping table for the virtual consoles.
+ 	};
 
   i18n = {
     defaultLocale = "de_DE.UTF-8";
@@ -155,6 +149,14 @@ services.xserver.desktopManager.runXdgAutostartIfNone = true; # whether to run X
   };
   # de_DE/ISO-8859-1  en_US.UTF-8/UTF-8 en_US/ISO-8859-1  de_DE.UTF-8/UTF-8 de_DE/ISO-8859-1 \de_DE@euro/ISO-8859-15 
   
+  services.xserver.exportConfiguration = true; # Makes it so the above mentioned xkb directory (and the xorg.conf file) gets exported to /etc/X11/xkb
+ 
+services.xserver.displayManager.sessionCommands = ''xcowsay " 
+"Hello World!" 
+      this is - Greetings from GUI - & Xamxama"'';
+
+services.xserver.desktopManager.runXdgAutostartIfNone = true; # whether to run XDG autostart files for sessions without a desktop manager (with only a window manager), these sessions usually don’t handle XDG autostart files by defaul
+ 
   
 # Enable CUPS to print documents.
   services.printing.enable = false;

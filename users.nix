@@ -9,13 +9,11 @@
 { config, pkgs, ... }:
 
 {
-#    ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
 system.activationScripts.diff = {
   supportsDryActivation = true;
-  text = ''
-  	  ${pkgs.nvd}/bin/nvd --color auto --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
-    '';
-};
+  text = '' 
+  	${pkgs.nvd}/bin/nvd --color auto --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+    ''; };
 
 # Globale Umgebungsvariablen
   environment.variables = {
@@ -73,7 +71,7 @@ system.activationScripts.diff = {
  __________________/ ___/ ___/ ___/ / __ \/ __/ ___/_________________        
 /_____/_____/_____(__  ) /__/ /  / / /_/ / /_(__  )_____/_____/_____/        
                  /____/\___/_/  /_/ .___/\__/____/                           
-                                 /_/   für User, Grps, ch-Rechte, ln, ...                          
+                                 /_/   für User, Grps, ch-Rechte, ln, ...                          )
 _________________________________________________________________________ */
 
 # Aktivierungsskripte für Benutzerrechte 

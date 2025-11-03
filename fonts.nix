@@ -73,11 +73,92 @@ in zusammenhängende Symbole umgewandelt (z. B. ≠, ≥, ≡).
     
 defaultFonts = {
         sansSerif = [ "tt2020" "Open Sans" "DejaVu Sans" "Symbols Nerd Font" ];
-        serif =    [ "Tinos Nerd Font" "DejaVu Serif" "Symbols Nerd Font" ];
-        emoji =    [ "openmoji-color " ];
-        monospace = [    "Envy Code R"  "Symbols Nerd Font"   ];   };        */
+        serif =     [ "Tinos Nerd Font" "DejaVu Serif" "Symbols Nerd Font" ];
+        emoji =     [ "openmoji-color " ];
+        monospace = [ "Envy Code R"  "Symbols Nerd Font"   ];   
+        };        */
 
 localConf = ''
+  <?xml version="1.0"?>
+  <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+  <fontconfig>
+    <!-- Reject all Nerd Font variants that don't contain "Mono" -->
+    <selectfont>
+      <rejectfont>
+        <glob>
+          <pattern>
+            <patelt name="family">
+              <string>*Nerd Font</string>
+            </patelt>
+          </pattern>
+        </glob>
+      </rejectfont>
+    </selectfont>
+
+    <selectfont>
+      <rejectfont>
+        <glob>
+          <pattern>
+            <patelt name="family">
+              <string>*Nerd Font Propo</string>
+            </patelt>
+          </pattern>
+        </glob>
+      </rejectfont>
+    </selectfont>
+
+    <!-- Explicitly accept Nerd Font Mono variants -->
+    <selectfont>
+      <acceptfont>
+        <glob>
+          <pattern>
+            <patelt name="family">
+              <string>*Nerd Font Mono</string>
+            </patelt>
+          </pattern>
+        </glob>
+      </acceptfont>
+    </selectfont>
+
+    <!-- Map Nerd Font Mono to monospace -->
+    <match target="pattern">
+      <test name="family" qual="any">
+        <string>FiraCode Nerd Font Mono</string>
+      </test>
+      <edit name="family" mode="append" binding="strong">
+        <string>monospace</string>
+      </edit>
+    </match>
+
+    <!-- Enable ligatures for FiraCode Nerd Font Mono -->
+    <match target="font">
+      <test name="family" compare="eq">
+        <string>FiraCode Nerd Font Mono</string>
+      </test>
+      <edit name="fontfeature" mode="append">
+        <string>calt</string>
+        <string>clig</string>
+        <string>liga</string>
+      </edit>
+    </match>font
+
+    <!-- Monospace fallback order -->
+    <alias>
+      <family>monospace</family>
+      <prefer>
+        <family>FiraCode Nerd Font Mono</family>
+        <family>Iosevka Term Slab Nerd Font Mono</family>
+        <family>MesloLGM Nerd Font Mono</family>
+        <family>Envy Code R</family>
+        <family>DejaVu Sans Mono</family>
+      </prefer>
+    </alias>
+  </fontconfig>
+'';
+
+};
+ 
+/*
 
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
@@ -113,17 +194,15 @@ localConf = ''
        </rejectfont>  
       </selectfont>
 </fontconfig>
-'';
-};
- 
-/*
 
+############
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
 <fontconfig>
   <selectfont>
     <!-- Nerd Fonts ablehnen (außer Mono) -->
-    <rejectfont>
+    <rejectfont>b_title
+# sonstiges
       <match target="pattern">
         <test name="family" compare="contains">
           <string>Nerd Font</string>

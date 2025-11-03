@@ -10,8 +10,8 @@ environment.systemPackages = with pkgs; [
  	unstable.hugo
  	unstable.yt-dlp
 #+############################ 	
- 	
- 	
+ 	kbd # Linux keyboard tools and keyboard maps
+ 	andromeda-gtk-theme # Elegant dark theme for gnome, mate, budgie, cinnamon, xfce
  	linearicons-free # linearicons.com/free	
  	icon-library # Symbolic icons for your apps
  	pantheon.elementary-icon-theme  # Named, vector icons for elementary OS
@@ -123,6 +123,10 @@ superTuxKart # Tux Kart
 #	nix-diff # Compare Nix derivations
 #	nix-output-monitor # Process output of Nix commands
 	nix-prefetch-github #Prefetch sources from github seppeljordan/nix-prefetch-github
+	nixfmt-classic # An opinionated formatter for Nix
+nixfmt-tree # Official Nix formatter zero-setup starter using treefmt
+    statix # Lints and suggestions for the nix programming language
+    deadnix # Find and remove unused code in .nix source files
 # ------------------------------------------------------	
 	# faba-icon-theme #  modern icon theme with Tango influences
 	faba-mono-icons
