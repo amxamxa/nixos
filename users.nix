@@ -30,18 +30,44 @@ system.activationScripts.diff = {
     KITTY_CONFIG_DIRECTORY  = 	"/share/kitty";    # kitty-Terminal Konfigurationspfad
     NIX_INDEX_DATABASE 	= 	"/share/nix-index";    # Nix-Index-Datenbank
          # SPACESHIP_CONFIG = "$ZDOTDIR/prompt/starship.toml"; # Spaceship Prompt Konfigurationspfad
-  };
-
-  # Sitzungsspezifische Umgebungsvariablen
-  environment.sessionVariables = {
+         
     XDG_CACHE_HOME      = 	"$HOME/.cache";
     XDG_CONFIG_HOME     = 	"$HOME/.config";
     XDG_DATA_HOME       = 	"$HOME/.local/share";
     XDG_STATE_HOME      = 	"$HOME/.local/state";  
-        # XAUTHORITY = "$XDG_CONFIG_HOME/Xauthority";  # Kommentiert, aber bei Bedarf nutzbar
+  
+   #XAUTHORITY = "$XDG_CONFIG_HOME/Xauthority";  # Kommentiert, aber bei Bedarf nutzbar
     CARGO_HOME         = 	"$HOME/.config/cargo";       # Für Rust-Projekte, falls benötigt
     WWW_HOME           = 	"$HOME/.config/w3m";           # w3m (Browser) Konfigurationspfad
     PYTHONPATH = "${pkgs.python3Full}/${pkgs.python3Full.sitePackages}";
+
+
+  };
+
+  # Sitzungsspezifische Umgebungsvariablen
+  environment.sessionVariables = {
+
+        RESET="\e[0m";
+     BOLD="\033[1m";
+     GREEN="\033[38;2;0;255;0m\033[48;2;0;25;2m";
+     PINK="\033[38;2;255;0;53m\033[48;2;34;0;82m";
+     RED="\033[38;2;240;138;100m\033[48;2;147;18;61m"; 
+# eza-Einstellungen
+    COLUMNS=78;
+    EZA_ICONS_AUTO="auto";
+    EZA_ICON_SPACING=2;
+    EZA_GRID_ROWS=3;
+    EZA_GRID_COLUMNS=3;
+    EZA_MIN_LUMINANCE=50;
+    EZA_COLORS="$LS_COLORS:hd=38;5;226:uu=38;5;202:gu=38;5;208:da=38;5;111:uR=38;5;197:uG=38;5;198";
+
+#zsh
+   HISTIGNORE="ls:cd:pwd:exit:tldr:cheat:printf:micro:man:eza:lsd:cp:echo:z:bap:bat:git:sudo:grep";
+HISTTIMEFORMAT="%D{%Y-%m-%d %H:%M} ";
+DIRSTACKSIZE=14;
+REPORTTIME=3;     # display cpu usage, if command taking more than 3s
+
+    
   };
 
   environment.etc."xdg/user-dirs.defaults".text = ''
@@ -80,8 +106,6 @@ system.activationScripts = {
     text = ''
     LOG_FILE=/var/log/setPermissions.log
       echo "===== $(date '+%Y-%m-%d %H:%M:%S') - Start setPermissions Script =====" > $LOG_FILE
-/*
-
   # Setze Berechtigungen auf 755 für /home-Verzeichnisse und 644 für Dateien
       chown -R :mxx /home && echo "Gruppe 'mxx' für /home erfolgreich gesetzt" >> $LOG_FILE
     
@@ -92,17 +116,15 @@ system.activationScripts = {
       chmod -R 0755 /share && echo "Berechtigungen auf 2760 für /share erfolgreich gesetzt" >> $LOG_FILE
       chown -R :mxx /share && echo "Gruppe 'mxx' für /share erfolgreich gesetzt" >> $LOG_FILE
  # Erstelle symbolische Links für bestimmte Verzeichnisse
-      name="finja"
-      for dir in Bilder Dokumente Video Vorlagen Musik; do
-        if [ -d "/home/amxamxa/$dir" ] && [ ! -e "/home/$name/$dir" ]; then
-          ln -s "/home/amxamxa/$dir" "/home/$name/$dir" && echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir erstellt" >> $LOG_FILE
-        else
-          echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir NICHT erstellt" >> $LOG_FILE
-        fi
-      done
-      ##
-*/
-
+ #     name="finja"
+  #    for dir in Bilder Dokumente Video Vorlagen Musik; do
+   #     if [ -d "/home/amxamxa/$dir" ] && [ ! -e "/home/$name/$dir" ]; then
+    #      ln -s "/home/amxamxa/$dir" "/home/$name/$dir" && echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir erstellt" >> $LOG_FILE
+     #   else
+      #    echo "Symbolischer Link von /home/amxamxa/$dir zu /home/$name/$dir NICHT erstellt" >> $LOG_FILE
+      #  fi
+    # done
+ 
  # Setze SSH-Berechtigungen
       find /home -name ".ssh" -exec chmod 0700 {} \; && echo "chmod 0700 für ~/.ssh gesetzt" >> $LOG_FILE
       find /home -type f -name "id_ed25519" -exec chmod 0600 {} \; && echo "chmod 0600 für id_ed25519 gesetzt" >> $LOG_FILE

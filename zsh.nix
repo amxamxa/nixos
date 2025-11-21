@@ -50,24 +50,6 @@
  source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
 source <(fzf --zsh)
 
-export RESET="\e[0m" 
-export BOLD="\033[1m" 
-export GREEN="\033[38;2;0;255;0m\033[48;2;0;25;2m"
-export PINK="\033[38;2;255;0;53m\033[48;2;34;0;82m"
-export RED="\033[38;2;240;138;100m\033[48;2;147;18;61m" 
-
-# eza-Einstellungen
-export COLUMNS=78
-export EZA_ICONS_AUTO="auto"
-export EZA_ICON_SPACING=2
-export EZA_GRID_ROWS=3
-export EZA_GRID_COLUMNS=3
-export EZA_MIN_LUMINANCE=50
-export EZA_COLORS="$LS_COLORS:hd=38;5;226:uu=38;5;202:gu=38;5;208:da=38;5;111:uR=38;5;197:uG=38;5;198"
-
-export 	HISTIGNORE="ls:cd:pwd:exit:tldr:cheat:printf:micro:man:eza:lsd:cp:echo:z:bap:bat:git:sudo:grep"
-export 	HISTTIMEFORMAT="%D{%Y-%m-%d %H:%M} "
-
 
 # Füge den Pfad für Custom- u Autoload-Funktionen hinzu. When we run a 
 # command that corresponds to an autoloaded function, ZSH searches for 
@@ -83,10 +65,7 @@ fpath=($ZDOTDIR:$ZDOTDIR/functions:$ZDOTDIR/plugins:$ZDOTDIR/prompts $fpath)
   _comp_options+=(globdots) 	# With hidden files
 
 ##  ZSH DIRECTORY STACK - DS
-   alias -g d='dirs -v'
-
-  export DIRSTACKSIZE=14
-  export REPORTTIME=3        # display cpu usage, if command taking more than 3s
+   alias -g D='dirs -v'
         
         # das ist hier aber nicht nötig, da alles über die $ZDOTDIR/zshrc.zsh gesourct wird!
         # test -f $ZDOTDIR/zshrc.zsh && source $ZDOTDIR/zshrc.zsh
@@ -94,7 +73,7 @@ fpath=($ZDOTDIR:$ZDOTDIR/functions:$ZDOTDIR/plugins:$ZDOTDIR/prompts $fpath)
   '';
 
    
-        promptInit = ''
+promptInit = ''
         # Shell script code used to initialise the zsh prompt.
         [[ ! -f "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme" ]] || source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
                     '';

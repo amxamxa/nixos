@@ -18,10 +18,10 @@
       fsIdentifier = "label";
       devices = [ "nodev" ];
       useOSProber = true;
-      splashImage = "/share/background.png";
+      splashImage = "./data/background.png";
       backgroundColor = "#7EBAE4";
       configurationLimit = 77;
-      # font = "/share/cfont.pf2";
+      font = "./data/cfont.pf2";
       fontSize = 14;
    #   gfxmodeEfi = "1920x1080";
       /*

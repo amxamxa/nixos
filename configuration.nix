@@ -120,7 +120,7 @@ services.xserver.displayManager.startx.enable = true; # Whether to enable the du
 
 services.xserver = {
     enable = true;	  # Enable the X11 windowing system. Die Reihenfolge ist wichtig, da das erste Layout standardmäßig verwendet wird.
-     xkb.layout = "de";  
+     xkb.layout = lib.mkForce "de";  
      xkb.variant = "";
      xkb.options = "lv3:ralt_switch"; # Option zum Umschalten der Layouts, # AltGr als Level-3-Taste (für Sonderzeichen)
   };
@@ -152,8 +152,7 @@ services.xserver = {
   services.xserver.exportConfiguration = true; # Makes it so the above mentioned xkb directory (and the xorg.conf file) gets exported to /etc/X11/xkb
  
 services.xserver.displayManager.sessionCommands = ''xcowsay " 
-"Hello World!" 
-      this is - Greetings from GUI - & Xamxama"'';
+"Hello World!" this is - Greetings from GUI - & Xamxama"'';
 
 services.xserver.desktopManager.runXdgAutostartIfNone = true; # whether to run XDG autostart files for sessions without a desktop manager (with only a window manager), these sessions usually don’t handle XDG autostart files by defaul
  
@@ -173,10 +172,14 @@ services.xserver.desktopManager.runXdgAutostartIfNone = true; # whether to run X
   # to install from unstable-channel, siehe packages.nix
   nixpkgs.config = { 
     allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-             "vivaldi"               "vagrant"  
-             "memtest86-efi"         "sublimetext" 
-             "obsidian" 	     "typora"
+             # "vivaldi"           
+              "vagrant"  
+             "memtest86-efi"       
+             "sublimetext" 
+             "obsidian" 
+             "typora"
              "decent-sampler"
+             "vst2-sdk"
            ];
     allowUnfree = false;
    

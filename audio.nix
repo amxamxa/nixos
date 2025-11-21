@@ -63,12 +63,12 @@ boot.kernel.sysctl = { # Verbessert die Audio-Performance und speicherbezogene L
   };
 
  systemd.user.services.set-volume = {
-  description = "Set volume to 75% at startup";
+  description = "Set volume to 80% at startup";
   wantedBy = [ "default.target" ];
   after = [ "wireplumber.service" ]; 
   serviceConfig = {
   #wpctl set-volume @DEFAULT_AUDIO_SINK@ 80% 
-    ExecStart = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 75%";
+    ExecStart = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 80%";
     Restart = "on-failure";
     StandardOutput = "journal";
     StandardError = "journal";
@@ -103,7 +103,7 @@ environment.systemPackages = with pkgs; [
   dvgrab 		# Receive and store audio & video over IEEE1394
 
 # PATCHFELD  
-  # helvum # GTK patchbay for PipeWire
+  helvum # GTK patchbay for PipeWire
   carla # komplexere Alternative zu Helvum
 #  patchage # Modular patch bay for Jack and ALSA systems
 #  qjackctl  # application to control the JACK sound server daemon
@@ -128,7 +128,7 @@ environment.systemPackages = with pkgs; [
   #  zynaddsubfx # Advanced software synthesizer
   muse       # MIDI/Audio sequencer with recording/editing
   petrifoo   # MIDI controllable audio sampler
-  # bespokesynth-with-vst2 # sw modular synth with controllers
+  bespokesynth-with-vst2 # sw modular synth with controllers
   decent-sampler   # Audio sample player
   zita-resampler   # Resample library by Fons Adriaensen	
   sooperlooper # Live looping tool for performances
@@ -142,7 +142,7 @@ environment.systemPackages = with pkgs; [
   dragonfly-reverb # High-quality reverb effects
   japa # 'perceptual' or 'psychoacoustic' audio spectrum analyser for JACK and ALSA
    # easyeffects # Audio effects for PipeWire, Entfernt, für PulseAudio entwickelt, nicht mit PipeWire kompatibel ist. 
-  jamesdsp # mit native PipeWire
+  # jamesdsp # mit native PipeWire
 
 # SONSTIGES   
   cava # console-based Audio Visualizer for Alsa
