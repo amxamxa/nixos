@@ -47,11 +47,7 @@ system.activationScripts.diff = {
   # Sitzungsspezifische Umgebungsvariablen
   environment.sessionVariables = {
 
-        RESET="\e[0m";
-     BOLD="\033[1m";
-     GREEN="\033[38;2;0;255;0m\033[48;2;0;25;2m";
-     PINK="\033[38;2;255;0;53m\033[48;2;34;0;82m";
-     RED="\033[38;2;240;138;100m\033[48;2;147;18;61m"; 
+ 
 # eza-Einstellungen
     COLUMNS=78;
     EZA_ICONS_AUTO="auto";
@@ -209,6 +205,8 @@ security.sudo = {
     { 
       groups = ["mxx"];
       commands = [
+         { command = "${pkgs.eza}/bin/eza"; options = ["NOPASSWD"]; } 
+         { command = "${pkgs.coreutils}/bin/dd"; options = ["NOPASSWD"]; } 
       # Dateisystemnutzung anzeigen
         { command = "${pkgs.coreutils}/bin/df"; options = ["NOPASSWD"]; } 
       # System neu starten

@@ -7,24 +7,7 @@
    
      xkb.options = " grp:win_space_toggle"; # Option zum Umschalten der Layouts
   };
-  services.xserver.exportConfiguration = true; # Makes it so the above mentioned xkb directory (and the xorg.conf file) gets exported to /etc/X11/xkb
-  
-i18n = {
-    defaultLocale = "de_DE.UTF-8";
-    supportedLocales =      [ "de_DE.UTF-8/UTF-8"   # Modern, universell unterstützt große Anzahl von Zeichen
-     		"en_US.UTF-8/UTF-8"    ];   # Sprache auf Deutsch/Englisch begrenzen
-    extraLocaleSettings = {
-    	LC_NAME = 		  "de_DE.UTF-8";
-        LC_TIME = 		  "de_DE.UTF-8";
-        LC_PAPER = 		  "de_DE.UTF-8";
-     	LC_ADDRESS =		  "de_DE.UTF-8";
-	LC_MEASUREMENT = 	  "de_DE.UTF-8";
-      	LC_MONETARY = 	 	  "de_DE.UTF-8";
-       	LC_NUMERIC =              "de_DE.UTF-8";
-	LC_TELEPHONE = 	 	  "de_DE.UTF-8";
-	LC_IDENTIFICATION =	  "de_DE.UTF-8";
-    };
- };
+
 }
   console.useXkbConfig = true; # Makes it so the tty console has about the same layout as the one configured in the services.xserver options.
   

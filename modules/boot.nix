@@ -1,6 +1,51 @@
 { config, pkgs, ... }:
 
 {
+# Intel CPU microcode updates
+hardware.cpu.intel.updateMicrocode = true;
+
+hardware.firmware = with pkgs; [ linux-firmware ];
+
+ boot.consoleLogLevel = 3;
+ boot.initrd.verbose = true;
+  
+ boot.kernel.sysctl = {
+  "kernel.sysrq" = 1;
+  "kernel.printk" = "3 3 3 3";   # Kernel-Log (console_/default_message_/minimum_console_/default_console_)loglevel
+};
+ boot.kernelModules = [ 
+  "kvm-intel"                      # Intel virtualization (statt kvm-amd)
+  "bfq"                            # I/O scheduler
+  
+  # Optional für bessere Intel GPU performance
+  # "i915"                         # Wird meist automatisch geladen
+];
+ 
+# Turbo Boost explizit aktivieren (falls deaktiviert)
+boot.kernelParams = [
+  "intel_pstate=active"
+  "intel_pstate.no_hwp=1"  # Disable Hardware P-States auf Ivy Bridge
+    # Intel-specific CPU frequency scaling
+  "intel_pstate=active"           # Modern Intel P-State driver
+    # Security 
+  "mitigations=auto"              # Empfohlen statt "off" für Ivy Bridge
+  
+  # System behavior
+  "panic=1"
+  
+  # Boot verbosity
+  "rd.systemd.show_status=auto"
+  "rd.udev.log_priority=3"
+  
+  "zswap.enabled=1"
+  
+  # Intel graphics (integrierte GPU)
+  "i915.enable_fbc=1"             # Framebuffer compression
+  "i915.enable_psr=0"             # Panel Self Refresh (oft buggy bei Ivy Bridge)
+  "i915.fastboot=1"               # Faster boot for Intel GPU
+];
+
+
   boot.loader = {
   # UEFI
     efi = {
@@ -18,7 +63,7 @@
       fsIdentifier = "label";
       devices = [ "nodev" ];
       useOSProber = true;
-      splashImage = "./data/background.png";
+      splashImage = "./assets/background.png";
       backgroundColor = "#7EBAE4";
       configurationLimit = 77;
       font = "./data/cfont.pf2";
@@ -65,6 +110,10 @@
       '';
     }; 
   };
+  
+    boot.tmp.cleanOnBoot = true;
+ 
+
       /*
       ''
   menuentry "Windows 7" {  # GRUB 2 example

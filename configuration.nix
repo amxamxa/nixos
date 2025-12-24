@@ -1,27 +1,25 @@
 { config, pkgs, lib,  ... }:
-let
-  backgroundColor = "#7EBAE4";
-in
+#let
+ # backgroundColor = "#7EBAE4";
+#in
 
 {
-
-  imports =
+ imports =
     [ # Include the results of the hardware scan.
       	./hardware-configuration.nix	
-      	./adBloxx.nix # ehem. ./AdBloxx.nix
-      	./audio.nix
-      	./boot.nix # grub2 & lightDM
-      	./docker.nix
-      	./fonts.nix
-    #   ./gpu-GV-N960.nix # nicht mehr drin
-	./mouse-rog.nix
-      	./packages.nix # env.pkgs
-      	./python.nix # ehem.	./ld.nix
-      	./users.nix
-        #	./us-altgr-umlaut.nix  # Tastatur Konfig hier integriert
-      	# ./firefox.nix # todo
-      	./zsh.nix
-    ];
+      	./test.nix
+      	./modules/boot.nix # grub2 & lightDM
+     	./modules/displayMgr.nix
+       	./modules/packages.nix # env.pkgs
+       	./modules/enviroment.nix
+	./modules/zsh.nix
+	./modules/packages.nix # env.pkgs
+      	./modules/adBloxx.nix # ehem. ./AdBloxx.nix
+	./modules/audio.nix
+	./modules/docker.nix
+	./modules/fonts.nix
+    	./modules/python.nix # ehem.	./ld.nix
+];
 
 fileSystems."/share" =
   { device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
@@ -52,71 +50,28 @@ fileSystems."/home/project/AUDIO/samples+" =
 	    "204.152.184.76" # (f.6to4-servers.net, ISC, USA)
 	    "2001:4f8:0:2::14" # (f.6to4-servers.net, IPv6, ISC)
 	    "194.150.168.168" # (dns.as250.net; Berlin/Frankfurt) 
-	         ];
+	         ]; 
+
+networking.networkmanager.settings.connectivity.uri =
+      "http://nmcheck.gnome.org/check_network_status.txt";
+	         
   networking.networkmanager.dns = "default"; # default", "dnsmasq", "systemd-resolved", "none"
   # networking.interfaces.enp4s0.useDHCP = true;
   # networking.interfaces.enp4s0.name = [ "eth0" ];
   hardware.usb-modeswitch.enable  = false; # to support certain USB WLAN and WWAN adapters.  These network adapters initial present themselves as Flash Drives containing their drivers. This option enables automatic switching to the networking mode
-    services.logind.extraConfig = '' 
-    	HandlePowerKey = poweroff;
-    	HandlePowerKeyLongPress = reboot; 
-	'';	
+      #   Use services.logind.settings.Login instead.  # services.logind.extraConfig = ''     	HandlePowerKey = poweroff;    	HandlePowerKeyLongPress = reboot;	'';	
   security.polkit.enable = true; # Framework, um privilegierte Aktionen auszuführen
 services.udisks2.enable = true; # Daemon, der Festplatten, USB-Sticks, SD-Karten und andere Wechselmedien verwaltet
-  services.upower.enable= true; #    Daemon, der Informationen über die Energieversorgung sammelt und bereitstellt. Für Akku-Betrieb
+  services.upower.enable= false; # Daemon, der Informationen über die Energieversorgung sammelt und bereitstellt. Für Akku-Betrieb
   services.power-profiles-daemon.enable = false;
 services.tlp.enable = true; # Energieoptimierung, CPU-freq, Aktivitäts-Timeouts für Festplatten und USB-Ports
   boot.tmp.cleanOnBoot = true;   # Wipe /tmp on boot.
 
   # Set your time zone.
    time.timeZone = "Europe/Berlin";
+   
    hardware.ksm.enable = true; # Aktiviert den Kernel Samepage Merging (KSM)-Dienst, durchsucht den RAM nach identischen Speicherseiten (Pages), spart Speicher, aber CPU-Last. Für Virtualisierungsumgebungen mit  ähnlichen VMs ... oder redundanten Speicher allozieren
-# Enable the - d e s k t o p  m a n a g e r - Environment. # slick-greeter; | lightdm-enso-os-greeter| lightdm-tiny-greeter 
-  # Include LightDM configuration if necessary
-# services.xserver.displayManager.lightdm.enable = true;
-# services.xserver.displayManager.lightdm.greeters.slick.enable = true;
-# -------------------------------------------
 
-# LightDM Slick Greeter 
-services.xserver.displayManager = {
-  gdm.enable = false;
-  lightdm.enable = true;
-  # lightdm.greeters.tiny = {   enable = true;    #background = "/share/wallpaper/sonstige/blitz.png"; };
-   lightdm.greeters.slick = {
-     enable = true;
-     theme = 	 { name = "andromeda"; package = pkgs.andromeda-gtk-theme; };
-     iconTheme = { name = "Faba-Mono-Dark"; package = pkgs.faba-mono-icons; };
-     font  = 	 { name = "MesloLGS NF 24"; package = pkgs.meslo-lgs-nf;	};
-     draw-user-backgrounds= true; # steuert, ob Hintergrund des Nutzers auf Login-Bildschirm erscheint
-     # tshoot:  /var/log/lightdm/lightdm.log
-     extraConfig = ''
-    # LightDM GTK+ Configuration file for /etc/lightdm/slick-greeter.conf        
-        stretch-background-across-monitors=false # to stretch the background across multiple monitors
-        only-on-monitor=HDMI-1  # Sets monitor on which is login; -1 means "follow the mouse"
-        background=/etc/lightdm/lightDM-bg.png
-# logo=/etc/lightdm/logo-aramgedon.png         other-monitors-logo=/etc/lightdm/logo-aramgedon.png          show-power=false        # show-keyboard=false         show-hostname=true        show-clock=true        show-quit=true # show the quit menu in the menubar 
-        xft-hintstyle="hintmedium" # hintnone/hintslight/hintmedium/hintfull  
-	clock-format=" %d.%b.%g %H:%" #  clock format to use (e.g., %H:%M or %l:%M %p)
-# xft-antialias=Whether to antialias Xft fonts (true or false)  # xft-dpi=Resolution for Xft in dots per inch
-# xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)
-	 '';  
-	 };
-   };
-
-services.displayManager = {
-	autoLogin.enable = true;
-	autoLogin.user = "amxamxa";
-	defaultSession = "cinnamon";	
-	};   
-
- services.xserver.desktopManager = {
-    cinnamon.enable 	= true;
-    gnome.enable	= false;
-    pantheon.enable 	= false;
-    lxqt.enable		= false;
-    xfce.enable		= false; 
-    };
-services.xserver.displayManager.startx.enable = true; # Whether to enable the dummy “startx” pseudo-display manager, which allows users to start X manually via the startx command from a virtual terminal.
 
 services.xserver = {
     enable = true;	  # Enable the X11 windowing system. Die Reihenfolge ist wichtig, da das erste Layout standardmäßig verwendet wird.
@@ -128,34 +83,37 @@ services.xserver = {
  console = {
  	enable = true;
  	font = "Lat2-Terminus16"; # Beispiel  # ls  $(nix-shell -p kbd --run "ls \$out/share/kbd/consolefonts/")
+ 	   earlySetup = true;
  	useXkbConfig = true; # Makes it so the tty console has about the same layout as the one configured in the services.xserver options.
  	keyMap = lib.mkForce "de"; # keyboard mapping table for the virtual consoles.
  	};
 
-  i18n = {
+i18n = {
     defaultLocale = "de_DE.UTF-8";
- #   extraLocales = [ "en_US.UTF-8" ];
+    supportedLocales =      [ "de_DE.UTF-8/UTF-8" "en_US.UTF-8/UTF-8"    ];   # Sprache auf Deutsch/Englisch begrenzen
     extraLocaleSettings = {
-    	LC_NAME = 		  "de_DE.utf8";
-        LC_TIME = 		  "de_DE.utf8";
-        LC_PAPER = 		  "de_DE.utf8";
-     	LC_ADDRESS =		  "de_DE.utf8";
-	LC_MEASUREMENT = 	  "de_DE.utf8";
-      	LC_MONETARY = 	 	  "de_DE.utf8";
-       	LC_NUMERIC =              "de_DE.utf8";
-	LC_TELEPHONE = 	 	  "de_DE.utf8";
-	LC_IDENTIFICATION =	  "de_DE.utf8";
+    	LC_NAME = 		  "de_DE.UTF-8";
+        LC_TIME = 		  "de_DE.UTF-8";
+        LC_PAPER = 		  "de_DE.UTF-8";
+     	LC_ADDRESS =		  "de_DE.UTF-8";
+	LC_MEASUREMENT = 	  "de_DE.UTF-8";
+      	LC_MONETARY = 	 	  "de_DE.UTF-8";
+       	LC_NUMERIC =              "de_DE.UTF-8";
+	LC_TELEPHONE = 	 	  "de_DE.UTF-8";
+	LC_IDENTIFICATION =	  "de_DE.UTF-8";
     };
-  };
-  # de_DE/ISO-8859-1  en_US.UTF-8/UTF-8 en_US/ISO-8859-1  de_DE.UTF-8/UTF-8 de_DE/ISO-8859-1 \de_DE@euro/ISO-8859-15 
+ };  # de_DE/ISO-8859-1  en_US.UTF-8/UTF-8 en_US/ISO-8859-1  de_DE.UTF-8/UTF-8 de_DE/ISO-8859-1 \de_DE@euro/ISO-8859-15 
   
+ 
+#############################################################################
+services.xserver.displayManager.startx.enable = true; # Whether to enable the dummy “startx” pseudo-display manager, which allows users to start X manually via the startx command from a virtual terminal.
+
   services.xserver.exportConfiguration = true; # Makes it so the above mentioned xkb directory (and the xorg.conf file) gets exported to /etc/X11/xkb
+ services.xserver.desktopManager.runXdgAutostartIfNone = true; # whether to run XDG autostart files for sessions without a desktop manager (with only a window manager), these sessions usually don’t handle XDG autostart files by defaul
+ 
  
 services.xserver.displayManager.sessionCommands = ''xcowsay " 
 "Hello World!" this is - Greetings from GUI - & Xamxama"'';
-
-services.xserver.desktopManager.runXdgAutostartIfNone = true; # whether to run XDG autostart files for sessions without a desktop manager (with only a window manager), these sessions usually don’t handle XDG autostart files by defaul
- 
   
 # Enable CUPS to print documents.
   services.printing.enable = false;

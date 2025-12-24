@@ -118,7 +118,6 @@ environment.systemPackages = with pkgs; [
   # mamba # Virtual MIDI keyboard for Jack Audio Connection Kit
   hydrogen    # Advanced drum machine for beat production
   drumgizmo   # Drum sampler with high-quality samples
-  decent-sampler   # Audio sample player
   zita-resampler   # Resample library by Fons Adriaensen	
   sooperlooper # Live looping tool for performances
   # oxefmsynth # Open source VST 2.4 instrument plugin
@@ -128,7 +127,7 @@ environment.systemPackages = with pkgs; [
   #  zynaddsubfx # Advanced software synthesizer
   muse       # MIDI/Audio sequencer with recording/editing
   petrifoo   # MIDI controllable audio sampler
-  bespokesynth-with-vst2 # sw modular synth with controllers
+#  bespokesynth-with-vst2 # sw modular synth with controllers
   decent-sampler   # Audio sample player
   zita-resampler   # Resample library by Fons Adriaensen	
   sooperlooper # Live looping tool for performances

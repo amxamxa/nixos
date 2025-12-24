@@ -23,6 +23,8 @@
  programs.fzf.fuzzyCompletion = true; 
  programs.fzf.keybindings = false; # Whether to enable fzf keybindings.
  
+ programs.thefuck.enable = true; 
+ programs.thefuck.alias = "F0";
  
 # enable zsh system-wide use
  users.defaultUserShell = pkgs.zsh;
@@ -34,7 +36,8 @@
         enableBashCompletion = true;
         enableLsColors = true;
         syntaxHighlighting.enable = true;  
-                autosuggestions.enable = true; 
+        
+        autosuggestions.enable = true; 
 #	autosuggestions.strategy = "history"; 	# "match_prev_cmd"; OneOf: "history" "completion"
 #    match_prev_cmd: won’t work as expected with  HIST_IGNORE_ALL_DUPS or HIST_EXPIRE_DUPS_FIRST. 
 
@@ -128,7 +131,7 @@ environment.systemPackages = with pkgs; [
   terminal-parrot # Shows colorful, animated party parrot in your terminial
   bat-extras.batman # scripts: batgrep, batman, batpipe (less), batwatch, batdiff, prettybat 
 ### Miscellaneous
-  #thefuck # Corrects previous console commands
+  thefuck # Corrects previous console commands
   ripgrep # Fast search tool
   banner # Text banner tool
   toilet # Text banner tool

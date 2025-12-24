@@ -4,9 +4,8 @@
 #  lightdm-settings = import /etc/nixos/custom-pkgs/lightdm-settings.nix { inherit pkgs; };#
 #in
 {
-environment.systemPackages = with pkgs; [
-[
-[
+ environment.systemPackages = with pkgs; [
+
   # System/Basis-Tools
   dmidecode # Info about your hardware according to SMBIOS/DMI
   efibootmgr # EFI boot manager utility
@@ -23,8 +22,6 @@ environment.systemPackages = with pkgs; [
   # unrar #unfree
   file # Specifies that a series of tests are performed on the file
 
----
-
   # System-Monitore und -Diagnose
   btop # Resource monitor (modern htop alternative)
   htop # Interactive process viewer
@@ -34,8 +31,6 @@ environment.systemPackages = with pkgs; [
   bottom # Modern system monitor (alternative to btop/htop)
   vnstat # Console-based network traffic monitor
   libgtop # Library for multicore sys monitor
-
----
 
   # Bootloader und Recovery
   grub2 # Bootloader
@@ -47,16 +42,12 @@ environment.systemPackages = with pkgs; [
   extundelete # Tool for recovering deleted files on ext3/ext4 file systems.
   gparted # Partition editor
 
----
-
   # Backup und Synchronisation
   deja-dup # Simple and secure backup tool with a graphical interface.
   duplicity # Encrypted backup across various protocols with incremental backups.
   warpinator # Share files across the LAN
   dedup # Deduplicating backup program
   timeshift # System restore utility
-
----
 
   # Netzwerk und Konnektivität
   gvfs # Virtual Filesystem support library
@@ -75,18 +66,14 @@ environment.systemPackages = with pkgs; [
   bandwhich # Network utilization by process
   ntfs3g # FUSE-based NTFS driver with full write support
 
----
-
-  # Android-Tools und MTP
+   # Android-Tools und MTP
   android-tools # Android SDK platform tools (adb, fastboot)
   libmtp # Implementation of Microsoft's Media Transfer Protocol
   jmtpfs # Mounts MTP devices as a fuse filesystem (~/android-mount)
   scrcpy # Display and control Android devices over USB or TCP/IP
   # genymotion # Fast and easy Android emulation
 
----
-
-  # Shell und Kommandozeilen-Tools
+ # Shell und Kommandozeilen-Tools
   age # Modern encryption tool (alternative to GPG)
   direnv # Automatic environment variables per directory
   just # Command runner (Makefile alternative)
@@ -109,8 +96,6 @@ environment.systemPackages = with pkgs; [
   libglvnd # The GL Vendor-Neutral Dispatch library
   libGL # Stub bindings using libglvnd
 
----
-
   # Nix-Spezifische Tools
   nix-index # Quickly locate nix packages
   nvd # Nix/NixOS package version diff tool
@@ -124,8 +109,6 @@ environment.systemPackages = with pkgs; [
   statix # Lints and suggestions for the nix programming language
   deadnix # Find and remove unused code in .nix source files
   nixos-icons # Icons of the Nix logo, in Freedesktop Icon Directory Layout
-
----
 
   # Terminal- und Shell-Erweiterungen (Zsh/Kitty)
   zsh # Shell
@@ -149,8 +132,6 @@ environment.systemPackages = with pkgs; [
   # mcfly # An upgraded ctrl-r where history results make sense
   # mcfly-fzf # Integrate Mcfly with fzf
 
----
-
   # Terminal-Visualisierung und -Farben
   colordiff # Colored diff tool
   lscolors # Colorize paths using LS_COLORS
@@ -168,8 +149,6 @@ environment.systemPackages = with pkgs; [
   chafa # Tool for generating colored ASCII art
   notcurses # C compile, TUIs and character graphics
 
----
-
   # Terminal-Spaß und MOTD
   fancy-motd # Colorful MOTD written in bash
   rust-motd # Useful MOTD generation with zero runtime dependencies
@@ -186,10 +165,7 @@ environment.systemPackages = with pkgs; [
   theme-sh # Theme management
   neofetch # System information display
   hyfetch # Fork of neofetch
-
----
-
-  # ASCII/Bild-Tools
+ # ASCII/Bild-Tools
   asciiquarium-transparent # Aquarium/sea animation in ASCII art
   ascii-image-converter # Convert images into ASCII art on the console
   pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
@@ -200,9 +176,7 @@ environment.systemPackages = with pkgs; [
   gifsicle # CLI tool for GIF images
   gif-for-cli # Render gifs as ASCII art in your cli
 
----
-
-  # Multimedia und Video-Tools
+ # Multimedia und Video-Tools
   asciinema # Record terminal sessions
   asciinema-scenario # Create asciinema videos from a text file
   asciinema-agg # Generate animated GIF files from asciicast v2 files
@@ -210,9 +184,7 @@ environment.systemPackages = with pkgs; [
   obs-studio # Free and open source software for video recording and live streaming
   losslesscut-bin # Lossless video/audio editor
   mp3splt # Utility to split mp3, ogg vorbis and FLAC files without decoding
-  spotdl # Download your Spotify playlists and songs
-
----
+  spotdl # Downl---oad your Spotify playlists and songs
 
   # Grafik und Visualisierung
   libsixel # Console graphics library
@@ -231,15 +203,11 @@ environment.systemPackages = with pkgs; [
   imagemagick # Image manipulation tool
   drawing # Basic image editor
 
----
-
   # Dokumenten- und Text-Verarbeitung
   pdfarranger # Rearrange pages in PDF files
   pandoc # Convert markup formats (Markdown, HTML, LaTeX, etc.)
   wmctrl # CLI tool to interact with EWMH/NetWM compatible X Window Managers
   # jupyter # Webbasierte interaktive Entwicklungsumgebung (z.B. für Python)
-
----
 
   # Text-Editoren und Notizen
   # IDEs
@@ -252,9 +220,7 @@ environment.systemPackages = with pkgs; [
   micro # Terminal-based text editor
   # vscode-with-extensions # Open source source code editor developed by Microsoft
 
----
-
-  # Programmier- und Entwicklungstools
+ # Programmier- und Entwicklungstools
   # Python Development # (siehe python.nix)
   # Version Control
   gitFull # Distributed version control system
@@ -280,8 +246,6 @@ environment.systemPackages = with pkgs; [
   OVMFFull # Sample UEFI firmware for QEMU and KVM
   qtemu # Qt-based front-end for QEMU emulator
 
----
-
   # Text Processing Utilities (alternatives/ergänzungen)
   choose # Human-friendly alternative to cut/awk
   dasel # Query and modify JSON, YAML, TOML, XML, CSV
@@ -289,15 +253,11 @@ environment.systemPackages = with pkgs; [
   gron # Make JSON greppable
   xcp # cp 2.0
 
----
-
   # Testing und Utility-Tools
   shellspec # BDD unit testing framework
   hackertyper # Simulate hacking
   presenterm # Terminal-based presentation creator
   # BROKEN: pingu # Ping command implementation in Go but with colorful output and pingu ascii art
-
----
 
   # GNOME/Desktop Utilities
   gnome-online-accounts # Single sign-on framework for GNOME
@@ -311,8 +271,6 @@ environment.systemPackages = with pkgs; [
   fwupd-efi # EFI component for fwupd
   # ausweisapp # Official authentication app for German ID card and residence permit
 
----
-
   # Cinnamon Utilities
   nemo # File manager
   nemo-qml-plugin-dbus # D-Bus integration for Nemo
@@ -321,8 +279,6 @@ environment.systemPackages = with pkgs; [
   nemo-fileroller # File roller integration
   nemo-python # Python extensions for Nemo
 
----
-
   # X11 Utilities
   xorg.xwininfo # Display information about a window
   xorg.libXrandr # X Resize and Rotate Extension library
@@ -330,9 +286,7 @@ environment.systemPackages = with pkgs; [
   xclip # X11 clipboard manipulation
   emacsPackages.pbcopy # Clipboard integration for Emacs
 
----
-
-  # Multimedia/Desktop-Anwendungen
+   # Multimedia/Desktop-Anwendungen
   libreoffice # Office suite
   shotwell # Photo organizer
   evince # Document viewer
@@ -345,9 +299,7 @@ environment.systemPackages = with pkgs; [
   superTuxKart # Tux Kart (Kart racing game)
   # steam # Game platform
 
----
-
-  # Theming und Icons
+   # Theming und Icons
   lightdm-slick-greeter # Slick-looking LightDM greeter
   whitesur-gtk-theme # MacOS Big Sur theme for GNOME
   numix-cursor-theme # Cursor theme
@@ -379,16 +331,14 @@ environment.systemPackages = with pkgs; [
   papirus-icon-theme # Papirus icon theme
   andromeda-gtk-theme # Elegant dark theme for gnome, mate, budgie, cinnamon, xfce
 
----
-
   # Aus unstable Channel
   # unstable.hugo # Static site generator
   unstable.yt-dlp # Downloader for YouTube and other sites
+ # Fonts and Typography  > fonts.nix
+];
 
-]
- # Fonts and Typography ---> fonts.nix
 
-]; 
+
 
 /* 
 ######### Packages die im Standartd der jeweiligen WM inkludiert sind, abwählen, per:

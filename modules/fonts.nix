@@ -43,6 +43,8 @@ in zusammenhängende Symbole umgewandelt (z. B. ≠, ≥, ≡).
       # noto-fonts       # Optionally enable Google's Noto family
       # dejavu_fonts      # Popular fallback serif/sans fonts
       redhat-official-fonts
+      
+      
     ];
 
   # --- 2. Allgemeine Schriftarten-Einstellungen ---
