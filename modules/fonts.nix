@@ -55,6 +55,7 @@ in zusammenhängende Symbole umgewandelt (z. B. ≠, ≥, ≡).
   # --- 3. Fontconfig-Systemkonfiguration ---
   fonts.fontconfig = {
     enable = true;              # Fontconfig systemweit aktivieren
+    allowBitmaps = false; 	 # b an all bitmap fonts.
     includeUserConf = false;    # Benutzerspezifische Konfigurationen ignorieren
     useEmbeddedBitmaps = false; # Verbessert die Darstellung auf modernen Displays
     antialias = true;           # Kantenglättung aktivieren

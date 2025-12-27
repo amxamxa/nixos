@@ -34,7 +34,7 @@ let
     # Sonstige Werkzeuge
     pygments                      # Syntax highlighting for code
     markdown2                     # Markdown parser in Python [cite: 6]
-    pdfminer                      # PDF zu Text [cite: 9]
+    pdfminer-six             # PDF zu Text [cite: 9]
     keyrings-alt                  # Alternative keyring backends
   ]));
 

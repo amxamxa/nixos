@@ -17,7 +17,7 @@
     	enableZshIntegration = true;    
     	};
     	
- programs.bash.completion.enable = true; 
+ programs.bash.completion.enable = true;
  programs.bash.enableLsColors = true; 
  
  programs.fzf.fuzzyCompletion = true; 

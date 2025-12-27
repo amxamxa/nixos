@@ -18,7 +18,7 @@ system.activationScripts.diff = {
 # Globale Umgebungsvariablen
   environment.variables = {
     BROWSER 		  = 	"firefox";
-    EDITOR 		  =	"micro";
+ #   EDITOR 		  =	"micro";
     PRO 		  = 	"/home/project";
     SHAREDIR 		  = 	"/share";
     # EMACSDIR		  =	"/share/emacs";
@@ -39,7 +39,7 @@ system.activationScripts.diff = {
    #XAUTHORITY = "$XDG_CONFIG_HOME/Xauthority";  # Kommentiert, aber bei Bedarf nutzbar
     CARGO_HOME         = 	"$HOME/.config/cargo";       # Für Rust-Projekte, falls benötigt
     WWW_HOME           = 	"$HOME/.config/w3m";           # w3m (Browser) Konfigurationspfad
-    PYTHONPATH = "${pkgs.python3Full}/${pkgs.python3Full.sitePackages}";
+    # PYTHONPATH = "${pkgs.python3Full}/${pkgs.python3Full.sitePackages}";
 
 
   };

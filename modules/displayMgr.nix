@@ -1,16 +1,11 @@
 { config, pkgs, lib,  ... }:
-
+     # sudo nixos-rebuild boot --profile-name xam4boom --cores 2 --show-trace
 {
-
-  # Fonts für grafische Umgebung
-  fonts.packages = with pkgs; [
-    terminus_font
-  ];
   
 services.xserver = {
     enable = true;	  # Enable the X11 windowing system. Die Reihenfolge ist wichtig, da das erste Layout standardmäßig verwendet wird.
  #    packages = with pkgs; [ terminus_font ];
-     #font = "drdos";
+  #   font = "Lat2-Terminus16.psfu.gz"; #  Lat2-Terminus16.psfu.gz    lat2-sun16 solar24x32
      xkb.layout = lib.mkForce "de";  
      xkb.variant = "";
      xkb.options = "lv3:ralt_switch"; # Option zum Umschalten der Layouts, # AltGr als Level-3-Taste (für Sonderzeichen)

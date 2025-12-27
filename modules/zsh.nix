@@ -23,9 +23,6 @@
  programs.fzf.fuzzyCompletion = true; 
  programs.fzf.keybindings = false; # Whether to enable fzf keybindings.
  
- programs.thefuck.enable = true; 
- programs.thefuck.alias = "F0";
- 
 # enable zsh system-wide use
  users.defaultUserShell = pkgs.zsh;
 # add a shell to /etc/shells
@@ -131,7 +128,7 @@ environment.systemPackages = with pkgs; [
   terminal-parrot # Shows colorful, animated party parrot in your terminial
   bat-extras.batman # scripts: batgrep, batman, batpipe (less), batwatch, batdiff, prettybat 
 ### Miscellaneous
-  thefuck # Corrects previous console commands
+  #thefuck # Corrects previous console commands
   ripgrep # Fast search tool
   banner # Text banner tool
   toilet # Text banner tool

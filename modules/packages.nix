@@ -77,7 +77,6 @@
   age # Modern encryption tool (alternative to GPG)
   direnv # Automatic environment variables per directory
   just # Command runner (Makefile alternative)
-  thefuck # Corrects previous console commands
   ripgrep # Fast search tool (grep alternative)
   fd # Find in go (find 2.0)
   procs # Modern ps replacement
@@ -183,8 +182,7 @@
   agg # High quality rendering engine for C++
   obs-studio # Free and open source software for video recording and live streaming
   losslesscut-bin # Lossless video/audio editor
-  mp3splt # Utility to split mp3, ogg vorbis and FLAC files without decoding
-  spotdl # Downl---oad your Spotify playlists and songs
+ #  spotdl # Downl---oad your Spotify playlists and songs
 
   # Grafik und Visualisierung
   libsixel # Console graphics library
@@ -195,7 +193,7 @@
   jpeginfo # JPEG integrity checker
   libva # Video Acceleration API
   libva-utils # VA-API utilities
-  glxinfo # OpenGL information
+  mesa-demos # OpenGL information
   glmark2 # OpenGL benchmarking
   clinfo # OpenCL information
   gcolor3 # Color chooser written in GTK3
@@ -277,7 +275,7 @@
   nemo-emblems # Emblems for Nemo
   folder-color-switcher # Folder color switcher
   nemo-fileroller # File roller integration
-  nemo-python # Python extensions for Nemo
+#  nemo-python # Python extensions for Nemo
 
   # X11 Utilities
   xorg.xwininfo # Display information about a window
@@ -307,7 +305,6 @@
   theme-vertex # Theme for GTK 3, GTK 2, Gnome-Shell, and Cinnamon
   pantheon.elementary-wallpapers # Collection of wallpapers for elementary
   adapta-backgrounds # Wallpaper collection for adapta-project
-  deepin.deepin-wallpapers # Wallpapers provides wallpapers of dde
   faba-mono-icons # Mono icons
   # flat-remix-icon-theme # Flat remix icon theme
   # eww #ElKowars wacky widgets

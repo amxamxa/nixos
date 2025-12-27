@@ -18,7 +18,7 @@
 	./modules/audio.nix
 	./modules/docker.nix
 	./modules/fonts.nix
-    	./modules/python.nix # ehem.	./ld.nix
+   # 	./modules/python.nix # ehem.	./ld.nix
 ];
 
 fileSystems."/share" =
@@ -194,7 +194,8 @@ services.gvfs.enable = true;
     	pkgs.xdg-desktop-portal-xapp # integration for XFCE, ..
     ];
   };
- #xdg-desktop-portal-gtk 	# -> flatpak.github.io/xdg-desktop-portal/
+ #xdg-desktop-portal-gtk -6˚
+	# -> flatpak.github.io/xdg-desktop-portal/
 # Flatpak Ende     						
 */
 # Avahi für Netzwerk-Discovery aktivieren
@@ -226,7 +227,7 @@ services.samba-wsdd.enable = true;
    
  services.postgresql.enable = true;
  services.vnstat.enable = true; # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
- services.playerctld.enable = true;   # enable the playerctld daemon.
+ services.playerctld.enable = false;   # ac/dc/enable the playerctld daemon.
   services.logrotate.enable = true;
   services.logrotate.configFile = pkgs.writeText "logrotate.conf" ''
 		weekly 				

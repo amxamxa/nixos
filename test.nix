@@ -15,7 +15,7 @@
   gtk.iconCache.enable = true; #   Improve GTK icon cache generation to ensure immediate visibility
 # Enable automount for removable media
  services.udisks2.enable = true;
-services.playerctld.enable = false; # dc
+
    boot.supportedFilesystems = [ "ntfs" ];
   # programs.pay-respects = true; #  This usually happens if `programs.pay-respects' has option        definitions inside that are not matched. Please check how to properly define       this option by e.g. referring to `man 5 configuration.nix'!insteadt  programs.thefuck
 programs.pay-respects.enable = true;
