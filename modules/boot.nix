@@ -6,7 +6,7 @@ hardware.cpu.intel.updateMicrocode = true;
 
 hardware.firmware = with pkgs; [ linux-firmware ];
 
- boot.consoleLogLevel = 3;
+ boot.consoleLogLevel = 4;
  boot.initrd.verbose = true;
   
  boot.kernel.sysctl = {

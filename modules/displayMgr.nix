@@ -1,80 +1,55 @@
 { config, pkgs, lib,  ... }:
      # sudo nixos-rebuild boot --profile-name xam4boom --cores 2 --show-trace
 {
-  
-services.xserver = {
-    enable = true;	  # Enable the X11 windowing system. Die Reihenfolge ist wichtig, da das erste Layout standardmäßig verwendet wird.
- #    packages = with pkgs; [ terminus_font ];
-  #   font = "Lat2-Terminus16.psfu.gz"; #  Lat2-Terminus16.psfu.gz    lat2-sun16 solar24x32
-     xkb.layout = lib.mkForce "de";  
-     xkb.variant = "";
-     xkb.options = "lv3:ralt_switch"; # Option zum Umschalten der Layouts, # AltGr als Level-3-Taste (für Sonderzeichen)
-  };
+  # Optional: Disable warning about excluded packages
+  services.desktopManager.cosmic.showExcludedPkgsWarning = false
 
+ environment.systemPackages = [
+   cosmic-store # App Store for the COSMIC Desktop Envir
+   
 
-# Enable the - d e s k t o p  m a n a g e r - Environment. # slick-greeter; | lightdm-enso-os-greeter| lightdm-tiny-greeter 
-  # Include LightDM configuration if necessary
-# services.xserver.displayManager.lightdm.enable = true;
-# services.xserver.displayManager.lightdm.greeters.slick.enable = true;
+  # Exclude specific COSMIC packages
+  environment.cosmic.excludePackages = with pkgs; [
+    cosmic-term        # alternative terminal preferred
+    cosmic-randr #    Library and utility for displaying and configuring Wayland outputs
+    cosmic-icons #     System76 Cosmic icon theme for Linux
+cosmic-applets
+cosmic-protocols # Additional wayland-protocols used by the COSMIC desktop environment
+cosmic-ext-tweaks # Tweaking tool for the COSMIC Desktop Environment
+cosmic-ext-calculator # Calculator for the COSMIC Desktop Envir
+cosmic-ext-applet-minimon # COSMIC applet for displaying CPU/Memory/Network/Disk/GPU usage in the Panel or Dock
+quick-webapps # Web App Manager for the COSMIC desktop
+examine # System information viewer for the COSM
+xdg-desktop-portal-cosmic #XDG Desktop Portal for the COSMIC Desktop Environment
+tasks # Simple task management application for the COSMIC desktop
+      ];
+
+# --- Desktop Environment: COSMIC ---
+# Ohne Flakes wird das Modul direkt aus dem 25.11 Channel bezogen
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
+# Performance-Optimierung (System76 Integration)
+  services.system76-scheduler.enable = true;
 #-------------------------------------------
-
 # LightDM Slick Greeter 
 services.xserver.displayManager = {
-  gdm.enable = true;
+  gdm.enable = false;
   lightdm.enable = false;
-  # lightdm.greeters.tiny = {   enable = true;    #background = "/share/wallpaper/sonstige/blitz.png"; };
-   lightdm.greeters.slick = {
-     enable = false;
-     theme = 	 { name = "andromeda"; package = pkgs.andromeda-gtk-theme; };
-     iconTheme = { name = "Faba-Mono-Dark"; package = pkgs.faba-mono-icons; };
-     font  = 	 { name = "MesloLGS NF 24"; package = pkgs.meslo-lgs-nf;	};
-     draw-user-backgrounds= true; # steuert, ob Hintergrund des Nutzers auf Login-Bildschirm erscheint
-     # tshoot:  /var/log/lightdm/lightdm.log
-     extraConfig = ''
-    # LightDM GTK+ Configuration file for /etc/lightdm/slick-greeter.conf        
-        stretch-background-across-monitors=false # to stretch the background across multiple monitors
-        only-on-monitor=HDMI-1  # Sets monitor on which is login; -1 means "follow the mouse"
-        background=        background="./assets/background.png"
-# logo=/etc/lightdm/logo-aramgedon.png         other-monitors-logo=/etc/lightdm/logo-aramgedon.png          show-power=false        # show-keyboard=false         show-hostname=true        show-clock=true        show-quit=true # show the quit menu in the menubar 
-        xft-hintstyle="hintmedium" # hintnone/hintslight/hintmedium/hintfull  
-	clock-format=" %d.%b.%g %H:%" #  clock format to use (e.g., %H:%M or %l:%M %p)
-# xft-antialias=Whether to antialias Xft fonts (true or false)  # xft-dpi=Resolution for Xft in dots per inch
-# xft-rgba=Type of subpixel antialiasing (none/rgb/bgr/vrgb/vbgr)
-	 '';  
-	 };
-   };
-
-services.displayManager = {
-	autoLogin.enable = true;
-	autoLogin.user = "amxamxa";
-	defaultSession = "cinnamon";	
-	};   
+    };          ###########################!!!
 
  services.xserver.desktopManager = {
-    cinnamon.enable 	= true;
+    cinnamon.enable	= false;
     gnome.enable	= false;
-    pantheon.enable 	= false;
+    pantheon.enable	= false;
     lxqt.enable		= false;
     xfce.enable		= false; 
     };
-
-}
- # Deaktivierung konkurrierender Display-Manager
-  # services.xserver.displayManager.lightdm.enable = true;
-/*
-services.displayManager = {
-  gdm.enable = false;
-  sddm.enable = false; #  lib.mkForce false;
- };
-   # Enable the Cinnamon Desktop Environment.
-  services.xserver.desktopManager.cinnamon.enable = true;
-*/
-/*
-# Alter-Option: Keep Cinnamon + GDM (Recommended for stability)
-services.xserver.displayManager.gdm.enable = true;
-services.xserver.displayManager.gdm.wayland = false; # Cinnamon needs X11
-*/
-
+  
+ nix.settings = {
+    # Erlaubt das Beziehen von fertigen COSMIC-Builds ohne Flakes
+    substituters = [ "https://cosmic.cachix.org" ];
+    trusted-public-keys = [ "cosmic.cachix.org-1:9/S695oLGOnS9e12Rh9CLGiL9uX9HId+6A473Y9U158=" ];
+  };
 /*
   # siehe /run/current-system/sw/share/backgrounds
  let
@@ -93,145 +68,13 @@ services.xserver.displayManager.gdm.wayland = false; # Cinnamon needs X11
    environment.pathsToLink = [ "/share/wallpapers" ];
  };
 */
-
 /*
-# Greeter User hat keine Login-Shell und dient 
-# nur als Container für den Greeter-Prozess.
-# Greeter-Benutzer für Wayland
-  users.users.greeter = {
-    isSystemUser = true;
-    group = "greeter";
-    home = "/var/lib/greeter";
-    createHome = true;
-    shell = "${pkgs.shadow}/bin/nologin";
-  };
-  
-  users.groups.greeter = {};
-
 # Ensure background image directory exists and has correct permissions
   systemd.tmpfiles.rules = [
     "d /etc/nixos/assets 0755 root root -"
     "f /etc/nixos/assets/bg2.png 0644 root root -"
     "f /etc/nixos/assets/regreet.css 0644 root root -" 
   ];
-  
-  # security.pam.services.regreet.enableGnomKeyring = true; 
-  # PAM-Konfiguration für regreet
-  security.pam.services.regreet = {
-    enableGnomeKeyring = true;
-    # GDM-kompatible PAM-Regeln für bessere Integration
-    text = ''
-      auth     requisite      pam_nologin.so
-      auth     required       pam_env.so
-      auth     required       pam_faillock.so preauth
-      auth     required       pam_shells.so
-      auth     include        login-common
-      auth     optional       pam_gnome_keyring.so
-      
-      account  include        login-common
-      
-      password requisite      pam_deny.so
-      password include        login-common
-      password optional       pam_gnome_keyring.so use_authtok
-      
-      session  required       pam_limits.so
-      session  include        login-common
-      session  optional       pam_gnome_keyring.so auto_start
-      session  optional       pam_systemd.so
-    '';
-  };
-
-  services.greetd = {
-  enable = true;
-  restart = false; # Whether to restart greetd when it terminates (e.g. on failure). This is usually desirable so a user can always log in, but should be disabled when using ‘settings.initial_session’ (autologin), because every greetd restart will trigger the autologin again.
-
-  settings = {
-    initial_session = {
-      command = "${pkgs.regreet}/bin/regreet";
-      user = "greeter";
-    };
-
-    default_session = {
-      # Cinnamon läuft hier bewusst unter X11
-      command = "${pkgs.cage}/bin/cage -- ${pkgs.cinnamon}/bin/cinnamon-session";
-      user = "amxamxa";
-    };
-  };
-};
-
-
-
-/*  services.greetd = {
-    enable = true;
- settings = {
-   initial_session = {
-      command = "${pkgs.greetd.regreet}/bin/regreet";
-      user = "greeter";
-    };
-    default_session = {
-      command = "${pkgs.cage}/bin/cage -- ${pkgs.cinnamon}/bin/cinnamon-session --wayland";
-      user = "amxamxa";  # oder der jeweilige Benutzer, aber eigentlich wird dies von regreet gesetzt
-    };
-  };
-
-
-  # ReGreet (Der grafische Greeter)
-  programs.regreet = {
-    enable = true;
-    theme = {
-      name = "Andromeda";
-      package = pkgs.andromeda-gtk-theme;
-    };
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-    cursorTheme = {
-      name = "Xcursor";
-      package = pkgs.xcursor-themes;
-        };
-    # Schriftart (NixOS 25.x Syntax)
-    font = {
-      name = "3270 Nerd Font Mono";
-      package = pkgs.nerd-fonts._3270;
-      size = 22;
-    };
-   cageArgs = ["last"];
-
-    # CSS-Anpassung
-    # Liest die lokale Datei und kopiert sie in den Nix-Store. 
-    # Löst das Berechtigungsproblem automatisch.
-    extraCss = builtins.readFile ./assets/regreet.css;
-    # ReGreet Einstellungen (TOML)
-    settings = {
-      background = {
-        # Referenziert die Datei als Pfad -> Kopie in den Nix-Store -> Lesbar für 'greeter'
-        path = ./assets/bg2.png;
-        fit = "Cover";  # Options: Cover, Contain, Fill, ScaleDown
-        };
-
-      # User and session memory
-      remember = {
-        user = true;
-        session = true;
-      };
-      # Appearance settings
-      appearance = {
-        greeting_msg = "Willkommen zurück!";
-            };
-      GTK = {
-        application_prefer_dark_theme = true;
-        cursor_blink = true;
-      };
-      commands = {
-        reboot = [ "systemctl" "reboot" ];
-        poweroff = [ "systemctl" "poweroff" ];
-      };
-    };
-    };
-
- systemd.services.greetd = {
-    after = [ "network.target" "systemd-user-sessions.service" ];
-    wants = [ "network.target" ];
-  };
 */
+
+}

@@ -4,23 +4,23 @@
 #  ----------------------
 #       Z  S  H
 # """"""""""""""""""""""
- programs.command-not-found.enable = false;
- # programs.zsh.interactiveShellInit = ''
- #	source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh '';
  programs.bash.interactiveShellInit = ''
  	source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh '';
-
+ programs.bash.completion.enable = true; 
+ programs.bash.enableLsColors = true; 
+ 
+  
+ programs.command-not-found.enable = false; # -> nix-index
+ # programs.zsh.interactiveShellInit = ''
+ #	source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh '';
  programs.nix-index = {  # damit command: nix-locate pattern
         enable = true; # a file database for nixpkgs for "cmd-not-found".
     	package = pkgs.nix-index;
     	enableBashIntegration = true;
     	enableZshIntegration = true;    
     	};
-    	
- programs.bash.completion.enable = true; 
- programs.bash.enableLsColors = true; 
- 
- programs.fzf.fuzzyCompletion = true; 
+  ####
+ programs.fzf.fuzzyCompletion = false; # die source ich selber unter 
  programs.fzf.keybindings = false; # Whether to enable fzf keybindings.
  
 # enable zsh system-wide use
@@ -44,24 +44,79 @@
 #   for index ({1..14}) alias "$index"="cd -${index}"; unset index
   	interactiveShellInit = ''
  ##### Shell script code called during interactive zsh shell initialisation.  
-    
- source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-source <(fzf --zsh)
- /home/project/bash-auto-table/kitty-table5.sh
-
+      
+#     	Initialisiere Autocompletion
+# 	----------------------------- 
+# autoload command load a file containing shell commands
+# autoload looks in directories of the "_Zsh file search path_", defined in the 
+# variable `$fpath`, and search a file called `compinit`.
+  autoload -Uz compinit; compinit
+  _comp_options+=(globdots) 	# With hidden files
 # Füge den Pfad für Custom- u Autoload-Funktionen hinzu. When we run a 
 # command that corresponds to an autoloaded function, ZSH searches for 
 # it in the “fpath” and loads it into the memory if located.
-fpath=($ZDOTDIR:$ZDOTDIR/functions:$ZDOTDIR/plugins:$ZDOTDIR/prompts $fpath)
+  fpath=($ZDOTDIR:$ZDOTDIR/functions $fpath)
 
-# 		Initialisiere Autocompletion
-# 	----------------------------- 
- # autoload command load a file containing shell commands
- # autoload looks in directories of the "_Zsh file search path_", defined in the 
- # variable `$fpath`, and search a file called `compinit`.
-  autoload -Uz compinit; compinit
-  _comp_options+=(globdots) 	# With hidden files
+ source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+ source <(fzf --zsh)
+ # Define syntax highlighting styles
+#   _________________________________________________________
+#	╔═╗╔═╗╦ ╦    ╦ ╦╦╔═╗╦ ╦╦  ╦╔═╗╦ ╦╔╦╗╦╔╗╔╔═╗
+#	╔═╝╚═╗╠═╣    ╠═╣║║ ╦╠═╣║  ║║ ╦╠═╣ ║ ║║║║║ ╦
+#	╚═╝╚═╝╩ ╩────╩ ╩╩╚═╝╩ ╩╩═╝╩╚═╝╩ ╩ ╩ ╩╝╚╝╚═╝
+#   _________________________________________________________
+#	[  "main" "brackets" "pattern" "cursor" "regexp" "root" "line" ]
+# source_or_error "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
+# Using typeset -A to ensure it's treated as an associative array
+typeset -A ZSH_HIGHLIGHT_STYLES
+# FFD75D gelb
+ ZSH_HIGHLIGHT_STYLES[command]='fg=#DC8DF5' ##
+ ZSH_HIGHLIGHT_STYLES[precommand]='fg=#DC8DF5'
+ ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=#FFD75D'
+ ZSH_HIGHLIGHT_STYLES[alias]='fg=#DC8DF5'
+ ZSH_HIGHLIGHT_STYLES[suffix-alias]='fg=#DC8DF5'
+ ZSH_HIGHLIGHT_STYLES[global-alias]='fg=#DC8DF5'
+ ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=#FFD75D'
+ ZSH_HIGHLIGHT_STYLES[builtin]='fg=#DC8DF5'
+ ZSH_HIGHLIGHT_STYLES[function]='fg=#DC8DF5'
+ ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#726D8F'
+ ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=#726D8F'
+ ZSH_HIGHLIGHT_STYLES[command-substitution]='fg=#DC8DF5'
+ ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#FFD75D'
+ ZSH_HIGHLIGHT_STYLES[path]='fg=#DC8DF5'
+ ZSH_HIGHLIGHT_STYLES[default]='none'
+ ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#33E5E5'
+ ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#33E5E5'
+ ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#33E5E5'
+ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#33E5E5'
+ ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=#3AEB94'
+ ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]='fg=#3AEB94'
+ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]='fg=#3AEB94'
+ ZSH_HIGHLIGHT_STYLES[assign]='fg=#FFD75D'
+ ZSH_HIGHLIGHT_STYLES[named-fd]='fg=#FFD75D'
+ ZSH_HIGHLIGHT_STYLES[numeric-fd]='fg=#FFD75D'
+ ZSH_HIGHLIGHT_STYLES[comment]='fg=#3AEB94'
+ ZSH_HIGHLIGHT_STYLES[redirection]='fg=#786EC9'
+ ZSH_HIGHLIGHT_STYLES[arg0]='fg=#3AEB94' # gruen tuerki
+# avoid partial path lookups on a path		# ZSH_HIGHLIGHT_DIRS_BLACKLIST+=(/mnt/slow_share)
+
+typeset -A ZSH_HIGHLIGHT_REGEXP
+ZSH_HIGHLIGHT_REGEXP+=('^rm .*' fg=red,bold)
+ZSH_HIGHLIGHT_REGEXP+=('\<sudo\>' fg=123,bold)
+ZSH_HIGHLIGHT_REGEXP+=('[[:<:]]sudo[[:>:]]' fg=123,bold)
+
+      # 3. Explicitly sourcing a file under ZDOTDIR if needed
+      # Zsh normally looks for .zshrc in ZDOTDIR automatically.
+      # If ZDOTDIR is set, this ensures custom logic is loaded.
+      if [[ -f "$ZDOTDIR/.zshrc" ]]; then
+        source "$ZDOTDIR/.zshrc"
+      fi
+      
+    if [ -f /share/zsh/aliases.zsh ]; then
+        source /share/zsh/aliases.zsh
+      fi
+# 	
 ##  ZSH DIRECTORY STACK - DS
    alias -g D='dirs -v'
         
@@ -112,7 +167,7 @@ environment.etc = { "aliases.zsh".source = "/share/zsh/aliases.zsh";   };
 
 environment.systemPackages = with pkgs; [
  bar # cli progress
- spotdl # Download your Spotify playlists and songs along with album art and metadata
+
  ncdu # Disk usage analyzer with an ncurses interface
 ### Terminal and Shell Utilities
   kitty # Terminal emulator
@@ -174,8 +229,7 @@ environment.systemPackages = with pkgs; [
  #  mcfly-fzf # Integrate Mcfly with fzf to combine a solid command history database with a widely-loved fuzzy search UI
   bat
   zoxide
-  figlet   banner # Print large banners to ASCII terminals
-  calligraphy # GTK tool turning text into ASCII banners
+ banner # Print large banners to ASCII terminals
   figlet # Program for making large letters out of ordinary text
   zsh-forgit # Git utility tool
   # tmux # Terminal multiplexer
@@ -186,10 +240,7 @@ environment.systemPackages = with pkgs; [
   lshw # Detailed hardware information
   btop # Resource monitor
   duf # Disk usage/free utility
-  htop # Interactive process viewer
-  toybox # ascii bblkid blockdev bunzip2 ... uvm
-  jq # lightweight and flexible command-line JSON processo
-  neofetch hyfetch
+   neofetch hyfetch
   dotacat # Like lolcat, but fast
   graphviz #graph visualization tools
   theme-sh
@@ -197,8 +248,6 @@ environment.systemPackages = with pkgs; [
 ### ASCII pictures
   asciiquarium-transparent #  Aquarium/sea animation in ASCII art 
   ascii-image-converter # Convert images into ASCII art on the console
-  pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
-  ascii-draw #
   uni2ascii # UTF-8 to ASCII conversion
   jp2a # small utility that converts JPG images to ASCII
   artem # Small CLI program to convert images to ASCII art

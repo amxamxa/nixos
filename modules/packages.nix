@@ -1,11 +1,76 @@
- { config, pkgs, lib, ... }:
-#let
-  # Import the custom package
-#  lightdm-settings = import /etc/nixos/custom-pkgs/lightdm-settings.nix { inherit pkgs; };#
-#in
+{ config, pkgs, lib, ... }:
 {
+#        services.xserver.excludePackages
+ #       environment.xfce.excludePackages
+  #      environment.lxqt.excludePackages
+   #     environment.gnome.excludePackages
+    #    environment.cinnamon.excludePackages
+
+
+
+/* 
+######### Packages die im Standartd der jeweiligen WM inkludiert sind, abwählen, per:
+ environment.packageOverrides = pkgs: {
+	removePackages = pkgs.lib.removeDerivations [ 
+		pkgs.onboard 
+ 		pkgs.cinnamon.mint-x-icons pkgs.cinnamon.mint-l-theme pkgs.cinnamon.mint-l-icons
+	   	pkgs.cinnamon.xreader
+ 			];
+		}; 
+environment.xfce.excludePackages = [	            pkgs.xfce.mousepad 	 pkgs.xfce.parole
+	            pkgs.xfce.ristretto	 pkgs.xfce.thunar ]; 
+environment.gnome.excludePackages = [
+	   		pkgs.gnome.gnome-backgrounds pkgs.gnome.gnome-characters
+	   		pkgs.gnome.geary  pkgs.gnome.gnome-music
+	   		pkgs.gnome-photos pkgs.gnome.nautilus
+	   		pkgs.gnome.totem  pkgs.gnome.yelp
+	   		pkgs.gnome.cheese     	 ];
+	   		*/
+
+  
  environment.systemPackages = with pkgs; [
 
+  linux-firmware
+  gpaste
+  zenity # Tool to display dialogs from the commandline and shell scripts
+     libnotify # notify-send
+  file-roller
+  # Theming and Appearance 
+  ## tshoot: /run/current-system/sw/share/icons
+  #pop-icon-theme # Pop!_OS icon theme
+  fluent-icon-theme
+  #flat-remix-icon-theme
+  # lomiri.suru-icon-theme
+  # numix-icon-theme
+  # faba-mono-icons
+  oranchelo-icon-theme # Oranchelo icon theme
+  papirus-icon-theme # Pixel perfect icon theme for Linux
+  papirus-folders # Tool to change papirus icon theme color
+   
+  whitesur-gtk-theme # MacOS Big Sur theme for GNOME
+  andromeda-gtk-theme # elegant dark theme for gnome, cinnamon
+  #greetd
+  #regreet # Clean and customizable greeter for greetd
+  #cage #   Wayland kiosk that runs a single, maximized application
+  # cagebreak # Wayland tiling compositor inspired by ratpoison
+  
+  #  mint-cursor-themes
+#  xwayland # X server for interfacing X11 apps with the Wayland protocol
+#  wayback-x11 # X11 compatibility layer leveraging wlroots and Xwayland
+  afterglow-cursors-recolored #Recoloring of the Afterglow Cursors x-cursor theme
+# xorg.xcursorthemes
+  #xcursor-themes # Default set of cursor themes for use with libXcursor.
+  themechanger # Theme changing utility for Linux statt # themix-gui
+ pay-respects # Terminal command correction, alternative to thefuck, written in Rust
+  
+  pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
+  ascii-draw
+  spotdl # Download your Spotify playlists and songs along with album art and metadata
+  calligraphy # GTK tool turning text into ASCII banners
+# htop # Interactive process viewer
+  toybox # ascii bblkid blockdev bunzip2 ... uvm
+  jq # lightweight and flexible command-line JSON processo
+ 
   # System/Basis-Tools
   dmidecode # Info about your hardware according to SMBIOS/DMI
   efibootmgr # EFI boot manager utility
@@ -282,7 +347,7 @@
   xorg.libXrandr # X Resize and Rotate Extension library
   xorg.xhost # Access control for the X server
   xclip # X11 clipboard manipulation
-  emacsPackages.pbcopy # Clipboard integration for Emacs
+  # emacsPackages.pbcopy # Clipboard integration for Emacs
 
    # Multimedia/Desktop-Anwendungen
   libreoffice # Office suite
@@ -298,32 +363,32 @@
   # steam # Game platform
 
    # Theming und Icons
-  lightdm-slick-greeter # Slick-looking LightDM greeter
-  whitesur-gtk-theme # MacOS Big Sur theme for GNOME
-  numix-cursor-theme # Cursor theme
+ # lightdm-slick-greeter # Slick-looking LightDM greeter
+ # whitesur-gtk-theme # MacOS Big Sur theme for GNOME
+ # numix-cursor-theme # Cursor theme
   # pop-gtk-theme # Pop!_OS GTK theme
   theme-vertex # Theme for GTK 3, GTK 2, Gnome-Shell, and Cinnamon
   pantheon.elementary-wallpapers # Collection of wallpapers for elementary
   adapta-backgrounds # Wallpaper collection for adapta-project
-  faba-mono-icons # Mono icons
+ # faba-mono-icons # Mono icons
   # flat-remix-icon-theme # Flat remix icon theme
   # eww #ElKowars wacky widgets
   linearicons-free # linearicons.com/free
   icon-library # Symbolic icons for your apps
   pantheon.elementary-iconbrowser # Browse and find system icons
-  xfce.xfce4-icon-theme # Icons for Xfce
-  material-design-icons # 7000+ Material Design Icons from the Community
-  material-black-colors # Material Black Colors icons
-  sweet-folders # Folders icons for Sweet GTK theme
-  candy-icons # Icon theme colored with sweet gradients
-  arc-icon-theme # Arc icon theme
-  whitesur-icon-theme # MacOS Big Sur icons
-  vimix-icon-theme # Vimix icon theme
+ # xfce.xfce4-icon-theme # Icons for Xfce
+ # material-design-icons # 7000+ Material Design Icons from the Community
+ # material-black-colors # Material Black Colors icons
+ # sweet-folders # Folders icons for Sweet GTK theme
+ # candy-icons # Icon theme colored with sweet gradients
+ # arc-icon-theme # Arc icon theme
+ # whitesur-icon-theme # MacOS Big Sur icons
+ # vimix-icon-theme # Vimix icon theme
   kanagawa-icon-theme # Kanagawa icon theme
-  tela-icon-theme # Tela icon theme
-  nordzy-icon-theme # Nordzy icon theme
+ # tela-icon-theme # Tela icon theme
+ # nordzy-icon-theme # Nordzy icon theme
   kora-icon-theme # Kora icon theme
-  qogir-icon-theme # Qogir icon theme
+ # qogir-icon-theme # Qogir icon theme
   rose-pine-icon-theme # Rose Pine icon theme
   papirus-icon-theme # Papirus icon theme
   andromeda-gtk-theme # Elegant dark theme for gnome, mate, budgie, cinnamon, xfce
@@ -335,26 +400,6 @@
 ];
 
 
-
-
-/* 
-######### Packages die im Standartd der jeweiligen WM inkludiert sind, abwählen, per:
- environment.packageOverrides = pkgs: {
-	removePackages = pkgs.lib.removeDerivations [ 
-		pkgs.onboard 
- 		pkgs.cinnamon.mint-x-icons pkgs.cinnamon.mint-l-theme pkgs.cinnamon.mint-l-icons
-	   	pkgs.cinnamon.xreader
- 			];
-		}; 
-environment.xfce.excludePackages = [	            pkgs.xfce.mousepad 	 pkgs.xfce.parole
-	            pkgs.xfce.ristretto	 pkgs.xfce.thunar ]; 
-environment.gnome.excludePackages = [
-	   		pkgs.gnome.gnome-backgrounds pkgs.gnome.gnome-characters
-	   		pkgs.gnome.geary  pkgs.gnome.gnome-music
-	   		pkgs.gnome-photos pkgs.gnome.nautilus
-	   		pkgs.gnome.totem  pkgs.gnome.yelp
-	   		pkgs.gnome.cheese     	 ];
-	   		*/
 }
 
 

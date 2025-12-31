@@ -1,3 +1,11 @@
+/*evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/etc/nixos/modules/cosmic.nix' has been renamed to `services.desktopManager.gnome.enable'.
+evaluation warning: The option `services.xserver.desktopManager.pantheon' defined in `/etc/nixos/modules/cosmic.nix' has been renamed to `services.desktopManager.pantheon'.
+evaluation warning: The option `services.xserver.displayManager.gdm.enable' defined in `/etc/nixos/modules/cosmic.nix' has been renamed to `services.displayManager.gdm.enable'.
+evaluation warning: The option `hardware.pulseaudio' defined in `/etc/nixos/modules/audio.nix' has been renamed to `services.pulseaudio'.
+unpacking 'https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz' into the Git cache...
+evaluation warning: pycharm-comminity-bin: PyCharm Community has been discontinued by Jetbrains. This binary build is no longer updated. Switch to 'jetbrains.pycharm-oss' for open source builds (from source) or 'jetbrains.pycharm' for commercial builds (binary, unfree). See: https://blog.jetbrains.com/pycharm/2025/04/pycharm-2025
+*/
+
 # You can get a list of the available packages as follows:
 # nix-env -qaP '*' --description
 #lslbk -f 
@@ -6,7 +14,7 @@
 
 #https://github.com/Misterio77/flavours
 # https://www.youtube.com/watch?v=AGVXJ-TIv3Y
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
 system.activationScripts.diff = {
@@ -23,6 +31,7 @@ system.activationScripts.diff = {
     SHAREDIR 		  = 	"/share";
     # EMACSDIR		  =	"/share/emacs";
     ZDOTDIR 		  = 	"/share/zsh";
+ZFUNCDIR = "/share/zsh/functions";
     TEALDEER_CONFIG_DIR = 	"/share/zsh/tldr";	# tealdeer-rs
     NAVI_CONFIG 	  = 	"/share/zsh/navi/config.yaml";
     GIT_CONFIG            = 	"/share/zsh/git/config";
@@ -41,13 +50,127 @@ system.activationScripts.diff = {
     WWW_HOME           = 	"$HOME/.config/w3m";           # w3m (Browser) Konfigurationspfad
     # PYTHONPATH = "${pkgs.python3Full}/${pkgs.python3Full.sitePackages}";
 
-
+        
   };
 
   # Sitzungsspezifische Umgebungsvariablen
   environment.sessionVariables = {
 
- 
+  EDITOR = "${pkgs.micro}/bin/micro";
+       VISUAL =  "${pkgs.micro}/bin/micro";
+       SYSTEMD_EDITOR =  "${pkgs.micro}/bin/micro";
+       
+   #Wayland-spezifische Umgebungsvariablen
+    GDK_BACKEND = "x11,wayland";
+    QT_QPA_PLATFORM = "xcb";
+    SDL_VIDEODRIVER = "x11";
+    CLUTTER_BACKEND = "x11";
+    MOZ_ENABLE_WAYLAND = "0";
+  
+  XDG_DATA_HOME="$HOME/.local/share";
+   XDG_CONFIG_HOME="$HOME/.config";
+   XDG_CACHE_HOME="$HOME/.cache";
+   XDG_STATE_HOME="$HOME/.local/state";
+   XDG_RUNTIME_DIR="/run/user/$UID";
+
+# history files
+   LESSHISTFILE="$XDG_CACHE_HOME/less_history";
+   PYTHON_HISTORY="$XDG_DATA_HOME/python/history";
+
+# moving other files and some other vars
+   XINITRC="$XDG_CONFIG_HOME/x11/xinitrc";
+   XPROFILE="$XDG_CONFIG_HOME/x11/xprofile";
+   XRESOURCES="$XDG_CONFIG_HOME/x11/xresources";
+    XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority";
+   GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc2.0"; # gtk 3 & 4 are XDG compliant
+   WGETRC="$XDG_CONFIG_HOME/wget/wgetrc";
+   PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc";
+   GNUPGHOME="$XDG_DATA_HOME/gnupg";
+  # CARGO_HOME="$XDG_DATA_HOME/cargo";
+   GOPATH="$XDG_DATA_HOME/go";
+   GOBIN="$GOPATH/bin";
+   GOMODCACHE="$XDG_CACHE_HOME/go/mod";
+   NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOMEnpm/npmrc";
+   GRADLE_USER_HOME="$XDG_DATA_HOME/gradle";
+   NUGET_PACKAGES="$XDG_CACHE_HOME/NuGetPackages";
+   # _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME/java";
+   #_JAVA_AWT_WM_NONREPARENTING=1;
+   PARALLEL_HOME="$XDG_CONFIG_HOME/parallel";
+   FFMPEG_DATADIR="$XDG_CONFIG_HOME/ffmpeg";
+
+# Anwendungsspezifisch
+   ANDROID_SDK_HOME="$XDG_DATA_HOME/android";
+   npm_config_cache="$XDG_CACHE_HOME/npm";
+   npm_config_userconfig="$XDG_CONFIG_HOME/npm/npmrc";
+   npm_config_prefix="$XDG_DATA_HOME/npm";
+   VAGRANT_HOME="$XDG_DATA_HOME/vagrant";
+   W3M_DIR="$XDG_DATA_HOME/w3m";
+ #  HISTFILE="$XDG_STATE_HOME/bash/history"
+   # WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
+   #DATE="$(date "+%A, %B %e  %_I:%M%P")";
+
+   FZF_DEFAULT_OPTS="--border rounded \
+                     --color=dark \
+                     --color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 \
+                     --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 \
+                     --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 \
+                     --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4 \
+                     --layout=reverse --height 40% --preview-window=right:60% \
+--preview='[[ \$(file --mime {}) =~ binary ]] && echo {} ist eine Binärdatei || (bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -300'";
+
+# Mit pygmentize (Python-basiert) FZF_DEFAULT_OPTS="--style minimal --color 16 --layout=reverse --height 30% --preview='pygmentize -g {} 2>/dev/null || cat {}'"
+ #   FZF_CTRL_R_OPTS="--style minimal --color 16 --info inline --no-sort --no-preview"; # separate opts for history widget
+  FZF_CTRL_R_OPTS="--border rounded \
+                --color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 \
+                --info inline --no-sort --no-preview \
+        --header '󰅍 Befehlshistory (Enter: Ausführen | CTRL-Y: Kopieren)'";
+# Sehr minimalistisch
+#FZF_DEFAULT_OPTS="--no-info --color 16 --layout=reverse --height 25%"
+#FZF_CTRL_R_OPTS="--no-info --color 16 --no-sort"
+
+   MANPAGER="less -R --use-color -Dd+r -Du+b"; # colored man pages
+
+# colored less + termcap vars
+  
+  LESS="R --use-color -Dd+r -Du+b";
+  LESS_TERMCAP_mb="$(printf '%b' '[1;31m')";  # blinking - red
+  LESS_TERMCAP_md="$(printf '%b' '[1;36m')";  # bold - cyan
+  LESS_TERMCAP_me="$(printf '%b' '[0m')";     # end mode
+  LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')"; # standout - yellow on blue
+  LESS_TERMCAP_se="$(printf '%b' '[0m')";     # end standout
+  LESS_TERMCAP_us="$(printf '%b' '[1;32m')";  # underline - green
+  LESS_TERMCAP_ue="$(printf '%b' '[0m')";     # end underline
+
+    BOLD="\\033[1m";
+    GRE2="\\033[38;2;0;255;0m\\033[48;2;0;25;2m";
+    RED2="\\033[38;2;240;138;100m\\033[48;2;147;18;61m"; 
+    # Farben für UI-Konfiguration (.zshenv)
+    RESET= lib.mkDefault "\\033[0m";
+    GREEN= lib.mkDefault "\\033[38;2;0;255;0m\\033[48;2;0;100;0m";
+    RED= lib.mkDefault "\\033[38;2;240;128;128m\\033[48;2;139;0;0m";
+    YELLOW= lib.mkDefault "\\033[38;2;255;255;0m\\033[48;2;128;128;0m";
+    NIGHT="\\033[38;2;252;222;90m\\033[48;2;0;0;139m";
+    
+    LAV="\\033[38;2;204;153;255m\\033[48;2;102;51;153m";
+    PUNK="\\033[38;2;0;17;204m\\033[48;2;147;112;219m";
+    RASP="\\033[38;2;32;0;21m\\033[48;2;163;64;217m";
+    PINK="\\033[38;2;255;105;180m\\033[48;2;75;0;130m";
+    FUCHSIA="\\033[38;2;239;217;129m\\033[48;2;59;14;122m";
+    VIOLET="\033[38;2;255;0;53m\\033[48;2;34;0;82m";
+    
+    BROWN="\\033[38;2;239;217;129m\\033[48;2;210;105;30m";
+    LEMON="\\033[38;2;216;101;39m\\033[48;2;218;165;32m";
+    CORAL="\\033[38;2;252;222;90m\\033[48;2;240;128;128m";
+    GOLD="\\033[38;2;255;0;53m\\033[48;2;218;165;32m";
+    ORANGE="\\033[38;2;0;17;204m\\033[48;2;255;140;0m";
+    GREY="\\033[38;2;252;222;90m\\033[48;2;192;192;192m";
+    MINT="\\033[38;2;6;88;96m\\033[48;2;144;238;144m";
+    SKY="\\033[38;2;62;36;129m\\033[48;2;135;206;235m";
+    LIME="\\033[38;2;6;88;96m\\033[48;2;0;255;255m";
+    PETROL="\\033[38;2;0;17;204m\\033[48;2;32;178;170m";
+    CYAN="\\033[38;2;64;224;208m\\033[48;2;0;128;128m";
+    OLIVE="\\033[38;2;0;74;40m\\033[48;2;107;142;35m";
+
 # eza-Einstellungen
     COLUMNS=78;
     EZA_ICONS_AUTO="auto";
@@ -55,13 +178,12 @@ system.activationScripts.diff = {
     EZA_GRID_ROWS=3;
     EZA_GRID_COLUMNS=3;
     EZA_MIN_LUMINANCE=50;
-    EZA_COLORS="$LS_COLORS:hd=38;5;226:uu=38;5;202:gu=38;5;208:da=38;5;111:uR=38;5;197:uG=38;5;198";
-
-#zsh
-   HISTIGNORE="ls:cd:pwd:exit:tldr:cheat:printf:micro:man:eza:lsd:cp:echo:z:bap:bat:git:sudo:grep";
-HISTTIMEFORMAT="%D{%Y-%m-%d %H:%M} ";
-DIRSTACKSIZE=14;
-REPORTTIME=3;     # display cpu usage, if command taking more than 3s
+EZA_COLORS="$LS_COLORS:hd=38;5;226:uu=38;5;202:gu=38;5;208:da=38;5;111:uR=38;5;197:uG=38;5;198";
+# zsh   
+    HISTIGNORE="ls:cd:pwd:exit:tldr:cheat:printf:micro:man:eza:lsd:cp:echo:z:bap:bat:git:sudo:grep";
+  HISTTIMEFORMAT="%D{%Y-%m-%d %H:%M} ";
+  DIRSTACKSIZE=14;
+  REPORTTIME=3;     # display cpu usage, if command taking more than 3s
 
     
   };

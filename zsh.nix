@@ -1,4 +1,15 @@
 # zsh.nix
+        /* services.xserver.excludePackages
+        environment.xfce.excludePackages
+        environment.plasma6.excludePackages
+        environment.pantheon.excludePackages
+        environment.mate.excludePackages
+        environment.lxqt.excludePackages
+        environment.gnome.excludePackages
+        environment.enlightenment.excludePackages
+        environment.cosmic.excludePackages
+        environment.cinnamon.excludePackages
+        environment.budgie.excludePackages */
 { config, pkgs, ... }:
 {  
 #  ----------------------
@@ -44,15 +55,20 @@
 #   for index ({1..14}) alias "$index"="cd -${index}"; unset index
   	interactiveShellInit = ''
  ##### Shell script code called during interactive zsh shell initialisation.  
-    
- source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-source <(fzf --zsh)
- /home/project/bash-auto-table/kitty-table5.sh
 
 # Füge den Pfad für Custom- u Autoload-Funktionen hinzu. When we run a 
 # command that corresponds to an autoloaded function, ZSH searches for 
 # it in the “fpath” and loads it into the memory if located.
 fpath=($ZDOTDIR:$ZDOTDIR/functions:$ZDOTDIR/plugins:$ZDOTDIR/prompts $fpath)
+    
+ source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+
+# Initialize fzf
+if [[ -x "$(command -v fzf)" ]]; then
+	source <(fzf --zsh)
+    #export FZF_DEFAULT_COMMAND='ag -g ""'
+    #export FZF_DEFAULT_OPTS='-m --preview-window=up:40%:wrap'
+fi
 
 # 		Initialisiere Autocompletion
 # 	----------------------------- 
@@ -73,8 +89,9 @@ fpath=($ZDOTDIR:$ZDOTDIR/functions:$ZDOTDIR/plugins:$ZDOTDIR/prompts $fpath)
    
 promptInit = ''
         # Shell script code used to initialise the zsh prompt.
-        [[ ! -f "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme" ]] || source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-                    '';
+#        [[ ! -f "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme" ]] || source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+         [[ ! -f "($ZDOTDIR)/plugins/p10k-fancy-v01.zsh") ]] || "($ZDOTDIR)/plugins/p10k-fancy-v01.zsh"
+         '';
  histSize = 30000;
  histFile = "$ZDOTDIR/history/zhistory";
  setOptions = [  # see man 1 zshoptions
