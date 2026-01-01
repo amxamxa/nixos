@@ -1,7 +1,6 @@
 { config, pkgs, lib,  ... }:
      # sudo nixos-rebuild boot --profile-name xam4boom --cores 2 --show-trace
 {
-
 # --- Desktop Environment: COSMIC ---
 # Ohne Flakes wird das Modul direkt aus dem 25.11 Channel bezogen
   services.desktopManager.cosmic.enable = true;
@@ -17,36 +16,40 @@
     cosmic-term        # alternative terminal preferred
       ];
 
-#-------------------------------------------
-# LightDM Slick Greeter 
-services.xserver.displayManager = {
-  gdm.enable = false;
-  lightdm.enable = false;
-    };          ###########################!!!
-
- services.xserver.desktopManager = {
-    cinnamon.enable	= false;
-    gnome.enable	= false;
-    pantheon.enable	= false;
-    lxqt.enable		= false;
-    xfce.enable		= false; 
-    };
-  
  nix.settings = {
     # Erlaubt das Beziehen von fertigen COSMIC-Builds ohne Flakes
     substituters = [ "https://cosmic.cachix.org" ];
     trusted-public-keys = [ "cosmic.cachix.org-1:9/S695oLGOnS9e12Rh9CLGiL9uX9HId+6A473Y9U158=" ];
   };
+#-------------------------------------------
+#  Greeter / Login / display mgr
+services.displayManager.gdm.enable = false;
 
+services.xserver.displayManager = {
+  lightdm.enable = false;
+    };         
+#-------------------------------------------
+#  window / desktop mgr
+
+services.desktopManager = {
+	gnome.enable = false;
+    pantheon.enable = false;
+ };
+
+ services.xserver.desktopManager = {
+    cinnamon.enable	= false;
+    lxqt.enable		= false;
+    xfce.enable		= false; 
+    };
+  
   environment.systemPackages = with pkgs; [
     examine
-   quick-webapps
-   cosmic-ext-applet-minimon
-  cosmic-ext-calculator #     Calculator for the COSMIC Desktop 
-    cosmic-design-demo  #      Design Demo for the COSMIC Desktop Environment
-      cosmic-applibrary #        Application Template for the COSMIC Desktop Environment
-        cosmic-ext-tweaks #           Tweaking tool for the COSMIC Desktop Environment
-          cosmic-protocols #          Additional wayland-protocols used by the COSMIC desktop environment  
-  
-  ];  
+    quick-webapps
+    cosmic-ext-applet-minimon
+    cosmic-ext-calculator # Calculator for the COSMIC Desktop 
+    cosmic-design-demo  #  Design Demo for the COSMIC Desktop Environment
+    cosmic-applibrary 	#  Application Template for the COSMIC Desktop Environment
+    cosmic-ext-tweaks 	# Tweaking tool for the COSMIC
+    cosmic-protocols 	# Additional wayland-protocols used by COSMIC de  
+    ];  
 }
