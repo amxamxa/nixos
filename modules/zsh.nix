@@ -36,37 +36,32 @@
 
 # Dies vermeidet Escape-Probleme vollständig, da die Datei direkt eingelesen wird ohne Nix-Interpolation.
 # promptInit = builtins.readFile /share/zsh/prompt-init.zsh;  
-promptInit = ''
+# To customize prompt, run `p10k configure` or edit /share/zsh/prompt/p10k.zsh.
+# [[ ! -f /share/zsh/prompt/p10k.zsh ]] || source /share/zsh/prompt/p10k.zsh
  # Enable Powerlevel10k instant prompt. Should stay close to the top of /share/zsh/.zshrc.
  # Initialization code that may require console input (password prompts, [y/n]
  # confirmations, etc.) must go above this block; everything else may go below.
- if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-  source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
- fi
+# if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+#  source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+# fi
+# 
+# if [[ -r"''${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme" ]]; then 
 
- # To customize prompt, run `p10k configure` or edit /share/zsh/prompt/p10k.zsh.
- [[ ! -f /share/zsh/prompt/p10k.zsh ]] || source /share/zsh/prompt/p10k.zsh
+ # source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+promptInit = ''
+PROMPT='%F{184}%n%f@%F{013}%m%f%F{025}%K{118} in %k%f%F{225}%K{055}%~%f%k%F{063}%K{045} --> %k%f'
+RPROMPT="|%F{#FFCA5B}ERR:%?||%F{#CF36E8}%K{#39257D}%f%k%K{#3B0045}%F{#518EA9}%D{%e.%b.}%f%k%F{#FFEAA0}%K{#1E202C}%f%k||%F{#FFEAA0}%K{#95235F}%D{%R}%f%k%F{#FFCA5B}|"
+
+source  ''${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10.zsh-theme
 '';
    
  histSize = 30000;
  histFile = "''$ZDOTDIR/history/zhistory";
-
-  	interactiveShellInit = ''
+/*
  ##### Shell script code called during interactive zsh shell initialisation.  
       
 #     	Initialisiere Autocompletion
 # 	----------------------------- 
-# autoload command load a file containing shell commands
-# autoload looks in directories of the "_Zsh file search path_", defined in the 
-# variable `$fpath`, and search a file called `compinit`.
-  autoload -Uz compinit; compinit
-  _comp_options+=(globdots) 	# With hidden files
-# Füge den Pfad für Custom- u Autoload-Funktionen hinzu. When we run a 
-# command that corresponds to an autoloaded function, ZSH searches for 
-# it in the “fpath” and loads it into the memory if located.
-  fpath=(''${ZDOTDIR}:''${ZDOTDIR}/functions ''${fpath})
-
- source ''${pkgs.nix-index}/etc/profile.d/command-not-found.sh
  source <(fzf --zsh)
  # Define syntax highlighting styles
 #   _________________________________________________________
@@ -75,7 +70,7 @@ promptInit = ''
 #	╚═╝╚═╝╩ ╩────╩ ╩╩╚═╝╩ ╩╩═╝╩╚═╝╩ ╩ ╩ ╩╝╚╝╚═╝
 #   _________________________________________________________
 #	[  "main" "brackets" "pattern" "cursor" "regexp" "root" "line" ]
-# source_or_error "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+ source_or_error "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 # Using typeset -A to ensure it's treated as an associative array
 typeset -A ZSH_HIGHLIGHT_STYLES
@@ -115,16 +110,29 @@ typeset -A ZSH_HIGHLIGHT_STYLES
  ZSH_HIGHLIGHT_REGEXP+=('\<sudo\>' fg=123,bold)
  ZSH_HIGHLIGHT_REGEXP+=('[[:<:]]sudo[[:>:]]' fg=123,bold)
 
- #  Explicitly sourcing a file under ZDOTDIR if needed
- # Zsh normally looks for .zshrc in ZDOTDIR automatically.
- # If ZDOTDIR is set, this ensures custom logic is loaded.
- # if [[ -f "$ZDOTDIR/.zshrc" ]]; then source "$ZDOTDIR/.zshrc" fi
-      
   if [ -f /share/zsh/aliases.zsh ]; then
       source /share/zsh/aliases.zsh
    fi
- 	
-##  ZSH DIRECTORY STACK - DS
+
+*/
+# autoload command load a file containing shell commands
+# autoload looks in directories of the "_Zsh file search path_", defined in the 
+# variable `$fpath`, and search a file called `compinit`.
+
+
+  	interactiveShellInit = ''
+  autoload -Uz compinit; compinit
+  _comp_options+=(globdots) 	# With hidden files
+
+  fpath=(''${ZDOTDIR}:''${ZDOTDIR}/functions ''${fpath})
+
+ source ''${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+
+ #  Explicitly sourcing a file under ZDOTDIR if needed
+ # Zsh normally looks for .zshrc in ZDOTDIR automatically.
+ # if [[ -f "$ZDOTDIR/.zshrc" ]]; then source "$ZDOTDIR/.zshrc" fi     
+ 
+ ##  ZSH DIRECTORY STACK - DS
    alias -g D='dirs -v'
    for index ({1..14}) alias ''$index="cd -''${index}"; unset index       
  '';
@@ -169,8 +177,8 @@ typeset -A ZSH_HIGHLIGHT_STYLES
     	enableZshIntegration = true;    
     	};
 
- programs.fzf.fuzzyCompletion = false; # die source ich selber unter 
- programs.fzf.keybindings = false; # Whether to enable fzf keybindings.
+ programs.fzf.fuzzyCompletion = true; # die source ich selber unter 
+ programs.fzf.keybindings = true; # Whether to enable fzf keybindings.
 
   
 environment.systemPackages = with pkgs; [

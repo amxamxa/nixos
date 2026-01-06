@@ -89,24 +89,24 @@ environment.systemPackages = with pkgs; [
 
 # JACK und Audio-Routing
  jack2		# JACK audio connection kit, version 2 with jackdbus
- jamin 		# JACK Audio Mastering interface
+#  jamin 		# JACK Audio Mastering interface
  # jack_rack # An effects "rack" for the JACK low latency audio API
- jackmix # Matrix-Mixer for the Jack-Audio-connection-Kit
+ # jackmix # Matrix-Mixer for the Jack-Audio-connection-Kit
  meterbridge # Audio metering tools for JACK
  # ALT: jackmeter   # Simple level meter for JACK
  xtuner # Tuner for Jack Audio Connection Kit
 
 # FIREWIRE
-  ffado 		# FireWire audio drivers
-  ffado-mixer
-  jujuutils 	# Utilities around FireWire devices connected to a Linux computer
-  dvgrab 		# Receive and store audio & video over IEEE1394
+  # ffado 		# FireWire audio drivers
+  # ffado-mixer
+  # jujuutils 	# Utilities around FireWire devices connected to a Linux computer
+  # dvgrab 		# Receive and store audio & video over IEEE1394
 
 # PATCHFELD  
   helvum # GTK patchbay for PipeWire
-  carla # komplexere Alternative zu Helvum
-#  patchage # Modular patch bay for Jack and ALSA systems
-#  qjackctl  # application to control the JACK sound server daemon
+#  carla # komplexere Alternative zu Helvum
+	#alt:  patchage # Modular patch bay for Jack and ALSA systems
+	#alt:  qjackctl  # application to control the JACK sound server daemon
  
 # DAWs und Audio-Editoren
   vlc # Media player
@@ -117,29 +117,29 @@ environment.systemPackages = with pkgs; [
 # MIDI- Drum-, Loop-Machines,  MIDI-Sequencing und virtuelle Instrumente
   # mamba # Virtual MIDI keyboard for Jack Audio Connection Kit
   hydrogen    # Advanced drum machine for beat production
-  drumgizmo   # Drum sampler with high-quality samples
+#  drumgizmo   # Drum sampler with high-quality samples
   zita-resampler   # Resample library by Fons Adriaensen	
   sooperlooper # Live looping tool for performances
   # oxefmsynth # Open source VST 2.4 instrument plugin
-  ninjas2    # sample slicer plugin
+ # ninjas2    # sample slicer plugin
   # qtractor    # MIDI/Audio sequencer with recording/editing
   helm        # Polyphonic synthesizer with a powerful interface
   #  zynaddsubfx # Advanced software synthesizer
-  muse       # MIDI/Audio sequencer with recording/editing
-  petrifoo   # MIDI controllable audio sampler
+ # muse       # MIDI/Audio sequencer with recording/editing
+  # petrifoo   # MIDI controllable audio sampler
 #  bespokesynth-with-vst2 # sw modular synth with controllers
-  decent-sampler   # Audio sample player
-  zita-resampler   # Resample library by Fons Adriaensen	
-  sooperlooper # Live looping tool for performances
+ # decent-sampler   # Audio sample player
+ # zita-resampler   # Resample library by Fons Adriaensen	
+ #  sooperlooper # Live looping tool for performances
 
 # EFFETCS 
   guitarix # Virtual guitar amplifier for Linux running with JACK
   calf        # Collection of high-quality audio plugins (EQ, compressor, etc.)
   rakarrack   # Guitar effects processor
-  lsp-plugins # Collection of open-source audio plugins
+  # lsp-plugins # Collection of open-source audio plugins
   zam-plugins # Collection of LV2/LADS audio plugins by ZamAudio
   dragonfly-reverb # High-quality reverb effects
-  japa # 'perceptual' or 'psychoacoustic' audio spectrum analyser for JACK and ALSA
+  # japa # 'perceptual' or 'psychoacoustic' audio spectrum analyser for JACK and ALSA
    # easyeffects # Audio effects for PipeWire, Entfernt, für PulseAudio entwickelt, nicht mit PipeWire kompatibel ist. 
   # jamesdsp # mit native PipeWire
 

@@ -36,29 +36,32 @@ boot.kernelParams = [
   # Boot verbosity
   "rd.systemd.show_status=auto"
   "rd.udev.log_priority=3"
-  
-  "zswap.enabled=1"
-  
+ 
+  "zswap.enabled=1" 
   # Intel graphics (integrierte GPU)
   "i915.enable_fbc=1"             # Framebuffer compression
   "i915.enable_psr=0"             # Panel Self Refresh (oft buggy bei Ivy Bridge)
   "i915.fastboot=1"               # Faster boot for Intel GPU
 ];
 
-
-  boot.loader = {
+ 
+boot.tmp.cleanOnBoot =true;
+#################################################
+ boot.loader = {
   # UEFI
     efi = {
       canTouchEfiVariables = true;
       efiSysMountPoint = "/boot";
     };
-  # SYSTEMD-BOOT
-   systemd-boot = { enable = true; };
-   
-  # GRUB2
+ 
+  # - SYSTEMD-BOOT
+ systemd-boot = { enable = true; };
+ 
+  #-  GRUB2
     grub = {
       enable = false;
       efiSupport = true;
+      ##################################################
       memtest86.enable = true;
       fsIdentifier = "label";
       devices = [ "nodev" ];
@@ -76,22 +79,18 @@ boot.kernelParams = [
       	set timeout_style=hidden
       	set timeout=10
       	set color_normal=green/black 
-      	set color_highlight=yellow/blue
-      
- 	 ### --- Sicherheit ---
+      	set color_highlight=yellow/blue    
+### --- Sicherheit ---
  	# set superusers="admin"
   	# Passwort-Hash mit "grub-mkpasswd-pbkdf2" erzeugen:
  	 # password_pbkdf2 admin <hash>
   	# Beispiel: password_pbkdf2 admin grub.pbkdf2.sha512.10000.ABCDEF123...
   	#lock  # Menü sperren, wenn Passwort nötig
-
-	### --- Debugging---
-	 # set debug=all
-  
+### --- Debugging---
+	 # set debug=all 
   */
-  
+### --- Fallback auf Textmodus, falls Grafik scheitert ---
       extraConfig = ''    	
-      	### --- Fallback auf Textmodus, falls Grafik scheitert ---
   	if ! gfxterm; then
     		terminal_output console
   	fi
@@ -100,21 +99,18 @@ boot.kernelParams = [
       #extraInstallCommands = ''          ${pkgs.grub2}/bin/grub-install --target=x86_64-efi --efi-directory=/boot/efi '';
       extraEntries = ''
       #   menuentry "Netboot.xyz (UEFI)" {
-       #  insmod part_gpt
-        # insmod fat
-         #search --no-floppy --fs-uuid ED08-2B0B --set=root
-        # chainloader ($root)/netboot/netboot.xyz.efi
-        # }
-        menuentry "Reboot" { reboot }  
-	menuentry "Poweroff" { halt }
+      #  insmod part_gpt
+      # insmod fat
+      # search --no-floppy --fs-uuid ED08-2B0B --set=root
+      # chainloader ($root)/netboot/netboot.xyz.efi
+      # }
+      menuentry "Reboot" { reboot }  
+	  menuentry "Poweroff" { halt }
       '';
     }; 
   };
   
-    boot.tmp.cleanOnBoot = true;
- 
-
-      /*
+/*
       ''
   menuentry "Windows 7" {  # GRUB 2 example
     chainloader (hd0,4)+1

@@ -4,31 +4,31 @@
  #       environment.xfce.excludePackages
   #      environment.lxqt.excludePackages
    #     environment.gnome.excludePackages
-    #    environment.cinnamon.excludePackages
 
 
 
-/* 
 ######### Packages die im Standartd der jeweiligen WM inkludiert sind, abwählen, per:
- environment.packageOverrides = pkgs: {
-	removePackages = pkgs.lib.removeDerivations [ 
+  environment.cinnamon.excludePackages = [
 		pkgs.onboard 
  		pkgs.cinnamon.mint-x-icons pkgs.cinnamon.mint-l-theme pkgs.cinnamon.mint-l-icons
 	   	pkgs.cinnamon.xreader
  			];
-		}; 
-environment.xfce.excludePackages = [	            pkgs.xfce.mousepad 	 pkgs.xfce.parole
-	            pkgs.xfce.ristretto	 pkgs.xfce.thunar ]; 
+  environment.xfce.excludePackages = [	            
+  		pkgs.xfce.mousepad 	 pkgs.xfce.parole
+	    pkgs.xfce.ristretto	 pkgs.xfce.thunar 
+	    ]; 
 environment.gnome.excludePackages = [
-	   		pkgs.gnome.gnome-backgrounds pkgs.gnome.gnome-characters
-	   		pkgs.gnome.geary  pkgs.gnome.gnome-music
-	   		pkgs.gnome-photos pkgs.gnome.nautilus
-	   		pkgs.gnome.totem  pkgs.gnome.yelp
-	   		pkgs.gnome.cheese     	 ];
-	   		*/
-
-  
+   		pkgs.gnome.gnome-backgrounds pkgs.gnome.gnome-characters
+   		pkgs.gnome.geary  pkgs.gnome.gnome-music
+ 		pkgs.gnome-photos pkgs.gnome.nautilus
+		pkgs.gnome.totem  pkgs.gnome.yelp
+		pkgs.gnome.cheese     	 
+	   	];
+	   	  
  environment.systemPackages = with pkgs; [
+  ## tshoot: /run/current-system/sw/share/icons
+wlr-which-key # Keymap manager for wlroots-based compositors
+ydotool # Generic Linux command-line automation tool
 
   linux-firmware
   gpaste
@@ -36,7 +36,6 @@ environment.gnome.excludePackages = [
      libnotify # notify-send
   file-roller
   # Theming and Appearance 
-  ## tshoot: /run/current-system/sw/share/icons
   #pop-icon-theme # Pop!_OS icon theme
   fluent-icon-theme
   #flat-remix-icon-theme
