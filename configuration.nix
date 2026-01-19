@@ -3,20 +3,25 @@
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    #     	./test.nix # zum Testen neuer Konfig
     ./modules/boot.nix # grub2 & lightDM
-    ./modules/zsh.nix # shell
+    ./modules/enviroment.nix # ENV
+ ./modules/user-n-permissions.nix
+       ./modules/zsh.nix # shell
+       ./modules/bash.nix # shell
     ./modules/cosmic.nix # Display/Window-Mgr
     ./modules/packages.nix # env.pkgs
-    ./modules/enviroment.nix # ENV
     ./modules/audio.nix
-#    ./modules/docker.nix
+    #    ./modules/docker.nix
     ./modules/fonts.nix
- #   ./modules/python.nix # ehem.	./ld.nix
+    ./modules/logs.nix
+    #   ./modules/python.nix # ehem.	./ld.nix
     ./modules/read-only/adBloxx.nix # ehem. ./AdBloxx.nix
     ./modules/read-only/tuxpaint.nix
-
+    # ./test.nix # zum Testen neuer Konfig
   ];
+#-p, --priority: (1 aus:) emerg, alert, crit, err, warning, notice, info, debug , or #a value between 0 and 7
+#-t, --identifier: (STRING) eindeutiger Identifier (Tag), als Filter
+#-u, --unit:  Verknüpft die Nachricht mit einer bestimmten systemd-Unit.
 
   fileSystems."/share" = {
     device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
@@ -30,7 +35,7 @@
 
   hardware.cpu.intel.updateMicrocode =
     true; # update the CPU microcode for Intel processors.
-  networking.hostName = "local"; # Define your hostname.
+  networking.hostName = "localhorst"; # Offiziell reservierte Domains (RFC 6761)
   # Enable networking
   networking.networkmanager.enable = true;
   networking.usePredictableInterfaceNames = false; # eth0 statt ensp0
@@ -67,8 +72,7 @@
   gtk.iconCache.enable =
     true; # Improve GTK icon cache generation to ensure immediate visibility
   boot.supportedFilesystems = [ "ntfs" ];
-  # programs.pay-respects = true; #  This usually happens if `programs.pay-respects' has option        definitions inside that are not matched. Please check how to properly define       this option by e.g. referring to `man 5 configuration.nix'!insteadt  programs.thefuck
-  programs.pay-respects.enable = true;
+
   services.gvfs.enable = true;
   services.upower.enable = lib.mkForce
     false; # Daemon, der Informationen über die Energieversorgung sammelt und bereitstellt. Für Akku-Betrieb
@@ -79,10 +83,10 @@
   hardware.ksm.enable =
     true; # Aktiviert den Kernel Samepage Merging (KSM)-Dienst, durchsucht den RAM nach identischen Speicherseiten (Pages), spart Speicher, aber CPU-Last. Für Virtualisierungsumgebungen mit  ähnlichen VMs ... oder redundanten Speicher allozieren
 
-  nix.nixPath =  [
+  nix.nixPath = [
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
     "nixos-config=/etc/nixos/configuration.nix"
-    "/nix/var/nix/profiles/per-user/root/channels"  
+    "/nix/var/nix/profiles/per-user/root/channels"
   ];
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -126,7 +130,12 @@
     };
   }; # de_DE/ISO-8859-1  en_US.UTF-8/UTF-8 en_US/ISO-8859-1  de_DE.UTF-8/UTF-8 de_DE/ISO-8859-1 \de_DE@euro/ISO-8859-15
 
-  #############################################################################
+ #############################################################################
+# Modern Intel GPUs use the iHD driver, which can be installed with:
+# hardware.graphics.extraPackages = [ intel-media-driver ]; 
+# Older Intel GPUs use the i965 driver, which can be installed with:
+ hardware.graphics.extraPackages = with pkgs; [ driversi686Linux.intel-vaapi-driver];
+ 
 
   services.xserver.displayManager.startx.enable =
     true; # Whether to enable the dummy “startx” pseudo-display manager, which allows users to start X manually via the startx command from a virtual terminal.
@@ -139,61 +148,49 @@
 
   services.xserver.displayManager.sessionCommands = ''
     xcowsay " 
-    "Hello World!" this is - Greetings from GUI - & Xamxama"'';
-
-  # Enable CUPS to print documents.
-  services.printing.enable = false;
-  # Enable touchpad support (enabled default in most desktopManager)
-  services.libinput.enable = lib.mkForce false;
-
-  nix.settings.auto-optimise-store = true;
-  nix.settings.sandbox = true;
-
-  # Enable the Flakes feature and the accompanying new nix command-line tool
-  # nixos.org/manual/nix/stable/contributing/experimental-features
-  # "flakes"
-
+    "Hello World!" this is $USER
+         Greetings from your GUI and
+============================================================
+   .S_sSSs     .S   .S S.     sSSs_sSSs      sSSs
+   .SS~YS%%b   .SS  .SS SS.   d%%SP~YS%%b    d%%SP
+   S%S   `S%b  S%S  S%S S%S  d%S'     `S%b  d%S'
+   S%S    S%S  S%S  S%S S%S  S%S       S%S  S%| 
+   S%S    S&S  S&S  S%S S%S  S&S       S&S  S&S
+   S&S    S&S  S&S   SS SS   S&S       S&S  Y&Ss
+   S&S    S&S  S&S    S_S    S&S       S&S  `S&&S
+   S&S    S&S  S&S   SS~SS   S&S       S&S    `S*S  
+   S*S    S*S  S*S  S*S S*S  S*b       d*S     l*S  
+   S*S    S*S  S*S  S*S S*S  S*S.     .S*S    .S*P  
+   S*S    S*S  S*S  S*S S*S   SSSbs_sdSSS   sSS*S   
+   S*S    SSS  S*S  S*S S*S    YSSP~YSSY    YSS'    
+   SP          SP   SP                              
+ ============================================================
+    '';
   nix.settings = {
     download-buffer-size = 268435456; # 256 MB
     #134217728;
     http-connections = 25; # Max parallel HTTP connections
     max-jobs = "auto"; # Parallel builds
     cores = 3; # 0=Use all available cores
+      # Enable the Flakes feature and the accompanying new nix command-line tool
+  # nixos.org/manual/nix/stable/contributing/experimental-features
+  # "flakes"
+
     experimental-features =
       [ "nix-command" ]; # Aktiviert Cmds: nix search, nix run, nix shell
     #  extra-sandbox-paths = [ "/dev/nvidiactl" "/dev/nvidia0" "/dev/nvidia-uvm" ];
+  #  Nix automatically detects files in the store that have identical contents, and replaces them with hard links to a single copy. This saves disk space. 
+  auto-optimise-store = true;
+    sandbox = true;
+    require-sigs =true;
   };
-  # to install from unstable-channel, siehe packages.nix
+  # Enable CUPS to print documents.
+  services.printing.enable = false;
+  # Enable touchpad support (enabled default in most desktopManager)
+  services.libinput.enable = lib.mkForce false;
 
-  nixpkgs.config = {
-    allowUnfreePredicate = pkg:
-      builtins.elem (lib.getName pkg) [
-        "vivaldi"           
-        "vagrant"
-    	"memtest86-efi"
-        "sublimetext"
-        "obsidian"
-        "typora"
-        "decent-sampler"
-        "vst2-sdk"
-      ];
-    allowUnfree = false;
 
-    packageOverrides = pkgs: {
-      unstable = import (fetchTarball
-        "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") { };
-    };
 
-  };
-
-  #  Allow InsecurePackages
-  nixpkgs.config.permittedInsecurePackages = [
-    #"openssl-1.1.1w" 	
-    #"gradle-6.9.4" 
-    # "electron-25.9.0" 	
-    # "dotnet-sdk-7.0.410"
-    # "dotnet-runtime-7.0.20"
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are started in user sessions.
   # programs.mtr.enable = true;
@@ -249,10 +246,10 @@
      services.samba.nsswins = true;
      services.samba-wsdd.enable = true;
   */
-  programs.xwayland.enable = true; # Aktiviere XWayland
+  programs.xwayland.enable = false; # Aktiviere XWayland
   # programs.sway.enable = true;
   programs.thunar.enable = lib.mkForce false; # Deaktiviere Thunar
-#  programs.traceroute.enable = true; # Aktiviere Traceroute
+  #  programs.traceroute.enable = true; # Aktiviere Traceroute
   programs.gnome-disks.enable = true; # Aktiviere GNOME Disks
   programs.git = {
     enable = true;
@@ -263,28 +260,8 @@
   services.vnstat.enable =
     true; # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
   services.playerctld.enable = false; # ac/dc/enable the playerctld daemon.
-  services.logrotate.enable = true;
-  services.logrotate.configFile = pkgs.writeText "logrotate.conf"
-    "	weekly 				\n	rotate 4 		\n	create 				\n	dateext				\n	compress		\n	missingok			\n	notifempty\n";
-  #--------------
-  services.journald.extraConfig = ''
-    		SystemMaxUse=256M		
-    		SystemMaxFiles=10
-    		Compress=yes			
-    		MaxFileSec=1week
-        		ForwardToSyslog=yes	  
-        		ForwardToKMsg=yes 	
-        		'';
-
-  # Enable NixOS-specific documentation, including the NixOS manual
-  documentation.nixos.enable = true;
-  # Enable system-wide man pages. This uses man-db by default.
-  documentation.man.enable = true;
-  # Crucially, enable the generation of the 'whatis' database cache.
-  # This is required for search functionality like 'man -k' and our fzf widget.
-  documentation.man.generateCaches = true;
-  documentation.man.man-db.enable = true;
-
+  
+  
   # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration, 
   system.stateVersion = "24.05"; # Did you read the comment?
 

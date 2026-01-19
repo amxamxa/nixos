@@ -1,0 +1,1 @@
+/etc/static/nixos/docs/logging-guide.md

@@ -1,405 +1,439 @@
-{ config, pkgs, lib, ... }:
+# /etc/nixos/modules/packages.nix
+{ config, pkgs, lib, ... }: 
 {
-#        services.xserver.excludePackages
- #       environment.xfce.excludePackages
-  #      environment.lxqt.excludePackages
-   #     environment.gnome.excludePackages
+
+# System-wide application packages
+#--------------------------------
+# Organization:
+# - Packages specific to shells (zsh, bash) are in their respective modules
+# - Packages specific to desktop environments are in their respective modules
+# - This file contains general system utilities and applications
+# Note: Check for duplicates before adding packages here
 
 
+  # to install from unstable-channel, siehe packages.nix
+  nixpkgs.config = {
+    allowUnfreePredicate = pkg:
+    ##allow unfree
+      builtins.elem (lib.getName pkg) [
+        "vivaldi"              "vagrant"
+        "memtest86-efi"        "sublimetext"
+        "obsidian"             "typora"
+        "decent-sampler"        "vst2-sdk"
+        "kiro"
+      ];
+    allowUnfree = false;
 
-######### Packages die im Standartd der jeweiligen WM inkludiert sind, abwählen, per:
+    packageOverrides = pkgs: {
+      unstable = import (fetchTarball
+        "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") { };
+    };
+
+  };
+
+  #  Allow InsecurePackages
+  nixpkgs.config.permittedInsecurePackages = [
+    #"openssl-1.1.1w" 	    #"gradle-6.9.4" 
+    # "electron-25.9.0"     # "dotnet-sdk-7.0.410"
+    # "dotnet-runtime-7.0.20"
+  ];
+
+
+  # ====================================
+  # SYSTEM PACKAGES
+    environment.systemPackages = with pkgs; [
+kiro-fhs # Wrapped variant of kiro which launches in a FHS compatible environment, should allow for easy usage of extensions without nix-specific modifications
+  webfont-bundler # Create @font-face kits easily
+font-manager # Simple font management for GTK desktop environments
+texlivePackages.missaali # A late medieval OpenType textura font
+dinish # Modern computer font inspired by DIN 1451
+texlivePackages.yfonts-otf # OpenType version of the Old German fonts
+
+    # ──────────────────────────────────────────────
+    # WAYLAND & COMPOSITOR TOOLS
+       wlr-which-key              # Keymap manager for wlroots compositors
+    ydotool                    # Generic automation tool for Wayland
+    # ───────────────────────────────────────────
+    # CORE SYSTEM UTILITIES
+        
+    # System Information & Diagnostics
+    dmidecode                  # Hardware info via SMBIOS/DMI
+    efibootmgr                 # EFI boot manager utility
+    kbd                        # Keyboard tools and keymaps
+    libxkbcommon              # Keyboard description library
+    gettext                    # Internationalization framework
+    toybox                     # Minimalist Unix utilities
+    file                       # File type identification
+    inxi                       # Comprehensive system info tool
+    lshw                       # Detailed hardware lister
+    
+    # Process & Resource Monitoring
+    btop                       # Modern resource monitor (htop replacement)
+    htop                       # Interactive process viewer
+    bottom                     # Alternative system monitor
+    procs                      # Modern ps replacement
+    libgtop                    # Multi-core system monitor library
+    
+    # Disk Usage Analysis
+    duf                        # Modern df with better output
+    dust                       # More intuitive du
+    baobab                     # Graphical disk usage analyzer (GNOME)
+    # Note: ncdu is in zsh.nix as it's primarily a CLI tool
+    
+    # Logging & System Management
+    logrotate                  # Log rotation utility
+    coreutils                  # GNU core utilities
+    tree                       # Directory tree display
+
+    # ──────────────────────────────────────────
+    # BOOTLOADER & RECOVERY
+    
+    grub2                      # GRUB bootloader
+    memtest86-efi             # Memory testing tool
+    os-prober                  # Detect other operating systems
+    nixos-grub2-theme         # NixOS GRUB theme
+    # testdisk                   # Partition recovery tool
+    # extundelete               # ext3/ext4 file recovery
+    gparted                    # Partition editor
+
+    # ─────────────────────────
+    # BACKUP & SYNCHRONIZATION
+    # ─────────────────────────
+    deja-dup                   # Simple backup tool with GUI
+    duplicity                  # Encrypted incremental backups
+    warpinator                 # LAN file sharing
+    dedup                      # Deduplicating backup
+    timeshift                  # System restore utility
+
+    # ─────────────────────────
+    # NETWORKING & CONNECTIVITY
+    # ─────────────────────────
+        # Virtual Filesystem & Device Management
+    gvfs                       # Virtual filesystem support
+    avahi                      # mDNS/DNS-SD (network discovery)
+    blueman                    # Bluetooth manager (GTK)
+    wirelesstools             # Wireless interface tools (iwconfig, etc.)
+    hidapi                     # USB/Bluetooth HID device library
+    ntfs3g                     # FUSE-based NTFS driver
+    
+    # Network Tools
+    curl                       # Data transfer tool
+    wget                       # Network downloader
+    openssl                    # SSL/TLS toolkit
+    inetutils                  # Network utilities (ftp, telnet, etc.)
+    dog                        # DNS lookup (dig alternative)
+    gping                      # Ping with graph
+    trippy                     # Network diagnostic (modern traceroute)
+    mtr                        # Network diagnostic tool
+    bandwhich                  # Network utilization by process
+    vnstat                     # Network traffic monitor
+
+    # ─────────────────────────
+    # ANDROID TOOLS & MTP
+    # ─────────────────────────
+    android-tools              # adb, fastboot
+    libmtp                     # Media Transfer Protocol
+    jmtpfs                     # Mount MTP devices as FUSE filesystem
+    scrcpy                     # Display/control Android devices
+
+    # ─────────────────────────
+    # MODERN CLI REPLACEMENTS
+    # Note: Shell-specific tools (fzf, bat, zoxide) are in zsh.nix
+    # ─────────────────────────
+    # Modern Alternatives
+    age                        # Modern encryption (GPG alternative)
+    direnv                     # Per-directory environment variables
+    just                       # Command runner (Makefile alternative)
+    # Note: ripgrep, fd in zsh.nix (shell tools)
+    sd                         # Intuitive sed alternative
+    tokei                      # Code line counter
+    hyperfine                  # Command-line benchmarking
+    
+    # Shell & Script Tools
+    shellcheck                 # Shell script analyzer
+    shunit2                    # Bash unit testing framework
+    jq                         # JSON processor
+    bar                        # CLI progress bars
+    # ─────────────────────────
+    # Archive & Compression
+    # ─────────────────────────
+    unzip     zip     zlib    gnupg
+    # Graphics Libraries (for CLI tools that need them)
+    libglvnd                   # GL Vendor-Neutral Dispatch
+    libGL                      # GL stub bindings
+
+    # ─────────────────────────
+    # NIX-SPECIFIC TOOLS
+    # ─────────────────────────
+    nix-index                  # Locate Nix packages
+    nvd                        # Package version diff tool
+    nix-tree                   # Browse Nix store interactively
+    nix-info                   # System information for Nix
+    nix-prefetch-github       # Prefetch GitHub sources
+    nixfmt-tree               # Nix formatter with treefmt
+    statix                     # Nix linter
+    deadnix                    # Find unused Nix code
+    nixos-icons               # NixOS logo icons
+
+    # ─────────────────────────
+    # TERMINAL VISUALIZATION & COLORS
+    # ─────────────────────────
+    
+    # Color Tools
+    colordiff                  # Colored diff
+    lscolors                   # Colorize ls output
+    lcms                       # Color management engine
+    terminal-colors           # Display terminal colors
+    colorpanes                 # Terminal pane colors
+    sanctity                   # Terminal color combinations
+    vivid                      # LS_COLORS generator
+    colord-gtk4               # Color manager
+    colorized-logs            # Colorize log output
+    colorz                     # Color scheme generator
+    colorless                 # Colorize output and pipe to less
+    chafa                      # Colored ASCII art generator
+    notcurses                  # TUI and character graphics
+    
+    # Terminal Fun
+    terminal-parrot           # Animated party parrot
+    # Note: banner, toilet, neofetch in zsh.nix
+
+    # ─────────────────────────
+    # ASCII ART & IMAGE TOOLS
+    # ─────────────────────────
+    asciiquarium-transparent  # ASCII aquarium animation
+    ascii-image-converter     # Images to ASCII
+    pablodraw                  # ANSI/ASCII editor
+    ascii-draw                 # ASCII drawing tool
+    uni2ascii                  # UTF-8 to ASCII conversion
+    jp2a                       # JPG to ASCII
+    artem                      # Images to ASCII art
+    gifsicle                   # GIF manipulation
+    gif-for-cli               # Render GIFs as ASCII
+
+    # ─────────────────────────
+    # MULTIMEDIA & VIDEO TOOLS
+    # ─────────────────────────
+    asciinema                  # Record terminal sessions
+    asciinema-scenario        # Create asciinema from text
+    asciinema-agg             # Generate GIFs from asciinema
+    agg                        # Rendering engine
+    losslesscut-bin           # Lossless video/audio editor
+
+    # ─────────────────────────
+    # GRAPHICS & VISUALIZATION
+    # ─────────────────────────
+    libsixel                   # Console graphics library
+    libpng                     # PNG library
+    libavif                    # AVIF image library
+    webp-pixbuf-loader        # WebP loader
+    jpegoptim                  # JPEG optimizer
+    jpeginfo                   # JPEG integrity checker
+    libva                      # Video Acceleration API
+    libva-utils               # VA-API utilities
+    mesa-demos                 # OpenGL info (glxinfo)
+    glmark2                    # OpenGL benchmarking
+    clinfo                     # OpenCL information
+    gcolor3                    # GTK color picker
+    graphviz                   # Graph visualization
+    imagemagick               # Image manipulation
+    drawing                    # Basic image editor
+
+    # ─────────────────────────
+    # DOCUMENT PROCESSING
+    pdfarranger               # Rearrange PDF pages
+    pandoc                     # Document format converter
+    v4l-utils                  # Video4Linux utilities
+
+    # ─────────────────────────
+    # TEXT EDITORS & NOTE-TAKING
+    gnome-text-editor         # Simple GNOME text editor
+    cherrytree                 # Hierarchical note-taking
+    obsidian                   # Networked thought notes
+    typora                     # Markdown editor
+    # Note: micro is in zsh.nix as a shell tool
+
+    # ─────────────────────────
+    # VERSION CONTROL (GIT)
+    # All git-related tools consolidated here
+    gitFull                    # Full git with all features
+    git-doc                    # Git documentation
+    gitstats                   # Repository statistics
+    gitleaks                   # Scan for secrets
+    gitlint                    # Commit message linting
+    delta                      # Better git diff with syntax highlighting
+    gitnr                      # .gitignore generator
+    # ─────────────────────────
+    # TEXT PROCESSING
+    dasel                      # Query JSON/YAML/TOML/XML/CSV
+    fx                         # Terminal JSON viewer
+    gron                       # Make JSON greppable
+    xcp                        # Extended cp
+    # ─────────────────────────
+    # DEVELOPMENT & TESTING
+    shellspec                  # BDD testing for shell scripts
+    hackertyper               # Simulate hacking
+    presenterm                 # Terminal presentations
+    # ─────────────────────────
+    # DESKTOP UTILITIES
+    # GNOME Tools
+    gnome-online-accounts     # Single sign-on
+    # gnome-logs                 # Log viewer
+    gnome-keyring             # Keyring/secrets manager
+    dconf-editor              # Configuration editor
+    gnome-firmware            # Firmware updater
+    gnome-disk-utility        # Disk manager
+    # Firmware Management
+    fwup                       # Firmware update creator
+    fwupd                      # Firmware update daemon
+    fwupd-efi                  # EFI component for fwupd
+    # ─────────────────────────
+    # FILE MANAGERS & INTEGRATION
+    nemo                      # Cinnamon file manager
+    nemo-qml-plugin-dbus      # D-Bus integration
+    nemo-emblems              # File emblems
+    folder-color-switcher     # Change folder colors
+    nemo-fileroller           # Archive integration
+
+    # ─────────────────────────
+    # DESKTOP APPLICATIONS
+    # Office & Productivity
+    libreoffice               # Office suite
+    # Media
+    lolcat
+    pixd # a tool for visualizing binary data
+    pix
+    # shotwell                   # Photo organizer
+    evince                     # Document viewer
+    flameshot                  # Screenshot tool
+    vlc                        # Media player (from audio.nix functionality)
+    
+    # Web Browsers
+    firefox                    # Web browser
+    w3m                        # Terminal browser
+    
+    # Educational
+    tuxpaint                   # Drawing software for children
+    gcompris                   # Educational software
+    superTuxKart              # Kart racing game
+
+    # ─────────────────────────
+    # VIRTUALIZATION
+    # ─────────────────────────
+    vagrant                    # VM manager
+    qemu                       # Emulator/virtualizer
+    OVMFFull                  # UEFI firmware for QEMU
+    qtemu                      # Qt frontend for QEMU
+
+    # ─────────────────────────
+    # THEMING & APPEARANCE
+    # ─────────────────────────
+    themechanger              # Theme switching utility
+    pay-respects              # Command correction (thefuck alternative)
+    calligraphy               # ASCII banners from text
+    
+    # Wallpapers
+    adapta-backgrounds        # Wallpaper collection
+
+    # Icons (selected, not comprehensive)
+    linearicons-free          # Free linearicons
+    icon-library              # Symbolic icons
+    pantheon.elementary-iconbrowser  # Icon browser
+    kora-icon-theme           # Kora icons
+    rose-pine-icon-theme      # Rose Pine icons
+    papirus-icon-theme        # Papirus icons
+    andromeda-gtk-theme       # Dark theme
+
+    # ─────────────────────────
+    # SYSTEM-SPECIFIC UTILITIES
+    # ─────────────────────────
+    zenity                     # Display dialogs from CLI
+    libnotify                  # Desktop notifications
+    file-roller               # Archive manager
+
+    # Miscellaneous
+    linux-firmware            # Firmware files
+    pay-respects              # Command correction utility
+     
+    helix # Post-modern modal text editor
+    helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
+     
+    # ─────────────────────────
+    # UNSTABLE CHANNEL PACKAGES
+    # Packages from nixos-unstable for newer versions
+    # ─────────────────────────
+    unstable.yt-dlp           # YouTube downloader
+  ];
+
+  # ============================================================================
+  # PACKAGE NOTES
+  # ============================================================================
+  # 
+  # REMOVED (moved to zsh.nix):
+  # - All zsh-* packages
+  # - Shell tools: fzf, bat, zoxide, eza, lsd
+  # - CLI tools: ripgrep, fd, ncdu
+  # - Prompts: starship, powerlevel10k
+  # - Terminal: kitty
+  # - Shell utilities: banner, toilet, neofetch, hyfetch, fortune, lolcat, etc.
+  #
+  # REMOVED (moved to cosmic.nix):
+  # - COSMIC desktop components
+  #
+  # REMOVED (moved to audio.nix):
+  # - Audio/JACK/PipeWire packages
+  #
+  # REMOVED (moved to python.nix):
+  # - Python packages and development tools
+  #
+  # REMOVED (already in other modules or redundant):
+  # - Duplicate git tools (consolidated here)
+  # - Development language runtimes (go, nodejs, ruby)
+  # - Database systems (postgresql, mysql, etc.)
+  # - Web development frameworks
+
+    ## tshoot: /run/current-system/sw/share/icons
+    
+
+/*----------........ .__  ......... .___  ------- ___
+  ____ ___  ___ ____ |  |  __ __  __| _/____   __| _/
+_/ __ \\  \/  // ___\|  | |  |  \/ __ |/ __ \ / __ | 
+\  ___/ >    <\  \___|  |_|  |  / /_/ \  ___// /_/ | 
+ \___  >__/\_ \\___  >____/____/\____ |\___  >____ | 
+------\/ ---- \/ ----\/-------------- \/ -- \/ ---\/ 
+            .oPYo. 8  .o  .oPYo. .oPYo. 
+            8    8 8oP'   8    8 Yb..   
+EXCLUDED    8    8 8 `b.  8    8   'Yb. 
+PACKAGES    8YooP' 8  `o. `YooP8 `YooP' 
+:::.........8 ....:..::......8 :.....::.....:::::::::
+ ::.........8 ::::::::::: :ooP'.::::::::::...::::::: */
+# Remove unwanted packages that come with desktop environments
+## Packages die im Standartd der jeweiligen WM inkludiert sind, abwählen, per:
   environment.cinnamon.excludePackages = [
-		pkgs.onboard 
- 		pkgs.cinnamon.mint-x-icons pkgs.cinnamon.mint-l-theme pkgs.cinnamon.mint-l-icons
-	   	pkgs.cinnamon.xreader
- 			];
-  environment.xfce.excludePackages = [	            
-  		pkgs.xfce.mousepad 	 pkgs.xfce.parole
-	    pkgs.xfce.ristretto	 pkgs.xfce.thunar 
-	    ]; 
-environment.gnome.excludePackages = [
-   		pkgs.gnome.gnome-backgrounds pkgs.gnome.gnome-characters
-   		pkgs.gnome.geary  pkgs.gnome.gnome-music
- 		pkgs.gnome-photos pkgs.gnome.nautilus
-		pkgs.gnome.totem  pkgs.gnome.yelp
-		pkgs.gnome.cheese     	 
-	   	];
-	   	  
- environment.systemPackages = with pkgs; [
-  ## tshoot: /run/current-system/sw/share/icons
-wlr-which-key # Keymap manager for wlroots-based compositors
-ydotool # Generic Linux command-line automation tool
-
-  linux-firmware
-  gpaste
-  zenity # Tool to display dialogs from the commandline and shell scripts
-     libnotify # notify-send
-  file-roller
-  # Theming and Appearance 
-  #pop-icon-theme # Pop!_OS icon theme
-  fluent-icon-theme
-  #flat-remix-icon-theme
-  # lomiri.suru-icon-theme
-  # numix-icon-theme
-  # faba-mono-icons
-  oranchelo-icon-theme # Oranchelo icon theme
-  papirus-icon-theme # Pixel perfect icon theme for Linux
-  papirus-folders # Tool to change papirus icon theme color
-   
-  whitesur-gtk-theme # MacOS Big Sur theme for GNOME
-  andromeda-gtk-theme # elegant dark theme for gnome, cinnamon
-  #greetd
-  #regreet # Clean and customizable greeter for greetd
-  #cage #   Wayland kiosk that runs a single, maximized application
-  # cagebreak # Wayland tiling compositor inspired by ratpoison
-  
-  #  mint-cursor-themes
-#  xwayland # X server for interfacing X11 apps with the Wayland protocol
-#  wayback-x11 # X11 compatibility layer leveraging wlroots and Xwayland
-  afterglow-cursors-recolored #Recoloring of the Afterglow Cursors x-cursor theme
-# xorg.xcursorthemes
-  #xcursor-themes # Default set of cursor themes for use with libXcursor.
-  themechanger # Theme changing utility for Linux statt # themix-gui
- pay-respects # Terminal command correction, alternative to thefuck, written in Rust
-  
-  pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
-  ascii-draw
-  spotdl # Download your Spotify playlists and songs along with album art and metadata
-  calligraphy # GTK tool turning text into ASCII banners
-# htop # Interactive process viewer
-  toybox # ascii bblkid blockdev bunzip2 ... uvm
-  jq # lightweight and flexible command-line JSON processo
+    pkgs.onboard
+    pkgs.cinnamon.mint-x-icons
+    pkgs.cinnamon.mint-l-theme
+    pkgs.cinnamon.mint-l-icons
+    pkgs.cinnamon.xreader
+  ];
+  environment.xfce.excludePackages = [
+    pkgs.xfce.mousepad
+    pkgs.xfce.parole
+    pkgs.xfce.ristretto
+    pkgs.xfce.thunar
+  ];
+  environment.gnome.excludePackages = [
+    pkgs.gnome.gnome-backgrounds
+    pkgs.gnome.gnome-characters
+    pkgs.gnome.geary
+    pkgs.gnome.gnome-music
+    pkgs.gnome-photos
+    pkgs.gnome.nautilus
+    pkgs.gnome.totem
+    pkgs.gnome.yelp
+    pkgs.gnome.cheese
+  ];
+# environment.cosmic.excludePackages = with pkgs; --> cosmic.nix
  
-  # System/Basis-Tools
-  dmidecode # Info about your hardware according to SMBIOS/DMI
-  efibootmgr # EFI boot manager utility
-  v4l-utils # V4L utils and libv4l, provide common image formats regardless of the v4l device
-  kbd # Linux keyboard tools and keyboard maps
-  libxkbcommon # Library to handle keyboard descriptions
-  gettext # Well integrated localization tool
-  coreutils # Core utilities expected on every OS
-  logrotate # Rotate and compress system logs
-  tree # Display directories as trees
-  inxi # System information tool
-  lshw # Detailed hardware information
-  toybox # Minimalist utilities (bblkid, blockdev, etc.)
-  # unrar #unfree
-  file # Specifies that a series of tests are performed on the file
-
-  # System-Monitore und -Diagnose
-  btop # Resource monitor (modern htop alternative)
-  htop # Interactive process viewer
-  duf # Disk usage/free utility
-  baobab # Graphical application to analyse disk usage in any GNOME environment
-  ncdu # Disk usage analyzer with an ncurses interface
-  bottom # Modern system monitor (alternative to btop/htop)
-  vnstat # Console-based network traffic monitor
-  libgtop # Library for multicore sys monitor
-
-  # Bootloader und Recovery
-  grub2 # Bootloader
-  memtest86-efi # Memory testing tool
-  os-prober # Detect other OSes for GRUB
-  nixos-grub2-theme # NixOS GRUB theme
-  # refind # alt boot mgr
-  testdisk # Powerful tool for partition recovery and fixing boot problems
-  extundelete # Tool for recovering deleted files on ext3/ext4 file systems.
-  gparted # Partition editor
-
-  # Backup und Synchronisation
-  deja-dup # Simple and secure backup tool with a graphical interface.
-  duplicity # Encrypted backup across various protocols with incremental backups.
-  warpinator # Share files across the LAN
-  dedup # Deduplicating backup program
-  timeshift # System restore utility
-
-  # Netzwerk und Konnektivität
-  gvfs # Virtual Filesystem support library
-  avahi # mDNS/DNS-SD implementation
-  blueman # GTK-based Bluetooth Manager
-  wirelesstools # ifrename iwconfig iwevent iwgetid iwlist iwpriv iwspy
-  hidapi # Library for communicating with USB and Bluetooth HID devices
-  curl # Transfer data from or to a server
-  wget # Non-interactive network downloader
-  openssl # SSL/TLS toolkit
-  inetutils # Essential network utilities (ftp, telnet, ifconfig, etc.)
-  dog # DNS lookup tool (dig alternative)
-  gping # Ping with graph
-  trippy # Network diagnostic tool (modern traceroute)
-  mtr # Network diagnostic tool combining ping and traceroute
-  bandwhich # Network utilization by process
-  ntfs3g # FUSE-based NTFS driver with full write support
-
-   # Android-Tools und MTP
-  android-tools # Android SDK platform tools (adb, fastboot)
-  libmtp # Implementation of Microsoft's Media Transfer Protocol
-  jmtpfs # Mounts MTP devices as a fuse filesystem (~/android-mount)
-  scrcpy # Display and control Android devices over USB or TCP/IP
-  # genymotion # Fast and easy Android emulation
-
- # Shell und Kommandozeilen-Tools
-  age # Modern encryption tool (alternative to GPG)
-  direnv # Automatic environment variables per directory
-  just # Command runner (Makefile alternative)
-  ripgrep # Fast search tool (grep alternative)
-  fd # Find in go (find 2.0)
-  procs # Modern ps replacement
-  dust # More intuitive du alternative
-  sd # Intuitive sed alternative
-  tokei # Count code lines and statistics
-  hyperfine # Command-line benchmarking tool
-  shellcheck # Shell script analysis tool
-  shunit2 # xUnit based unit test framework for bash scripts
-  jq # Lightweight and flexible command-line JSON processor
-  bar # cli progress bar
-  unzip # List, test and extract compressed files
-  zip # Package and compress files
-  zlib # Compression library
-  gnupg # GNU Privacy Guard (encryption and signing)
-  libglvnd # The GL Vendor-Neutral Dispatch library
-  libGL # Stub bindings using libglvnd
-
-  # Nix-Spezifische Tools
-  nix-index # Quickly locate nix packages
-  nvd # Nix/NixOS package version diff tool
-  nix-tree # Interactively browse Nix store paths
-  nix-info # System information for Nix
-  # nix-diff # Compare Nix derivations
-  # nix-output-monitor # Process output of Nix commands
-  nix-prefetch-github # Prefetch sources from github
-  nixfmt-classic # An opinionated formatter for Nix
-  nixfmt-tree # Official Nix formatter zero-setup starter using treefmt
-  statix # Lints and suggestions for the nix programming language
-  deadnix # Find and remove unused code in .nix source files
-  nixos-icons # Icons of the Nix logo, in Freedesktop Icon Directory Layout
-
-  # Terminal- und Shell-Erweiterungen (Zsh/Kitty)
-  zsh # Shell
-  zsh-autosuggestions # Command line suggestions
-  zsh-autocomplete # Autocomplete for Zsh
-  zsh-syntax-highlighting # Syntax highlighting
-  starship # Minimal, blazing-fast, and infinitely customizable prompt
-  zsh-nix-shell # Use Zsh in nix-shell
-  navi # Cheat sheet tool
-  fzf # Command-line fuzzy finder
-  fzf-zsh # Fzf integration for Zsh
-  fzf-git-sh # Git utilities powered by fzf
-  zsh-forgit # Git utility tool
-  kitty # Terminal emulator
-  lsd # Modern ls command (ls alternative)
-  eza # Improved ls replacement
-  bat # Cat clone with wings (syntax highlighting)
-  zoxide # Smarter cd command
-  broot # Better way to navigate directories
-  # tmux # Terminal multiplexer
-  # mcfly # An upgraded ctrl-r where history results make sense
-  # mcfly-fzf # Integrate Mcfly with fzf
-
-  # Terminal-Visualisierung und -Farben
-  colordiff # Colored diff tool
-  lscolors # Colorize paths using LS_COLORS
-  lcms # Color management engine
-  terminal-colors # Display terminal colors
-  colorpanes # Terminal pane colors
-  sanctity # Terminal color combinations
-  vivid # LS_COLORS generator
-  colord-gtk4 # Color Manager
-  colorized-logs # Tools for logs with ANSI color
-  colorz # Color scheme generator ($ colorz image -n 12)
-  colorless # Colorise cmd output and pipe it to less
-  # dumm: colorstorm # cmd line tool to generate color themes for editors/terminals
-  # rich-cli # toolbox for fancy output in the terminal
-  chafa # Tool for generating colored ASCII art
-  notcurses # C compile, TUIs and character graphics
-
-  # Terminal-Spaß und MOTD
-  fancy-motd # Colorful MOTD written in bash
-  rust-motd # Useful MOTD generation with zero runtime dependencies
-  terminal-parrot # Shows colorful, animated party parrot in your terminial
-  banner # Text banner tool
-  toilet # Text banner tool (alternative to banner)
-  tealdeer # Simplified man pages
-  neo-cowsay # ASCII art tool
-  xcowsay # Customize cowsay with images
-  fortune # Display random quotes
-  lolcat # Colorize output
-  blahaj # Fun terminal tool
-  dotacat # Like lolcat, but fast
-  theme-sh # Theme management
-  neofetch # System information display
-  hyfetch # Fork of neofetch
- # ASCII/Bild-Tools
-  asciiquarium-transparent # Aquarium/sea animation in ASCII art
-  ascii-image-converter # Convert images into ASCII art on the console
-  pablodraw # Ansi/Ascii text and RIPscrip vector editor/viewer
-  ascii-draw # Drawing tool
-  uni2ascii # UTF-8 to ASCII conversion
-  jp2a # Utility that converts JPG images to ASCII
-  artem # Small CLI program to convert images to ASCII art
-  gifsicle # CLI tool for GIF images
-  gif-for-cli # Render gifs as ASCII art in your cli
-
- # Multimedia und Video-Tools
-  asciinema # Record terminal sessions
-  asciinema-scenario # Create asciinema videos from a text file
-  asciinema-agg # Generate animated GIF files from asciicast v2 files
-  agg # High quality rendering engine for C++
-  obs-studio # Free and open source software for video recording and live streaming
-  losslesscut-bin # Lossless video/audio editor
- #  spotdl # Downl---oad your Spotify playlists and songs
-
-  # Grafik und Visualisierung
-  libsixel # Console graphics library
-  libpng # PNG library
-  libavif # AVIF image library
-  webp-pixbuf-loader # WebP image loader
-  jpegoptim # JPEG optimizer
-  jpeginfo # JPEG integrity checker
-  libva # Video Acceleration API
-  libva-utils # VA-API utilities
-  mesa-demos # OpenGL information
-  glmark2 # OpenGL benchmarking
-  clinfo # OpenCL information
-  gcolor3 # Color chooser written in GTK3
-  graphviz # Graph visualization tools
-  imagemagick # Image manipulation tool
-  drawing # Basic image editor
-
-  # Dokumenten- und Text-Verarbeitung
-  pdfarranger # Rearrange pages in PDF files
-  pandoc # Convert markup formats (Markdown, HTML, LaTeX, etc.)
-  wmctrl # CLI tool to interact with EWMH/NetWM compatible X Window Managers
-  # jupyter # Webbasierte interaktive Entwicklungsumgebung (z.B. für Python)
-
-  # Text-Editoren und Notizen
-  # IDEs
-  # emacs # Powerful text editor
-  sublime # Text editor for code, markup, and prose
-  gnome-text-editor # Simple text editor for GNOME
-  cherrytree # Hierarchical note-taking application
-  obsidian # Note-taking app for networked thoughts
-  typora # Markdown editor
-  micro # Terminal-based text editor
-  # vscode-with-extensions # Open source source code editor developed by Microsoft
-
- # Programmier- und Entwicklungstools
-  # Python Development # (siehe python.nix)
-  # Version Control
-  gitFull # Distributed version control system
-  gitnr # Create `.gitignore` files using templates
-  git-doc # Git documentation
-  gitstats # Generate statistics from Git repositories
-  gitleaks # Scan git repos for secrets
-  gitlint # Linting for git commit messages
-  delta # Better git diff viewer with syntax highlighting
-  # git-hub # Interface to GitHub from the command line
-  # github-desktop # GUI for managing Git and GitHub
-  # gitlab # GitLab Community Edition
-  go # Go Programming language
-  nodejs # JavaScript runtime
-  nodePackages.npm # Node.js package manager
-  # yarn # Alternative package manager for Node.js
-  # deno # Secure runtime for JavaScript and TypeScript
-  sass # CSS preprocessor
-  # postcss # Tool for transforming CSS with JavaScript
-  ruby # Object-oriented language
-  vagrant # Virtual machine manager
-  qemu # Emulator and virtualizer
-  OVMFFull # Sample UEFI firmware for QEMU and KVM
-  qtemu # Qt-based front-end for QEMU emulator
-
-  # Text Processing Utilities (alternatives/ergänzungen)
-  choose # Human-friendly alternative to cut/awk
-  dasel # Query and modify JSON, YAML, TOML, XML, CSV
-  fx # Terminal JSON viewer (JSON processor)
-  gron # Make JSON greppable
-  xcp # cp 2.0
-
-  # Testing und Utility-Tools
-  shellspec # BDD unit testing framework
-  hackertyper # Simulate hacking
-  presenterm # Terminal-based presentation creator
-  # BROKEN: pingu # Ping command implementation in Go but with colorful output and pingu ascii art
-
-  # GNOME/Desktop Utilities
-  gnome-online-accounts # Single sign-on framework for GNOME
-  gnome-logs # Logs viewer
-  gnome-keyring # Component to store secrets, passwords, keys, certificates
-  dconf-editor # Configuration editor
-  gnome-firmware # Firmware updater
-  gnome-disk-utility # Disk utility
-  fwup # Configurable embedded Linux firmware update creator
-  fwupd # Firmware update daemon
-  fwupd-efi # EFI component for fwupd
-  # ausweisapp # Official authentication app for German ID card and residence permit
-
-  # Cinnamon Utilities
-  nemo # File manager
-  nemo-qml-plugin-dbus # D-Bus integration for Nemo
-  nemo-emblems # Emblems for Nemo
-  folder-color-switcher # Folder color switcher
-  nemo-fileroller # File roller integration
-#  nemo-python # Python extensions for Nemo
-
-  # X11 Utilities
-  xorg.xwininfo # Display information about a window
-  xorg.libXrandr # X Resize and Rotate Extension library
-  xorg.xhost # Access control for the X server
-  xclip # X11 clipboard manipulation
-  # emacsPackages.pbcopy # Clipboard integration for Emacs
-
-   # Multimedia/Desktop-Anwendungen
-  libreoffice # Office suite
-  shotwell # Photo organizer
-  evince # Document viewer
-  flameshot # Powerful yet simple to use screenshot software
-  # UNFREE vivaldi # customizable and feature-rich web browser
-  firefox # Web browser
-  w3m # Terminal web browser
-  tuxpaint # Open Source Drawing Software for Children
-  gcompris # Educational software suite for Children
-  superTuxKart # Tux Kart (Kart racing game)
-  # steam # Game platform
-
-   # Theming und Icons
- # lightdm-slick-greeter # Slick-looking LightDM greeter
- # whitesur-gtk-theme # MacOS Big Sur theme for GNOME
- # numix-cursor-theme # Cursor theme
-  # pop-gtk-theme # Pop!_OS GTK theme
-  theme-vertex # Theme for GTK 3, GTK 2, Gnome-Shell, and Cinnamon
-  pantheon.elementary-wallpapers # Collection of wallpapers for elementary
-  adapta-backgrounds # Wallpaper collection for adapta-project
- # faba-mono-icons # Mono icons
-  # flat-remix-icon-theme # Flat remix icon theme
-  # eww #ElKowars wacky widgets
-  linearicons-free # linearicons.com/free
-  icon-library # Symbolic icons for your apps
-  pantheon.elementary-iconbrowser # Browse and find system icons
- # xfce.xfce4-icon-theme # Icons for Xfce
- # material-design-icons # 7000+ Material Design Icons from the Community
- # material-black-colors # Material Black Colors icons
- # sweet-folders # Folders icons for Sweet GTK theme
- # candy-icons # Icon theme colored with sweet gradients
- # arc-icon-theme # Arc icon theme
- # whitesur-icon-theme # MacOS Big Sur icons
- # vimix-icon-theme # Vimix icon theme
-  kanagawa-icon-theme # Kanagawa icon theme
- # tela-icon-theme # Tela icon theme
- # nordzy-icon-theme # Nordzy icon theme
-  kora-icon-theme # Kora icon theme
- # qogir-icon-theme # Qogir icon theme
-  rose-pine-icon-theme # Rose Pine icon theme
-  papirus-icon-theme # Papirus icon theme
-  andromeda-gtk-theme # Elegant dark theme for gnome, mate, budgie, cinnamon, xfce
-
-  # Aus unstable Channel
-  # unstable.hugo # Static site generator
-  unstable.yt-dlp # Downloader for YouTube and other sites
- # Fonts and Typography  > fonts.nix
-];
-
-
 }
-
-
 
