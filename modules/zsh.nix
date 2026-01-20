@@ -228,10 +228,9 @@ programs.fzf.keybindings = false;
 # promptInit = builtins.readFile /share/zsh/prompt.zsh; # Dies vermeidet Escape-Probleme vollständig, da File direkt eingelesen wird ohne Nix-Interpolation.
  # Prompt initialization (executed at build-time into the generated file) 
  # Enable Powerlevel10k prompt with fallback
- 
- ##### ZSH-PROMPT: #####################################
+  ##### ZSH-PROMPT: #####################################
  promptInit = ''
- source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+ source ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme";
    '';
 # entspricht der .zshrc ------
 interactiveShellInit = ''

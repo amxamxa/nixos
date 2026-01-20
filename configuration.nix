@@ -17,7 +17,7 @@
     #   ./modules/python.nix # ehem.	./ld.nix
     ./modules/read-only/adBloxx.nix # ehem. ./AdBloxx.nix
     ./modules/read-only/tuxpaint.nix
-    # ./test.nix # zum Testen neuer Konfig
+    ./test.nix # zum Testen neuer Konfig
   ];
 #-p, --priority: (1 aus:) emerg, alert, crit, err, warning, notice, info, debug , or #a value between 0 and 7
 #-t, --identifier: (STRING) eindeutiger Identifier (Tag), als Filter
