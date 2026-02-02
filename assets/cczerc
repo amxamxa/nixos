@@ -1,0 +1,107 @@
+# Configuration file for ccze
+# Available 'pre' attributes: bold, underline, underscore, blink, reverse
+# Available colors:  black, red, green, yellow, blue, magenta, cyan, white
+# Available bgcolors: on_black, on_red, on_green, on_yellow, on_blue, on_magenta, on_cyan, on_white
+#
+# You can also use item names in color definition, like:
+#
+# default   blue
+# date      'default'
+#
+# Configuration file for ccze
+#
+# Terminalfarben bleiben ANSI-basiert.
+# HTML-Ausgabe nutzt deine HEX-Farbpalette.
+
+# item          color
+
+date            bold cyan
+host            bold blue
+process         green
+pid             bold white
+pid-sqbr        bold green
+default         cyan
+email           bold green
+subject         magenta
+dir             bold cyan
+file            bold cyan
+size            bold white
+user            bold yellow
+httpcodes       bold white
+getsize         magenta
+get             green
+post            bold green
+head            green
+put             bold green
+connect         green
+trace           green
+unknown         cyan
+gettime         bold magenta
+uri             bold green
+ident           bold white
+ctype           white
+error           bold red
+miss            red
+hit             bold yellow
+deny            bold red
+refresh         bold white
+swapfail        bold white
+debug           white
+warning         red
+direct          bold white
+parent          bold yellow
+swapnum         blue on_white
+create          bold white
+swapin          bold white
+swapout         bold white
+release         bold white
+mac             bold white
+version         bold white
+address         bold white
+numbers         white
+signal          bold yellow
+service         bold magenta
+prot            magenta
+bad             bold yellow
+good            bold green
+system          bold cyan
+incoming        bold white
+outgoing        white
+uniqn           bold white
+repeat          white
+field           green
+chain           cyan
+percentage      bold yellow
+ftpcodes        cyan
+keyword         bold yellow
+pkgstatus       green
+pkg             bold red
+
+# CSS codes for the HTML output (Dark Theme)
+
+cssbody         #291127          # dunkler Hintergrund (violett tief)
+
+cssblack        #07182a          # dunkelblau für "schwarze" Elemente
+cssboldblack    #2a0707          # tiefrot-dunkel als kräftigeres Schwarz
+
+cssred          #cf3023          # rot (ziegel)
+cssboldred      #ff0035          # rot (leuchtend)
+
+cssgreen        #549e00          # smaragdgrün
+cssboldgreen    #6f9509          # olivgrün
+
+cssyellow       #ffd75d          # gelb pastell
+cssboldyellow   #fdaa38          # orange hell
+
+cssblue         #64b7cc          # blau mittel
+cssboldblue     #0599c2          # blau himmel
+
+csscyan         #1790ae          # blau türkis
+cssboldcyan     #33e5e5          # türkis leuchtend
+
+cssmagenta      #502962          # violett dunkel
+cssboldmagenta  #f858ff          # magenta hell
+
+csswhite        #f8eec4          # beige hell
+cssboldwhite    #ffffff          # weiß
+

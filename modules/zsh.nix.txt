@@ -71,8 +71,8 @@ powerlevel10k_plugin_unload
 ##########
  # _error_echo "Failed to load powerlevel10k from system path. Falling back to default prompt."
 p10k_loaded=0
-# Powerlevel10k laden
-  if [[ -f ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme]]; then
+# Powerlevel10k laden the ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme]
+  if [[ -f /run/current-system/sw/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme]]; then
     source /run/current-system/sw/share/zsh/themes/powerlevel10k/powerlevel10k.zsh-theme 2>/dev/null
   else
     p10k_loaded=1

@@ -8,163 +8,57 @@
         █   ██    █▐       ▀            ▀           █   ██         
 #---------------   ▐   ------------------------------------------ */
 # System-wide environment configuration for NixOS
-# 
 # This module manages:
 # - System-wide environment variables
 # - User session variables (via PAM)
 # - XDG Base Directory compliance
 # - User/group configuration
 # - Activation scripts for permissions
-## nix-env -qaP '*' --description # You can get a list of the available packages as follows:
-# lsblk -f --topology --ascii --all --list 
-# setxkbmap -query -v
-
-# https://github.com/Misterio77/flavours
-# https://www.youtube.com/watch?v=AGVXJ-TIv3Y
 
 { config, pkgs, lib, ... }:
 {
-  # ============================================================================
-  # ACTIVATION SCRIPTS
-  # Display system changes on rebuild
+#####################################################
+# SECTION SCHEMA: system.activationScripts
+# Purpose:
+#   Declarative system activation helpers executed during rebuild.
+# Constraints:
+#   - Must be idempotent
+#   - Must not mutate persistent state
+#   - Must not rely on user input
   system.activationScripts.diff = {
     supportsDryActivation = true;
-    text = '' 
-      ${pkgs.nvd}/bin/nvd --color auto --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+    text = ''
+      ${pkgs.nvd}/bin/nvd \
+        --color auto \
+        --nix-bin-dir=${pkgs.nix}/bin \
+        diff /run/current-system "$systemConfig"
     '';
   };
 
-  # ============================================================================
-  # SYSTEM-WIDE ENVIRONMENT VARIABLES (environment.variables)
-  # Used by: CLI tools, systemd services, non-GUI applications
-  # Context: Available to all processes, set during shell initialization
+  ###################################################
+  # SECTION SCHEMA: environment.variables
+  # Scope:
+  #   - Global (system-wide)
+  # Purpose:
+  #   - Non-session-specific environment variables
+  #   - Package paths resolved at build-time
+  # Constraints:
+  #   - No $HOME or user-specific variables
+  #   - Only absolute paths or Nix store references
   environment.variables = {
-    # --- Core System Tools ---
+  # Absolute Pfade ohne User-Abhängigkeit gehören in variables.
+    
+    # Build-time package path interpolation
     EDITOR = "${pkgs.micro}/bin/micro";
-    VISUAL = "${pkgs.micro}/bin/micro";
     SYSTEMD_EDITOR = "${pkgs.micro}/bin/micro";
-  # in .zshrc:
-  /*
-    # --- Man Page Rendering ---
-    # Use bat for syntax-highlighted man pages
-    # Note: 'col -bx' strips backspaces for clean text processing
     MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
-    # --- Pager Configuration ---
     PAGER = "${pkgs.less}/bin/less -R";
+    
+    # Static configuration values
     LESS = "R --use-color -Dd+r -Du+b";
- */   
-    # --- Nix-Specific ---
     NIX_INDEX_DATABASE = "/share/nix-index";
     
-    # --- Build Tools ---
-    # Rust cargo home directory
-    CARGO_HOME = "\${HOME}/.config/cargo";
-    
-    # Go language paths
-    GOPATH = "\${XDG_DATA_HOME}/go";
-    GOBIN = "\${XDG_DATA_HOME}/go/bin";
-    GOMODCACHE = "\${XDG_CACHE_HOME}/go/mod";
-  };
-  # ============================================================================
-  
-  # ============================================================================
-  # SESSION VARIABLES (environment.sessionVariables)
-  # 
-  # Used by: Graphical sessions, desktop environments, GUI applications
-  # Context: Set via PAM during login, available to user sessions
-  # 
-  # CRITICAL PAM LIMITATIONS:
-  # - Cannot use command substitutions: $(command)
-  # - Cannot use unquoted dollar signs: use \${VAR} instead
-  # - Cannot contain double quotes
-  # - Cannot span multiple lines
-  # - Complex values must go in shell init files
-  
-  environment.sessionVariables = {
-    # --- XDG Base Directory Specification ---
-    # Standard directories for user data/config
-    # Using \${HOME} syntax for PAM compatibility
-    XDG_CACHE_HOME = "\${HOME}/.cache";
-    XDG_CONFIG_HOME = "\${HOME}/.config";
-    XDG_DATA_HOME = "\${HOME}/.local/share";
-    XDG_STATE_HOME = "\${HOME}/.local/state";
-    XDG_RUNTIME_DIR = "/run/user/\${UID}";
-    
-    # ────────────────────────────────────────────────────────────────────────
-    # COSMIC Desktop Environment + Wayland Session Configuration
-    # ────────────────────────────────────────────────────────────────────────
-    
-    # --- Session Type ---
-    XDG_SESSION_TYPE = "wayland";
-    XDG_CURRENT_DESKTOP = "COSMIC";
-    XDG_SESSION_DESKTOP = "COSMIC";
-    
-    # --- GTK Toolkit (GTK3/GTK4) ---
-    GDK_BACKEND = "wayland,x11";  # Prefer Wayland, fallback to X11
-    GDK_SCALE = "1";              # UI scaling factor
-    GDK_DPI_SCALE = "1.0";        # DPI scaling
-    GTK2_RC_FILES = "\${XDG_CONFIG_HOME}/gtk-2.0/gtkrc-2.0";
-    
-    # --- Qt Toolkit (Qt5/Qt6) ---
-    QT_QPA_PLATFORM = "wayland;xcb";           # Platform plugin order
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1"; # Let compositor handle decorations
-    QT_AUTO_SCREEN_SCALE_FACTOR = "0";         # Disable auto-scaling
-    
-    # --- SDL (Games/Emulators) ---
-    SDL_VIDEODRIVER = "wayland,x11";  # Video driver preference
-    SDL_JOYSTICK_HIDAPI = "1";        # Enable modern joystick support
-    
-    # --- Mozilla Firefox ---
-    MOZ_ENABLE_WAYLAND = "1";  # Enable Wayland backend
-    MOZ_USE_XINPUT2 = "1";     # Better input handling
-    
-    # --- Electron/Chromium Applications ---
-    NIXOS_OZONE_WL = "1";      # NixOS-specific Wayland enabler
-    OZONE_PLATFORM = "wayland"; # Force Wayland platform
-    
-    # --- Legacy Toolkits ---
-    CLUTTER_BACKEND = "wayland";
-    ELM_ENGINE = "wayland_egl";
-    
-    # --- Display/Color Management ---
-    WLR_DRM_NO_ATOMIC = "0";   # Use atomic modesetting (better performance)
-    COLOR_MANAGEMENT = "0";     # Disable color management (COSMIC limitation)
-    
-    # ────────────────────────────────────────────────────────────────────────
-    # XDG-Compliant Application Configurations
-    # Moving configs from home directory to XDG standard locations
-    # ────────────────────────────────────────────────────────────────────────
-    
-    # --- History Files ---
-    LESSHISTFILE = "\${XDG_CACHE_HOME}/less_history";
-    PYTHON_HISTORY = "\${XDG_DATA_HOME}/python/history";
-    
-    # --- X11 Configuration (if needed for compatibility) ---
-    XINITRC = "\${XDG_CONFIG_HOME}/x11/xinitrc";
-    XPROFILE = "\${XDG_CONFIG_HOME}/x11/xprofile";
-    XRESOURCES = "\${XDG_CONFIG_HOME}/x11/xresources";
-    XAUTHORITY = "\${XDG_RUNTIME_DIR}/Xauthority";
-    
-    # --- Development Tools ---
-    WGETRC = "\${XDG_CONFIG_HOME}/wget/wgetrc";
-    PYTHONSTARTUP = "\${XDG_CONFIG_HOME}/python/pythonrc";
-    GNUPGHOME = "\${XDG_DATA_HOME}/gnupg";
-    
-    # --- Build Systems & Package Managers ---
-# -> npm.nix
-    GRADLE_USER_HOME = "\${XDG_DATA_HOME}/gradle";
-    NUGET_PACKAGES = "\${XDG_CACHE_HOME}/NuGetPackages";
-    
-    # --- Miscellaneous ---
-    PARALLEL_HOME = "\${XDG_CONFIG_HOME}/parallel";
-    FFMPEG_DATADIR = "\${XDG_CONFIG_HOME}/ffmpeg";
-    ANDROID_SDK_HOME = "\${XDG_DATA_HOME}/android";
-    VAGRANT_HOME = "\${XDG_DATA_HOME}/vagrant";
-    W3M_DIR = "\${XDG_DATA_HOME}/w3m";
-    WWW_HOME = "\${HOME}/.config/w3m";
-    
-    # --- Custom Application Configs ---
-    # These are specific to your setup
+    # Shared system-wide paths (not user-dependent)
     TEALDEER_CONFIG_DIR = "/share/zsh/tldr";
     NAVI_CONFIG = "/share/zsh/navi/config.yaml";
     GIT_CONFIG = "/share/zsh/git/config";
@@ -172,70 +66,204 @@
     KITTY_CONFIG_DIRECTORY = "/share/kitty";
   };
 
-  # ============================================================================
-  # SHELL CONFIGURATION FILES
-  # Complex variables that cannot be set via PAM go here
-  
-  # --- Less Termcap Colors for Colored Man Pages ---
-  environment.etc."zsh/less-termcap.sh".text = ''
-    # Colored man pages via less termcap
-    export LESS_TERMCAP_mb=$(printf '\033[1;31m')      # blinking - red
-    export LESS_TERMCAP_md=$(printf '\033[1;36m')      # bold - cyan
-    export LESS_TERMCAP_me=$(printf '\033[0m')         # end mode
-    export LESS_TERMCAP_so=$(printf '\033[01;44;33m')  # standout - yellow on blue
-    export LESS_TERMCAP_se=$(printf '\033[0m')         # end standout
-    export LESS_TERMCAP_us=$(printf '\033[1;32m')      # underline - green
-    export LESS_TERMCAP_ue=$(printf '\033[0m')         # end underline
-  '';
+  ###################################################
+  # SECTION SCHEMA: environment.sessionVariables
+  # Scope:
+  #   - Session-local (per-user login scope)
+  # Purpose:
+  #   - XDG base directories
+  #   - Wayland/COSMIC configuration
+  #   - User-specific application paths
+  # Expansion:
+  #   - Shell expands variables at runtime
+  # Tests:
+  #   - env | grep XDG
+  #   - echo $XDG_CONFIG_HOME (after login)
 
-  # ============================================================================
-  # XDG USER DIRECTORIES
-  # German directory names
-    environment.etc."xdg/user-dirs.defaults".text = ''
+  environment.sessionVariables = {
+    # XDG Base Directory Specification
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
+    XDG_RUNTIME_DIR = "/run/user/$UID";
+    
+    # Default applications
+    VISUAL = "${pkgs.gnome-text-editor}/bin/gnome-text-editor";
+    
+    # Wayland/COSMIC session configuration
+    XDG_SESSION_TYPE = "wayland";
+    XDG_CURRENT_DESKTOP = "COSMIC";
+    XDG_SESSION_DESKTOP = "COSMIC";
+    
+    # GTK configuration
+    GDK_BACKEND = "wayland,x11";
+    GDK_SCALE = "1";
+    GDK_DPI_SCALE = "1.0";
+    GTK2_RC_FILES = "$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0";
+    
+    # Qt configuration
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    QT_AUTO_SCREEN_SCALE_FACTOR = "0";
+    
+    # SDL configuration
+    SDL_VIDEODRIVER = "wayland,x11";
+    SDL_JOYSTICK_HIDAPI = "1";
+    
+    # Mozilla applications
+    MOZ_ENABLE_WAYLAND = "1";
+    MOZ_USE_XINPUT2 = "1";
+    
+    # Chromium/Electron Wayland support
+    NIXOS_OZONE_WL = "1";
+    OZONE_PLATFORM = "wayland";
+    
+    # Additional Wayland backends
+    CLUTTER_BACKEND = "wayland";
+    ELM_ENGINE = "wayland_egl";
+    
+    LESSHISTFILE = "$XDG_CACHE_HOME/less_history";
+    PYTHON_HISTORY = "$XDG_DATA_HOME/python/history";
+    
+    # X11 configuration files (XDGWayland-Compositor initialisiert direkt ohne .xinitrc. XWayland wird automatisch vom Compositor gestartet)
+    XINITRC = "$XDG_CONFIG_HOME/x11/xinitrc";
+    # .xprofile wird nur bei X11-Sessions durch Display-Manager geparst. Wayland-Sessions nutzen andere Mechanismen (systemd user services, compositor configs)
+    XPROFILE = "$XDG_CONFIG_HOME/x11/xprofile";
+    # Native Wayland-Apps: Ignorieren .Xresources komplett.XWayland-Apps: Können .Xresources lesen, wenn xrdb geladen wurde
+    XRESOURCES = "$XDG_CONFIG_HOME/x11/xresources";
+    # XWayland benötigt dies: Authentifizierung zwischen Wayland-Compositor und XWayland-Server
+    XAUTHORITY = "$XDG_RUNTIME_DIR/Xauthority";
+    
+    # Development tools (XDG compliance)
+    CARGO_HOME = "$XDG_DATA_HOME/cargo";
+    GOPATH = "$XDG_DATA_HOME/go";
+    GOBIN = "$XDG_DATA_HOME/go/bin";
+    GOMODCACHE = "$XDG_CACHE_HOME/go/mod";
+    
+    # Application-specific XDG paths
+    WGETRC = "$XDG_CONFIG_HOME/wget/wgetrc";
+    PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/pythonrc";
+    GNUPGHOME = "$XDG_DATA_HOME/gnupg";
+    GRADLE_USER_HOME = "$XDG_DATA_HOME/gradle";
+    NUGET_PACKAGES = "$XDG_CACHE_HOME/NuGetPackages";
+    ANDROID_SDK_HOME = "$XDG_DATA_HOME/android";
+    VAGRANT_HOME = "$XDG_DATA_HOME/vagrant";
+    W3M_DIR = "$XDG_DATA_HOME/w3m";
+    WWW_HOME = "$XDG_CONFIG_HOME/w3m";
+    FFMPEG_DATADIR = "$XDG_CONFIG_HOME/ffmpeg";
+    PARALLEL_HOME = "$XDG_CONFIG_HOME/parallel";
+  };
+  ##########################################################
+  # SECTION SCHEMA: environment.etc
+  # Purpose:
+  #   - Declarative, read-only configuration files
+  # Constraints:
+  #   - No secrets
+  #   - Deterministic content only
+  # Security:
+  #   - Read-only in /etc
+  environment.etc."zsh/less-termcap.sh".text = ''
+    export LESS_TERMCAP_mb=$(printf '\033[1;31m')
+    export LESS_TERMCAP_md=$(printf '\033[1;36m')
+    export LESS_TERMCAP_me=$(printf '\033[0m')
+    export LESS_TERMCAP_so=$(printf '\033[01;44;33m')
+    export LESS_TERMCAP_se=$(printf '\033[0m')
+    export LESS_TERMCAP_us=$(printf '\033[1;32m')
+    export LESS_TERMCAP_ue=$(printf '\033[0m')
+  '';
+##########################################################
+  
+  # SECTION SCHEMA: systemd.user.tmpfiles.rules
+  # Purpose:
+  #   - Ensure standard user directories exist
+  # Constraints:
+  #   - Must be idempotent
+  #   - Must not delete user data
+  # Tests:
+  #   - systemd-tmpfiles --user --create
+####
+  systemd.user.tmpfiles.rules = [
+    "d %h/desktop 0755 - - -"
+    "d %h/downloads 0755 - - -"
+    "d %h/dokumente 0755 - - -"
+    "d %h/dokumente/vorlagen 0755 - - -"
+    "d %h/music 0755 - - -"
+    "d %h/bilder 0755 - - -"
+    "d %h/videos 0755 - - -"
+    "d %h/public 0755 - - -"
+
+    "L+ %h/desktop/pix.desktop - - - - /run/current-system/sw/share/applications/pix.desktop"
+  ];
+
+##########################################################
+   # SECTION SCHEMA: XDG user-dirs configuration
+  # Purpose:
+  #   - Define localized directory names
+  # Constraints:
+  #   - Must match tmpfiles layout
+  ##########################################################################
+  environment.etc."xdg/user-dirs.defaults".text = ''
     DESKTOP=desktop
-    DOCUMENTS=dokumente
     DOWNLOAD=downloads
+    TEMPLATES=dokumente/vorlagen
+    PUBLICSHARE=public
+    DOCUMENTS=dokumente
     MUSIC=music
     PICTURES=bilder
-    PUBLICSHARE=public
-    TEMPLATES=dokumente/vorlagen
     VIDEOS=videos
   '';
-# Enable NixOS-specific documentation, including the NixOS manual
+
+  environment.etc."xdg/user-dirs.conf".text = ''
+    enabled=False
+    filename_encoding=UTF-8
+  '';
+
+ ##########################################################
+    # SECTION SCHEMA: documentation
+  # Purpose:
+  #   - Provide offline documentation and man pages
+  # Constraints:
+  #   - Cache generation must be deterministic
+  ############################################################
   documentation.nixos.enable = true;
-  # Enable system-wide man pages. This uses man-db by default.
   documentation.man.enable = true;
-  # Crucially, enable the generation of the 'whatis' database cache.
-  # This is required for search functionality like 'man -k' and our fzf widget.
   documentation.man.generateCaches = true;
   documentation.man.man-db.enable = true;
-  # documentation.man.mandoc.manPath [ "share/man" "share/man/de" ]
 
-  # ============================================================================
-  # ADDITIONAL SYSTEM SETTINGS
   environment.extraOutputsToInstall = [
-       "info"        "man"
-  ];   
-  # Add ~/bin to PATH
-  environment.homeBinInPath = true;
-  # Add ~/.local/bin/ to $PATH
-  environment.localBinInPath = true;
+    "info"
+    "man"
+  ];
+
+ ##########################################################
+  # SECTION SCHEMA: PATH handling
+  # Purpose:
+  #   - Ensure standard binary locations are reachable
+  # Constraints:
+  #   - Linked paths must be immutable or store-backed
+ ##########################################################
   
+  environment.homeBinInPath = true;
+  environment.localBinInPath = true;
+
+  environment.pathsToLink = [
+    "/share/icons"
+    "/share/zsh"
+    "/share/wallpaper"
+    "/bin"
+    "/etc/xdg"
+    "/sbin"
+    "/share/themes"
+    "/share/thumbnailers"
+    "/share/systemd"
+  ];
+}
+/*
+
+
  # environment.extraSetup 
-  # Create symlinks to share directories # /run/current-system/sw/share/applications...
-#
-## tshoot: /run/current-system/sw/ ...  (share/icons)
-    environment.pathsToLink = [
-  "/share/icons"  # Alle Icon-Themes zusammenführen     
-  "/share/zsh"    # Alle Zsh-Themes/Plugins zusammenführen
-  "/share/wallpaper"
-  "/bin"
-  "/etc/xdg"
- "/sbin"
-  "/share/themes"
-  "/share/thumbnailers"
-  "/share/systemd"
-];
+
 /*
 **`/share/icons`** → Dein Desktop (COSMIC) findet:
    - Papirus Icons
@@ -243,7 +271,7 @@
    - Alle anderen installierten Icon-Themes
    - **Ohne dies:** Broken Icons in Apps!
 
-2. **`/share/zsh`** → Deine Zsh-Shell findet:
+**`/share/zsh`** → Deine Zsh-Shell findet:
    - Powerlevel10k Theme
    - Syntax-Highlighting Plugin
    - Autosuggestions Plugin
@@ -260,5 +288,4 @@ System-Profil (vereint):
   ├── Papirus/ → zeigt auf /nix/store/abc-papirus/...
   └── Kora/ → zeigt auf /nix/store/def-kora/...
 */
-}
 

@@ -27,7 +27,7 @@ let
   # If you prefer runtime-determined values, export them as env vars
   # and avoid interpolating them at build time.
   ZDOTDIR = "/share/zsh";
-   ZFUNC = "/share/zsh/functions";
+  ZFUNC = "/share/zsh/functions";
   SHARE   = "/share";
   PRO = "/home/project/";
   here = builtins.toString ./.;
@@ -41,7 +41,6 @@ environment.variables.SHARE = SHARE;
 environment.variables.PRO = PRO; 
 
 # B: CustomRC = builtins.readFile ../includes/init.vim;
-
 
  #### Dateien nach /share/zsh deployen ####
  # environment.etc wird verwendet, um Dateien in /etc zu platzieren 
@@ -58,7 +57,7 @@ environment.etc."zsh/zshActiveDirExist.sh".source = "${here}/../assets/shell/zsh
 environment.etc."zsh/zsh-highlight-styles.zsh".source = "${here}/../assets/shell/zsh-highlight-styles.zsh";
 
 # export cols for echo, printf
- environment.etc."colorEnvExport.sh" = {
+ environment.etc."zsh/colorEnvExport.sh" = {
       text = ''
         # Use 24-bit RGB colors (modern terminals like kitty)
         readonly RED=$'\033[38;2;240;128;128m\033[48;2;139;0;0m'
@@ -120,7 +119,8 @@ environment.shellAliases = {
     	package = pkgs.nix-index;
     	enableZshIntegration = true;    
     	};
-  # programs.pay-respects = true; #  This usually happens if `programs.pay-respects' has option        definitions inside that are not matched. Please check how to properly define       this option by e.g. referring to `man 5 configuration.nix'!insteadt  programs.thefuck
+  
+  # insteadt  programs.thefuck
   programs.pay-respects.enable = true;
   # You can also set a custom API endpoint, large language model and locale for command corrections. Simply access the aiIntegration.url, aiIntegration.model and aiIntegration.locale options, as described in the example.
   #    Take a look at the services.ollama NixOS module if you wish to host a local large language model for pay-respects.
@@ -180,7 +180,7 @@ programs.fzf.keybindings = false;
      autosuggestions.enable = true; 
      #autosuggestions.strategy = "history";  
 
-# Shell variables (werden in .zshrc gesetzt)
+# Shell variables (werden in .zshenv gesetzt)
     shellInit = ''
  # --- Completion setup ---
  # Ensure compinit is loaded safely. Use -u to avoid insecure directories warning.
@@ -194,8 +194,6 @@ programs.fzf.keybindings = false;
         printf "Warning: compinit failed. Check permissions of fpath directories.\n" >&2
       fi
       fpath=(
-        $ZDOTDIR/functions(N)
-        $ZDOTDIR/prompt(N)
         $ZDOTDIR(N)
         $fpath
       )
@@ -206,8 +204,7 @@ programs.fzf.keybindings = false;
       export HISTTIMEFORMAT="%Y-%m-%d %H:%M "
       export DIRSTACKSIZE=9
       export REPORTTIME=3
-      export COLUMNS=60
-
+      export COLUMNS=80
       ########################################################
       # EZA Konfiguration
       export EZA_ICONS_AUTO="auto"
@@ -219,8 +216,6 @@ programs.fzf.keybindings = false;
       export EZA_COLORS="$LS_COLORS:hd=38;5;226:\
       uu=38;5;202:gu=38;5;208:da=38;5;111:\
       uR=38;5;197:uG=38;5;198"
-
-
     '';
  
 # ----------------------------------
@@ -229,9 +224,17 @@ programs.fzf.keybindings = false;
  # Prompt initialization (executed at build-time into the generated file) 
  # Enable Powerlevel10k prompt with fallback
   ##### ZSH-PROMPT: #####################################
- promptInit = ''
- source ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-   '';
+  # promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+  # ... .zshrc
+ promptInit = '' 
+  [[ -f ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme ]] && \
+  source ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme
+   
+  [[ -f source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme ]] && \
+  ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+  
+  [[ -f /etc/zsh/colorEnvExport.sh ]] && source /etc/zsh/colorEnvExport.sh
+ '';
 # entspricht der .zshrc ------
 interactiveShellInit = ''
 # Load FZF configuration
@@ -240,16 +243,14 @@ interactiveShellInit = ''
 # if [[ -f "${pkgs.nix-index}/etc/profile.d/command-not-found.sh"  ]]; then 
 # source "${pkgs.nix-index}/etc/profile.d/command-not-found.sh"
  
-  ##  ZSH DIRECTORY STACK - DS
+##  ZSH DIRECTORY STACK - DS
      alias -g D='dirs -v'
      for index ({1..9}) alias "$index"="cd -$index"
 
 # not needed, because sourcing zshrc (normally automatic)
 #if [[ -f "$ZDOTDIR/.zshrc" ]]; then 
 #       source "$ZDOTDIR/.zshrc" 
-# fi    
-      source /etc/shell-colors.sh
-      
+# fi         
 '';
 
  setOptions = [  # see man 1 zshoptions
@@ -314,7 +315,8 @@ environment.systemPackages = with pkgs; [
 micro-with-wl-clipboard # Modern and intuitive terminal-based text editor
   kitty # Terminal emulator
   lsd # Modern ls command
-  colordiff # Colored diff tool
+  colordiff # Colored diff toolsource /etc/zsh/colorEnvExport.sh
+ 
   lscolors # Colorize paths using LS_COLORS
   lcms # Color management engine
   terminal-colors # Display terminal colors

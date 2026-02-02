@@ -1,9 +1,12 @@
 { config, pkgs, lib, ... }:
-
+## nix-env -qaP '*' --description # You can get a list of the available packages as follows:
+# lsblk -f --topology --ascii --all --list 
+# setxkbmap -query -v
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/boot.nix # grub2 & lightDM
+    #    ./test.nix # zum Testen neuer Konfig
     ./modules/enviroment.nix # ENV
  ./modules/user-n-permissions.nix
        ./modules/zsh.nix # shell
@@ -12,12 +15,13 @@
     ./modules/packages.nix # env.pkgs
     ./modules/audio.nix
     #    ./modules/docker.nix
+       #    ./modules/npm.nix
     ./modules/fonts.nix
     ./modules/logs.nix
     #   ./modules/python.nix # ehem.	./ld.nix
     ./modules/read-only/adBloxx.nix # ehem. ./AdBloxx.nix
     ./modules/read-only/tuxpaint.nix
-    ./test.nix # zum Testen neuer Konfig
+
   ];
 #-p, --priority: (1 aus:) emerg, alert, crit, err, warning, notice, info, debug , or #a value between 0 and 7
 #-t, --identifier: (STRING) eindeutiger Identifier (Tag), als Filter
@@ -170,17 +174,16 @@
     download-buffer-size = 268435456; # 256 MB
     #134217728;
     http-connections = 25; # Max parallel HTTP connections
-    max-jobs = "auto"; # Parallel builds
-    cores = 3; # 0=Use all available cores
+    max-jobs = 2; # Parallel builds
+    cores = 2; # 0=Use all available cores
       # Enable the Flakes feature and the accompanying new nix command-line tool
   # nixos.org/manual/nix/stable/contributing/experimental-features
   # "flakes"
-
     experimental-features =
       [ "nix-command" ]; # Aktiviert Cmds: nix search, nix run, nix shell
     #  extra-sandbox-paths = [ "/dev/nvidiactl" "/dev/nvidia0" "/dev/nvidia-uvm" ];
   #  Nix automatically detects files in the store that have identical contents, and replaces them with hard links to a single copy. This saves disk space. 
-  auto-optimise-store = true;
+    auto-optimise-store = true;
     sandbox = true;
     require-sigs =true;
   };
@@ -188,9 +191,6 @@
   services.printing.enable = false;
   # Enable touchpad support (enabled default in most desktopManager)
   services.libinput.enable = lib.mkForce false;
-
-
-
 
   # Some programs need SUID wrappers, can be configured further or are started in user sessions.
   # programs.mtr.enable = true;
@@ -246,21 +246,27 @@
      services.samba.nsswins = true;
      services.samba-wsdd.enable = true;
   */
-  programs.xwayland.enable = false; # Aktiviere XWayland
-  # programs.sway.enable = true;
-  programs.thunar.enable = lib.mkForce false; # Deaktiviere Thunar
-  #  programs.traceroute.enable = true; # Aktiviere Traceroute
-  programs.gnome-disks.enable = true; # Aktiviere GNOME Disks
+  # Some applicationsare built for X11. XWayland acts as a translator, allowing 
+  # these X11 windows to run inside my Wayland session
+  programs.xwayland.enable = true; 
+  # Deaktiviere Thunar
+  programs.thunar.enable = lib.mkForce false; 
+  #  programs.traceroute.enable = true; 
+  programs.gnome-disks.enable = true; 
   programs.git = {
     enable = true;
     prompt.enable = true; # Git-Prompt aktivieren
   };
 
-  services.postgresql.enable = true;
+  services.postgresql.enable = 
+    true;
+  # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
   services.vnstat.enable =
-    true; # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
-  services.playerctld.enable = false; # ac/dc/enable the playerctld daemon.
+    true; #
+ # ac/dc/enable the playerctld daemon.
   
+  services.playerctld.enable = 
+    false; 
   
   # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration, 
   system.stateVersion = "24.05"; # Did you read the comment?

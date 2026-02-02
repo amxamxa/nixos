@@ -90,8 +90,7 @@
       */
       ### --- Fallback auf Textmodus, falls Grafik scheitert ---
       extraConfig = ''
-          	
-        	if ! gfxterm; then
+          	if ! gfxterm; then
           		terminal_output console
         	fi
       '';
