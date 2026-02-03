@@ -353,7 +353,7 @@ micro-with-wl-clipboard # Modern and intuitive terminal-based text editor
   fff # file mgr
   navi cheat
   fzf # Command-line fuzzy finder
-  fzf-zsh # Fzf integration for Zsh
+  fzf-preview # Simple fzf preview script for previewing any filetype in fzf's preview window
   fzf-git-sh # Git utilities powered by fzf
  # mcfly # An upgraded ctrl-r where history results make sense
  #  mcfly-fzf # Integrate fzf to mcfly
