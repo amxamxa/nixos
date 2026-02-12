@@ -98,31 +98,23 @@
       # GLOBAL DEFAULTS
       # Applied to all log files unless overridden
       # ──────────────────────────────────────────────────────────────────
-      
       # Rotate logs weekly
       weekly
-      
       # Keep 4 weeks of rotated logs
       rotate 4
-      
       # Create new log file after rotation (with same permissions)
       create
-      
       # Add date extension to rotated files (e.g., logfile-20250111)
       dateext
       dateformat -%Y%m%d
-      
       # Compress old logs to save space
       compress
       delaycompress          # Don't compress the most recent rotation
-      
       # Don't error if log file is missing
       missingok
-      
       # Don't rotate empty log files
       notifempty
-      
-      # Use sharedscripts to run scripts once for all logs
+       # Use sharedscripts to run scripts once for all logs
       sharedscripts
       
       # ──────────────────────────────────────────────────────────────────
@@ -131,7 +123,7 @@
       # ──────────────────────────────────────────────────────────────────
       
       # Sudo logs (from environment.nix sudo configuration)
-      /var/log/sudo.log {
+      /var/log/nixos/sudo.log {
         weekly
         rotate 12              # Keep 3 months of sudo logs
         compress
@@ -141,7 +133,7 @@
       }
       
       # Custom permission management logs
-      /var/log/setPermissions.log {
+      /var/log/nixos/setPermissions.log {
         weekly
         rotate 4
         compress
@@ -335,10 +327,8 @@
     
     # View sudo log
     alias logssudo='sudo tail -f /var/log/nixos/sudo.log'
-    
     # View permissions log
     alias logsperm='sudo tail -f /var/log/nixos/setPermissions.log'
-    
     # View all custom logs
     alias logscustom='sudo tail -f /var/log/nixos/**/*.log'
   '';

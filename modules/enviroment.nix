@@ -123,36 +123,40 @@
     CLUTTER_BACKEND = "wayland";
     ELM_ENGINE = "wayland_egl";
     
-    LESSHISTFILE = "$XDG_CACHE_HOME/less_history";
-    PYTHON_HISTORY = "$XDG_DATA_HOME/python/history";
+    LESSHISTFILE = "$HOME/.cache/less_history";
     
-    # X11 configuration files (XDGWayland-Compositor initialisiert direkt ohne .xinitrc. XWayland wird automatisch vom Compositor gestartet)
-    XINITRC = "$XDG_CONFIG_HOME/x11/xinitrc";
-    # .xprofile wird nur bei X11-Sessions durch Display-Manager geparst. Wayland-Sessions nutzen andere Mechanismen (systemd user services, compositor configs)
-    XPROFILE = "$XDG_CONFIG_HOME/x11/xprofile";
-    # Native Wayland-Apps: Ignorieren .Xresources komplett.XWayland-Apps: Können .Xresources lesen, wenn xrdb geladen wurde
-    XRESOURCES = "$XDG_CONFIG_HOME/x11/xresources";
+    PYTHONSTARTUP = "$HOME/.config/python/pythonrc";
+    PYTHON_HISTORY = "$HOME/.local/share/python/history";
+    # X11 configuration files (XDGWayland-Compositor initialisiert direkt ohne 
+    # .xinitrc. XWayland wird automatisch vom Compositor gestartet)
+    XINITRC =  "$HOME/.config/x11/xinitrc";
+    # .xprofile wird nur bei X11-Sessions durch Display-Manager geparst. 
+    # Wayland-Sessions nutzen andere Mechanismen (systemd user services, compositor configs)
+    XPROFILE = "$HOME/.config/x11/xprofile";
+    # Native Wayland-Apps: Ignorieren .Xresources komplett.
+    # XWayland-Apps: Können .Xresources lesen, wenn xrdb geladen wurde
+    XRESOURCES = "$HOME/.config/x11/xresources";
     # XWayland benötigt dies: Authentifizierung zwischen Wayland-Compositor und XWayland-Server
+#    XAUTHORITY = "${XDG_RUNTIME_DIR}/Xauthority";
     XAUTHORITY = "$XDG_RUNTIME_DIR/Xauthority";
-    
     # Development tools (XDG compliance)
-    CARGO_HOME = "$XDG_DATA_HOME/cargo";
-    GOPATH = "$XDG_DATA_HOME/go";
-    GOBIN = "$XDG_DATA_HOME/go/bin";
-    GOMODCACHE = "$XDG_CACHE_HOME/go/mod";
+  CARGO_HOME = "$HOME/.local/share/cargo";
+  GOBIN = "$HOME/.local/share/go/bin";
+  GOMODCACHE = "$HOME/.cache/go/mod";
+  GOPATH = "$HOME/.local/share/go";
     
     # Application-specific XDG paths
-    WGETRC = "$XDG_CONFIG_HOME/wget/wgetrc";
-    PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/pythonrc";
-    GNUPGHOME = "$XDG_DATA_HOME/gnupg";
-    GRADLE_USER_HOME = "$XDG_DATA_HOME/gradle";
-    NUGET_PACKAGES = "$XDG_CACHE_HOME/NuGetPackages";
-    ANDROID_SDK_HOME = "$XDG_DATA_HOME/android";
-    VAGRANT_HOME = "$XDG_DATA_HOME/vagrant";
-    W3M_DIR = "$XDG_DATA_HOME/w3m";
-    WWW_HOME = "$XDG_CONFIG_HOME/w3m";
-    FFMPEG_DATADIR = "$XDG_CONFIG_HOME/ffmpeg";
-    PARALLEL_HOME = "$XDG_CONFIG_HOME/parallel";
+    ANDROID_HOME = "$HOME/.local/share/android";
+  FFMPEG_DATADIR = "$HOME/.config/ffmpeg";
+  GNUPGHOME = "$HOME/.local/share/gnupg";
+  GRADLE_USER_HOME = "$HOME/.local/share/gradle";
+#  GTK2_RC_FILES = "$HOME/.config/gtk-2.0/gtkrc-2.0";
+  NUGET_PACKAGES = "$HOME/.cache/NuGetPackages";
+  PARALLEL_HOME = "$HOME/.config/parallel";
+  VAGRANT_HOME = "$HOME/.local/share/vagrant";
+  W3M_DIR = "$HOME/.local/share/w3m";
+  WGETRC = "$HOME/.config/wget/wgetrc";
+  
   };
   ##########################################################
   # SECTION SCHEMA: environment.etc

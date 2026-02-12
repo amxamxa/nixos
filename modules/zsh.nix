@@ -30,6 +30,7 @@ let
   ZFUNC = "/share/zsh/functions";
   SHARE   = "/share";
   PRO = "/home/project/";
+  NDIR = "/etc/nixos";
   here = builtins.toString ./.;
 in
 {
@@ -39,6 +40,7 @@ environment.variables.ZDOTDIR = ZDOTDIR;
 environment.variables.ZFUNC = ZFUNC;
 environment.variables.SHARE = SHARE; 
 environment.variables.PRO = PRO; 
+environment.variables.NDIR = NDIR; 
 
 # B: CustomRC = builtins.readFile ../includes/init.vim;
 
@@ -57,46 +59,48 @@ environment.etc."zsh/zshActiveDirExist.sh".source = "${here}/../assets/shell/zsh
 environment.etc."zsh/zsh-highlight-styles.zsh".source = "${here}/../assets/shell/zsh-highlight-styles.zsh";
 
 # export cols for echo, printf
- environment.etc."zsh/colorEnvExport.sh" = {
+ environment.etc."colorEnvExport.sh" = {
       text = ''
-        # Use 24-bit RGB colors (modern terminals like kitty)
-        readonly RED=$'\033[38;2;240;128;128m\033[48;2;139;0;0m'
-        readonly GELB=$'\e[33m'
-        readonly GREEN=$'\033[38;2;0;255;0m\033[48;2;0;100;0m'
-        readonly PINK=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
-        readonly LILA=$'\033[38;2;255;105;180m\033[48;2;75;0;130m'
-        readonly LIL2=$'\033[38;2;239;217;129m\033[48;2;59;14;122m'
-        readonly VIO=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
-        readonly BLUE=$'\033[38;2;252;222;90m\033[48;2;0;0;139m'
-        readonly LIME=$'\033[38;2;6;88;96m\033[48;2;0;255;255m'
-        readonly YELLO=$'\033[38;2;255;215;0m\033[48;2;60;50;0m'
-        readonly LAVEN=$'\033[38;2;200;170;255m\033[48;2;40;30;70m'
-        readonly PINK2=$'\033[38;2;255;105;180m\033[48;2;60;20;40m'
-        readonly RASPB=$'\033[38;2;190;30;90m\033[48;2;50;10;30m'
-        readonly VIOLE=$'\033[38;2;170;0;255m\033[48;2;30;0;60m'
-        readonly ORANG=$'\033[38;2;255;140;0m\033[48;2;60;30;0m'
-        readonly CORAL=$'\033[38;2;255;110;90m\033[48;2;70;30;20m'
-        readonly GOLD=$'\033[38;2;255;200;60m\033[48;2;80;60;10m'
-        readonly OLIVE=$'\033[38;2;120;140;40m\033[48;2;40;50;20m'
-        readonly PETRO=$'\033[38;2;0;160;160m\033[48;2;0;40;40m'
-        readonly CYAN=$'\033[38;2;80;220;220m\033[48;2;0;50;50m'
-        readonly GREY=$'\033[38;2;200;200;200m\033[48;2;60;60;60m'
-        readonly TEAL=$'\033[38;2;0;180;140m\033[48;2;0;60;50m'
-        readonly MINT=$'\033[38;2;150;255;200m\033[48;2;20;60;40m'
-        readonly SKY=$'\033[38;2;120;200;255m\033[48;2;30;60;80m'
-        readonly PLUM=$'\033[38;2;180;80;200m\033[48;2;50;20;60m'
-        readonly BROWN=$'\033[38;2;160;110;60m\033[48;2;50;30;10m'
-        readonly IVORY=$'\033[38;2;255;250;220m\033[48;2;80;70;50m'
-        readonly SLATE=$'\033[38;2;150;160;170m\033[48;2;40;50;60m'
-        readonly INDIG=$'\033[38;2;90;0;130m\033[48;2;30;0;50m'
-        readonly EMBER=$'\033[38;2;255;80;40m\033[48;2;60;20;10m'
-        readonly BOLD=$'\033[1m'
-        readonly BLINK=$'\033[5m'
-        readonly UNDER=$'\033[4m'
-        readonly RESET=$'\033[0m'
+      #!/usr/bin/env bash
+        # kittey term support 24-bit RGB colors 
+        export RED=$'\033[38;2;240;128;128m\033[48;2;139;0;0m'
+        export GELB=$'\e[33m'
+        export GREEN=$'\033[38;2;0;255;0m\033[48;2;0;100;0m'
+        export PINK=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
+        export LILA=$'\033[38;2;255;105;180m\033[48;2;75;0;130m'
+        export LIL2=$'\033[38;2;239;217;129m\033[48;2;59;14;122m'
+        export VIO=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
+        export BLUE=$'\033[38;2;252;222;90m\033[48;2;0;0;139m'
+        export LIME=$'\033[38;2;6;88;96m\033[48;2;0;255;255m'
+        export YELLO=$'\033[38;2;255;215;0m\033[48;2;60;50;0m'
+        export LAVEN=$'\033[38;2;200;170;255m\033[48;2;40;30;70m'
+        export PINK2=$'\033[38;2;255;105;180m\033[48;2;60;20;40m'
+        export RASPB=$'\033[38;2;190;30;90m\033[48;2;50;10;30m'
+        export VIOLE=$'\033[38;2;170;0;255m\033[48;2;30;0;60m'
+        export ORANG=$'\033[38;2;255;140;0m\033[48;2;60;30;0m'
+        export CORAL=$'\033[38;2;255;110;90m\033[48;2;70;30;20m'
+        export GOLD=$'\033[38;2;255;200;60m\033[48;2;80;60;10m'
+        export OLIVE=$'\033[38;2;120;140;40m\033[48;2;40;50;20m'
+        export PETRO=$'\033[38;2;0;160;160m\033[48;2;0;40;40m'
+        export CYAN=$'\033[38;2;80;220;220m\033[48;2;0;50;50m'
+        export GREY=$'\033[38;2;200;200;200m\033[48;2;60;60;60m'
+        export TEAL=$'\033[38;2;0;180;140m\033[48;2;0;60;50m'
+        export MINT=$'\033[38;2;150;255;200m\033[48;2;20;60;40m'
+        export SKY=$'\033[38;2;120;200;255m\033[48;2;30;60;80m'
+        export PLUM=$'\033[38;2;180;80;200m\033[48;2;50;20;60m'
+        export BROWN=$'\033[38;2;160;110;60m\033[48;2;50;30;10m'
+        export IVORY=$'\033[38;2;255;250;220m\033[48;2;80;70;50m'
+        export SLATE=$'\033[38;2;150;160;170m\033[48;2;40;50;60m'
+        export INDIG=$'\033[38;2;90;0;130m\033[48;2;30;0;50m'
+        export EMBER=$'\033[38;2;255;80;40m\033[48;2;60;20;10m'
+        export BOLD=$'\033[1m'
+        export BLINK=$'\033[5m'
+        export UNDER=$'\033[4m'
+        export RESET=$'\033[0m'
       '';
       mode = "0444"; # read-only
     };
+    
 # globale aliase fuer zsh, bash, ...
 /* NIX-spezific:
 - Maskierung von Sonderzeichen (Escaping) beachten \"
@@ -110,6 +114,17 @@ environment.shellAliases = {
  	cp="cp -v";
   	rm="rm -v";
   	mv="mv -v";
+  # eza
+     e=''echo "eza (´FILE*´ for execute perm. ´DIR/´ for directory)" && eza --all --classify'';
+    ed=''echo "eza (only directories)" && eza --all --classify --only-dirs'';
+    ef=''echo "eza (only files)" && eza --all --classify --only-files'';
+    et=''echo "eza (sorted by time)" && eza --all --classify --sort time'';
+    ex=''echo "eza (sorted by extension)" && eza --all --classify --sort extension'';
+    es=''echo "eza (sorted by size)" && eza --all --classify --sort size'';
+    el=''echo "eza (long format)" && eza --all --classify --long'';
+    ee=''echo "eza (tree view)" && eza --all --classify --tree --level=2'';
+    eg=''echo "eza (git status)" && eza --all --classify --git'';
+ 
 };
 
 # Disable command-not-found in favor of nix-index    
@@ -119,47 +134,136 @@ environment.shellAliases = {
     	package = pkgs.nix-index;
     	enableZshIntegration = true;    
     	};
-  
-  # insteadt  programs.thefuck
+#-------------------
+#  pay-respects instedt  programs.thefuck
+#-------------------
+
   programs.pay-respects.enable = true;
   # You can also set a custom API endpoint, large language model and locale for command corrections. Simply access the aiIntegration.url, aiIntegration.model and aiIntegration.locale options, as described in the example.
   #    Take a look at the services.ollama NixOS module if you wish to host a local large language model for pay-respects.
    programs.pay-respects.aiIntegration = true;
-#===============================================
-  # FZF CONFIGURATION
-  # Fuzzy Finder für interaktive Shell-Nutzung
-programs.fzf.fuzzyCompletion = false;
-# Whether to enable fzf keybindings. 
-programs.fzf.keybindings = false; 
 
-# FZF configuration via environment file
-  environment.etc."zsh/fzf-confg.sh".text = ''
-  #----- FZF default option--------------------------------------------
-    # with Dracula theme
-    export FZF_DEFAULT_OPTS="--border rounded \
-      --color=dark \
-      --color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 \
-      --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 \
-      --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 \
-      --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4 \
-      --layout=reverse --height 40% --preview-window=right:60% \
-      --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} ist eine Binärdatei || (bat --style=numbers --color=always {} || cat {}) 2>/dev/null | head -300'"
-      
- #----- FZF CTRL-R options ----------------------------------------------------
-    #  for history search
-    export FZF_CTRL_R_OPTS="--border rounded \
-      --color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 \
-      --info inline --no-sort --no-preview \
-      --header '󰅍 Befehlshistory (Enter: Ausführen | CTRL-Y: Kopieren)'"
-      
- ### History Widget
-      fzfh() {
-      print -z "$(fc -rl 1 | fzf | sed 's/^[[:space:]]*[0-9]\+[[:space:]]*//')"
-      }
-      # keybinding
-      bindkey -s '^F' 'fh\n'
-      #--------------------
-  '';
+#-------------------
+# FZF CONFIGURATION
+#-------------------
+# Fuzzy Finder für interaktive Shell-Nutzung
+programs.fzf.fuzzyCompletion = true;
+# Whether to enable fzf keybindings. 
+programs.fzf.keybindings = true; 
+/*
+# Tests:
+fbrowse          # Datei-Browser
+fcode "TODO"     # Code suchen
+fgit             # Git-Dateien
+fcd              # Verzeichnis-Wechsel
+
+# Eingebaute Keybindings:
+# CTRL-T  → Datei suchen
+# ALT-C   → Verzeichnis wechseln
+# CTRL-R  → History
+# Beispiele:
+vim **<TAB>        # Datei-Suche mit FZF-Preview
+cd **<TAB>         # Verzeichnis-Suche mit FZF-Preview
+kill -9 **<TAB>    # Prozess-Auswahl mit FZF
+ssh **<TAB>        # Host-Auswahl
+*/
+# Umgebungsvariablen für FZF
+environment.etc."zsh/fzf-config.sh".text = ''
+  #----- FZF Base Configuration ------------------------------------
+  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+  
+  export FZF_DEFAULT_OPTS="
+    --border rounded
+    --color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9
+    --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9
+    --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6
+    --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4
+    --layout=reverse
+    --height=40%
+    --preview-window=right:60%:wrap
+    --preview='fzf-preview {}'
+    --bind='ctrl-/:change-preview-window(down|hidden|)'
+    --bind='ctrl-e:execute($EDITOR {})'
+    --bind='ctrl-y:execute-silent(echo {} | wl-copy)'
+  "
+  
+  #----- CTRL-T (File search) --------------------------------------
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_CTRL_T_OPTS="
+    --preview='fzf-preview {}'
+    --header='CTRL-E: Edit | CTRL-Y: Copy path | CTRL-/: Toggle preview'
+  "
+  
+  #----- ALT-C (Directory navigation) ------------------------------
+  export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+  export FZF_ALT_C_OPTS="
+    --preview='eza --tree --level=2 --color=always --icons {} 2>/dev/null || tree -C -L 2 {}'
+    --header='Select directory to cd into'
+  "
+  
+  #----- CTRL-R (History) ------------------------------------------
+  export FZF_CTRL_R_OPTS="
+    --no-preview
+    --info=inline
+    --no-sort
+    --header='󰅍 Command history (CTRL-Y: Copy)'
+    --bind='ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
+  "
+  
+  #----- TAB Completion Settings -----------------------------------
+  # Trigger für ** (wird durch programs.fzf.fuzzyCompletion aktiviert)
+  export FZF_COMPLETION_TRIGGER='**'
+  
+  # Preview für verschiedene Completion-Kontexte
+  export FZF_COMPLETION_OPTS="
+    --preview='
+      if [[ -f {} ]]; then
+        fzf-preview {}
+      elif [[ -d {} ]]; then
+        eza --tree --level=2 --color=always --icons {} 2>/dev/null || ls -lah {}
+      fi
+    '
+    --preview-window=right:50%:wrap
+  "
+  
+  #----- Custom Functions ------------------------------------------
+  
+  # Datei-Browser mit fzf-preview
+  ff() {
+    local file
+    file=$(fd --type f --hidden --follow --exclude .git | \
+           fzf --preview='fzf-preview {}' \
+               --header='Select file to edit')
+    [[ -n "$file" ]] && $EDITOR "$file"
+  }
+  
+  # Code-Suche mit fzf-preview
+  fcode() {
+    [[ $# -eq 0 ]] && echo "Usage: fcode <search-pattern>" && return 1
+    local result file line
+    result=$(rg --line-number --no-heading --color=always "$@" | \
+             fzf --ansi \
+                 --delimiter=':' \
+                 --preview='fzf-preview {1}' \
+                 --preview-window='+{2}-/2' \
+                 --header='Select match to edit')
+    
+    if [[ -n "$result" ]]; then
+      file=$(echo "$result" | cut -d: -f1)
+      line=$(echo "$result" | cut -d: -f2)
+      $EDITOR "$file" "+$line"
+    fi
+  }
+  
+  # Git-Dateien durchsuchen
+  fgit() {
+    local file
+    file=$(git ls-files | \
+           fzf --preview='fzf-preview {}' \
+               --header='Git-tracked files')
+    [[ -n "$file" ]] && $EDITOR "$file"
+  }
+'';
 
 
 # enable zsh system-wide use
@@ -232,13 +336,15 @@ programs.fzf.keybindings = false;
    
   [[ -f source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme ]] && \
   ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-  
-  [[ -f /etc/zsh/colorEnvExport.sh ]] && source /etc/zsh/colorEnvExport.sh
- '';
+     '';
+
 # entspricht der .zshrc ------
 interactiveShellInit = ''
 # Load FZF configuration
     [[ -f /etc/zsh/fzf-config.sh ]] && source /etc/zsh/fzf-config.sh
+      
+# Load colors
+[[ -f /etc/colorEnvExport.sh ]] && source /etc/zsh/colorEnvExport.sh
 
 # if [[ -f "${pkgs.nix-index}/etc/profile.d/command-not-found.sh"  ]]; then 
 # source "${pkgs.nix-index}/etc/profile.d/command-not-found.sh"

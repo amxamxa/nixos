@@ -19,13 +19,13 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
 # PipeWire clients: Each native PipeWire client also loads a configuration file. Emulated JACK client also have separate configuration.
 { config, pkgs, ... }: 
 {
-  # ============================================================================
+  # ============================================
   # USER GROUPS
   # Add audio-related groups for the primary user
-  # ============================================================================
+ 
   users.users.amxamxa.extraGroups = [ "jackaudio" "audio" ];
 
-  # ============================================================================
+  # ============================================
   # KERNEL CONFIGURATION
   # Optimize kernel for audio performance
    boot.kernelModules = [ 
@@ -41,12 +41,13 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
     # Reduce swappiness to minimize audio dropouts
     "vm.swappiness" = 10;
   };
+  # =========================================
 
-  # ============================================================================
+  # =========================================
   # HARDWARE FIRMWARE
   hardware.firmware = [ pkgs.alsa-firmware ];
 
-  # ============================================================================
+  # ========================================
   # AUDIO SERVICE CONFIGURATION
   
   # Disable JACK daemon (PipeWire provides JACK emulation)
@@ -61,7 +62,7 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
   # This allows audio processes to get real-time priority on demand
   security.rtkit.enable = true;
 
-  # ============================================================================
+  # ====================================
   # PIPEWIRE CONFIGURATION
   # PipeWire is a modern audio server that replaces both PulseAudio and JACK
    services.pipewire = {
@@ -105,17 +106,16 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
     };
   };
 
-  # ============================================================================
+  # ==============================================
   # ENVIRONMENT VARIABLES
    environment.variables = {
     # Set default latency for PipeWire clients
     PIPEWIRE_LATENCY = "32/48000";  # 32 samples at 48kHz
-    
-    # Disable JACK audio reservation (allow multiple clients)
+    # Disable JACK audio reservation for allow multiple clients
     JACK_NO_AUDIO_RESERVATION = "1";
   };
 
-  # ============================================================================
+  # ===========================================
   # Testing
   # TESTING AUDIO:
   # - Test PipeWire: pw-top
@@ -130,9 +130,9 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
   # - View audio logs: journalctl --user -u pipewire -u wireplumber -u set-volume -f
   # - List audio devices: wpctl status
   # - Set volume manually: wpctl set-volume @DEFAULT_AUDIO_SINK@ 80%
-  # ============================================================================
+  # =============================================
   
-  # ============================================================================
+  # ============================================
   # DEFAULT VOLUME SERVICE
   # Set volume to 80% after WirePlumber starts
   systemd.user.services.set-volume = {
@@ -144,7 +144,7 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
     
     serviceConfig = {
       # SystemD services don't have PATH set, must specify absolute path
-      ExecStart = "${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 80%";
+      ExecStart = "${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_SINK@ 80%";
       # Service behavior
       Type = "oneshot";              # Run once and exit
       RemainAfterExit = true;        # Consider successful after completion
@@ -156,8 +156,25 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
       SyslogIdentifier = "set-volume";  # Tag for filtering logs
     };
   };
+  # Umgebungsvariablen LV2_PATH, VST_PATH und LADSPA_PATH werden global gesetzt
+    system.activationScripts.audioPlugins = ''
+    # Verzeichnisstruktur erstellen
+    mkdir -p /home/project/AUDIO/plugins/{lv2,vst,ladspa}
+    chown amxamxa:mxx -R /home/project/AUDIO/plugins
+
+    # Symlinks für LV2-Plugins
+    ln -sfn ${pkgs.lsp-plugins}/lib/lv2 /home/project/AUDIO/plugins/lv2/lsp-plugins
+    ln -sfn ${pkgs.zam-plugins}/lib/lv2 /home/project/AUDIO/plugins/lv2/zam-plugins
+    ln -sfn ${pkgs.dragonfly-reverb}/lib/lv2 /home/project/AUDIO/plugins/lv2/dragonfly-reverb
+  '';
+
+  environment.sessionVariables = {
+    LV2_PATH = "/home/project/AUDIO/plugins/lv2";
+    VST_PATH = "/home/project/AUDIO/plugins/vst";
+    LADSPA_PATH = "/home/project/AUDIO/plugins/ladspa";
+  };
   
-# ============================================================================
+# ==============================================
   # AUDIO PACKAGES
   # Professional audio tools and utilities
   environment.systemPackages = with pkgs; [
@@ -170,7 +187,7 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
     alsa-scarlett-gui # GUI for alsa controls presented by Focusrite Scarlett Gen 2/3/4 Mixer Driver
     ffmpeg # Complete, cross-platform solution to record, convert and stream audio and video
     pwvucontrol # PipeWire volume control
-    # pavucontrol # pulseaudio controls the volume (per-sink and per-app basis. entfernt, da es für PulseAudio ist und nicht mit PipeWire kompatibel 
+   # pavucontrol # pulseaudio controls the volume (per-sink and per-app basis. entfernt, da es für PulseAudio ist und nicht mit PipeWire kompatibel 
 
     # JACK und Audio-Routing
     jack2 # JACK audio connection kit, version 2 with jackdbus
@@ -189,7 +206,7 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
 
     # PATCHFELD  
     helvum # GTK patchbay for PipeWire
-    #  carla # komplexere Alternative zu Helvum
+    carla # komplexere Alternative zu Helvum
     #alt:  patchage # Modular patch bay for Jack and ALSA systems
     #alt:  qjackctl  # application to control the JACK sound server daemon
 
@@ -201,7 +218,7 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
 
     # MIDI- Drum-, Loop-Machines,  MIDI-Sequencing und virtuelle Instrumente
     # mamba # Virtual MIDI keyboard for Jack Audio Connection Kit
-    hydrogen # Advanced drum machine for beat production
+   # hydrogen # Advanced drum machine for beat production
     #  drumgizmo   # Drum sampler with high-quality samples
     zita-resampler # Resample library by Fons Adriaensen
     sooperlooper # Live looping tool for performances
@@ -221,7 +238,7 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
     guitarix # Virtual guitar amplifier for Linux running with JACK
     calf # Collection of high-quality audio plugins (EQ, compressor, etc.)
     rakarrack # Guitar effects processor
-    # lsp-plugins # Collection of open-source audio plugins
+     lsp-plugins # Collection of open-source audio plugins
     zam-plugins # Collection of LV2/LADS audio plugins by ZamAudio
     dragonfly-reverb # High-quality reverb effects
     # japa # 'perceptual' or 'psychoacoustic' audio spectrum analyser for JACK and ALSA
@@ -232,6 +249,8 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
     cava # console-based Audio Visualizer for Alsa
     cavalier # visualize audio with CAVA
     playerctl # cmd utility and lib for media players that implement MPRIS
+
+    xfce.xfburn # Disc burner and project creator for Xfce
 
     yt-dlp
     ytfzf

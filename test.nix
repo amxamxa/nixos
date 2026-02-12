@@ -52,15 +52,15 @@ boot.tmp.tmpfsSize = "2G";
 nix.settings.daemon-base-priority = 10;
 
   # Grafikbeschleunigung (Intel HD Graphics 2500/4000)
- /* hardware.graphics = {
+  hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
     # Hardware-Dekodierung von H.264 und VC-1.
       intel-vaapi-driver # Spezifischer Treiber für Ivy Bridge (VA-API)
- #     libvdpau-va-gl
+      libvdpau-va-gl
     ];
   };
-*/
+
   # Ressourcen-Management und Performance-Daemons
 #  services.thermald.enable = true; # Verhindert Überhitzung durch intelligentes Throttling
 /*  

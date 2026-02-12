@@ -77,7 +77,7 @@
     ];
     
     # Global sudo settings
-    # Note: logfile is set in logging.nix for centralized logging
+    # Note: logfile is set in logs.nix for centralized logging
     extraConfig = ''
       Defaults env_reset              # Reset environment for security
       Defaults pwfeedback             # Show asterisks when typing password

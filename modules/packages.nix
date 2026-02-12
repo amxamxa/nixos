@@ -177,8 +177,7 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
 
     # ─────────────────────────
     # TERMINAL VISUALIZATION & COLORS
-    # ─────────────────────────
-    
+    # ─────────────────────────   
     # Color Tools
     colordiff                  # Colored diff
     lscolors                   # Colorize ls output
@@ -193,7 +192,6 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     colorless                 # Colorize output and pipe to less
     chafa                      # Colored ASCII art generator
     notcurses                  # TUI and character graphics
-    
     # Terminal Fun
     terminal-parrot           # Animated party parrot
     # Note: banner, toilet, neofetch in zsh.nix

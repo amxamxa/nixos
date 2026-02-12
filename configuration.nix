@@ -2,26 +2,33 @@
 ## nix-env -qaP '*' --description # You can get a list of the available packages as follows:
 # lsblk -f --topology --ascii --all --list 
 # setxkbmap -query -v
+/*
+channel probs:
+❯ sudo nix-channel --list
+❯ sudo nix-channel --add https://nixos.org/channels/nixos-25.11 nixos
+❯ sudo nix-channel --update
+*/
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/boot.nix # grub2 & lightDM
-    #    ./test.nix # zum Testen neuer Konfig
+        #    ./test.nix # zum Testen neuer Konfig
     ./modules/enviroment.nix # ENV
- ./modules/user-n-permissions.nix
-       ./modules/zsh.nix # shell
-       ./modules/bash.nix # shell
+  #  ./modules/color-env.nix
+    ./modules/user-n-permissions.nix
+    ./modules/zsh.nix # shell
+    ./modules/bash.nix # shell
     ./modules/cosmic.nix # Display/Window-Mgr
     ./modules/packages.nix # env.pkgs
     ./modules/audio.nix
-    #    ./modules/docker.nix
-       #    ./modules/npm.nix
+    #./modules/docker.nix
+    #   ./modules/npm.nix
     ./modules/fonts.nix
     ./modules/logs.nix
     #   ./modules/python.nix # ehem.	./ld.nix
     ./modules/read-only/adBloxx.nix # ehem. ./AdBloxx.nix
     ./modules/read-only/tuxpaint.nix
-
+    
   ];
 #-p, --priority: (1 aus:) emerg, alert, crit, err, warning, notice, info, debug , or #a value between 0 and 7
 #-t, --identifier: (STRING) eindeutiger Identifier (Tag), als Filter
@@ -87,6 +94,13 @@
   hardware.ksm.enable =
     true; # Aktiviert den Kernel Samepage Merging (KSM)-Dienst, durchsucht den RAM nach identischen Speicherseiten (Pages), spart Speicher, aber CPU-Last. Für Virtualisierungsumgebungen mit  ähnlichen VMs ... oder redundanten Speicher allozieren
 
+#    color-env.nix
+/*programs.colorEnv = {
+    enable = true;
+    colorMode = "auto";  # oder "mono", "256", "24bit"
+    enableLogging = true;
+  };
+  */
   nix.nixPath = [
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
     "nixos-config=/etc/nixos/configuration.nix"
