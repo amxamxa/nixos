@@ -95,12 +95,7 @@ channel probs:
     true; # Aktiviert den Kernel Samepage Merging (KSM)-Dienst, durchsucht den RAM nach identischen Speicherseiten (Pages), spart Speicher, aber CPU-Last. Für Virtualisierungsumgebungen mit  ähnlichen VMs ... oder redundanten Speicher allozieren
 
 #    color-env.nix
-/*programs.colorEnv = {
-    enable = true;
-    colorMode = "auto";  # oder "mono", "256", "24bit"
-    enableLogging = true;
-  };
-  */
+
   nix.nixPath = [
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
     "nixos-config=/etc/nixos/configuration.nix"

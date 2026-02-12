@@ -122,7 +122,7 @@ environment.shellAliases = {
     ex=''echo "eza (sorted by extension)" && eza --all --classify --sort extension'';
     es=''echo "eza (sorted by size)" && eza --all --classify --sort size'';
     el=''echo "eza (long format)" && eza --all --classify --long'';
-    ee=''echo "eza (tree view)" && eza --all --classify --tree --level=2'';
+    el2=''echo "eza (tree view)" && eza --all --classify --tree --level=2'';
     eg=''echo "eza (git status)" && eza --all --classify --git'';
  
 };
@@ -135,7 +135,7 @@ environment.shellAliases = {
     	enableZshIntegration = true;    
     	};
 #-------------------
-#  pay-respects instedt  programs.thefuck
+#  pay-respects insteadt  programs.thefuck
 #-------------------
 
   programs.pay-respects.enable = true;
@@ -332,10 +332,10 @@ environment.etc."zsh/fzf-config.sh".text = ''
   # ... .zshrc
  promptInit = '' 
   [[ -f ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme ]] && \
-  source ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme
+  source ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme && echo "nr. 1"
    
-  [[ -f source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme ]] && \
-  ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+  [[ -f ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme ]] && \
+  source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
      '';
 
 # entspricht der .zshrc ------
@@ -344,7 +344,7 @@ interactiveShellInit = ''
     [[ -f /etc/zsh/fzf-config.sh ]] && source /etc/zsh/fzf-config.sh
       
 # Load colors
-[[ -f /etc/colorEnvExport.sh ]] && source /etc/zsh/colorEnvExport.sh
+[[ -f /etc/colorEnvExport.sh ]] && source /etc/colorEnvExport.sh
 
 # if [[ -f "${pkgs.nix-index}/etc/profile.d/command-not-found.sh"  ]]; then 
 # source "${pkgs.nix-index}/etc/profile.d/command-not-found.sh"
