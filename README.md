@@ -1,4 +1,5 @@
 # NixOS Configuration — Modular, Flake‑free, Homemgr-free Production‑ready
+![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)![NixOS](https://img.shields.io/badge/NixOS-25.11-purple) ![Kernel](https://img.shields.io/badge/Kernel-6.6.80-orange) ![Shell](https://img.shields.io/badge/Shell-zsh%205.9-green) ![Terminal](https://img.shields.io/badge/Terminal-kitty%200.37.0-purple) ![Declarative](https://img.shields.io/badge/config-declarative-blue) ![No Flakes](https://img.shields.io/badge/flakes-disabled-red) ![Pure NixOS](https://img.shields.io/badge/setup-pure%20NixOS-5277C3)
 
 This configuration provides a stable, declarative setup that is flexible and works without additional tools!
 
@@ -6,9 +7,6 @@ This repository contains my `configuration.nix` and module files for a standard 
 
 I am a strong advocate of the distribution's declarative configuration approach. Therefore, this setup does **not** use Flakes or Home Manager.
 
-
-https://img.shields.io/badge/License-MIT-yellow.svg
-https://img.shields.io/badge/NixOS-24.05-blue
 
 This repository contains a **comprehensive, modular NixOS configuration** that powers a daily‑driven desktop environment. It demonstrates **Nix best practices without relying on Flakes**, while still being easily portable to a flake‑based setup.
 
@@ -31,10 +29,9 @@ This repository contains a **comprehensive, modular NixOS configuration** that p
 
 *   **No Flakes**
 *   **No Home Manager**
-*   **Desktop:** Cinnamon, Xorg, LightDM
-*   **Shell:** Zsh
-*   **GPU Driver:** NVIDIA proprietary (GeForce GTX 960)
-*   **Additional Tools:** Docker
+*   **Desktop:** `cosmic`, `wayland`
+*   **Shell:** `zsh`
+*   **Additional Tools:**`Docker`, `npm`, `python`
 
 ------
 
