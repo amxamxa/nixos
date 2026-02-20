@@ -161,14 +161,19 @@ NIXoi = ''
     (mkIf (builtins.hasAttr "git" pkgs) {
       # FIX: ''${GELB}, ''${RESET} in allen git-Aliases
       ga   = ''echo -e "''${GELB}\nFügt Änderungen hinzu''${RESET}\n" && git add'';
-      gb   = ''echo -e "''${GELB}\nZeigt Branches''${RESET}\n" && git branch'';
+      gc   = ''echo -e "''${GELB}\ncommit''${RESET}\n" && git commit '';
+            gb   = ''echo -e "''${GELB}\nZeigt Branches''${RESET}\n" && git branch'';
       gblog = ''git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(refname:short) - %(objectname:short) - %(contents:subject) - %(authorname) (%(committerdate:relative))"'';
       glol = ''echo -e "''${GELB}\nCommit-Historie''${RESET}\n" && git log --graph --abbrev-commit --oneline --decorate'';
       gp   = ''echo -e "''${GELB}\nPush''${RESET}\n" && git push'';
       gr   = ''echo -e "''${GELB}\nRemote Repos''${RESET}\n" && git remote'';
       grb  = ''echo -e "''${GELB}\nRemote Branches''${RESET}\n" && git branch -r'';
       grs  = ''echo -e "''${GELB}\nRemote Info''${RESET}\n" && git remote show'';
-
+    gll = ''
+        echo -e "''${GELB}\nFarbig formatierte Ausgabe der Commit-Historie in Graph-Darstellung''${RESET}\n" && \
+        git log --graph \
+          --format=format:"%C(bold blue)%h%C(reset) - %C(bold NIGHT)(%ar)%C(reset) %C(white)%an%C(reset)%C(bold yellow)%d%C(reset) %C(dim white)- %s%C(reset)" \
+          --all
       gss  = ''cowsay -nW 60 "$(echo -e "''${NIGHT}[Git Status]''${RESET}\n$(git status -s)")" && echo -e "\n''${PINK}Legende:''${RESET}\nM Modified A Staged\nD Deleted R Renamed\nC Copied\n? Untracked"'';
       gsss = ''echo -e "''${PINK}\n git status --short ''${RESET}" && git status -s'';
     })
@@ -229,6 +234,28 @@ NIXoi = ''
   brnix   = "broot /etc/nixos";
   brlog   = "broot /var/log";
  })
+ # --- neofetch ---
+    (mkIf (builtins.hasAttr "neofetch" pkgs) {
+      neo  = ''echo -e "\t''${PINK} neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/spaceinv.conf\t''${RESET}" && neofetch --config "$ZDOTDIR/neofetch/spaceinv.conf"'';
+      neo0 = "neo";
+      neo1 = ''echo -e "\t  ''${PINK}neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/neofetch-short.conf\t''${RESET}" && neofetch --config "$ZDOTDIR/neofetch/neofetch-short.conf"'';
+      neo2 = ''echo -e "\t''${PINK} neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/config2.conf\t''${RESET}" && neofetch --config "$ZDOTDIR/neofetch/config2.conf"'';
+      neo3 = ''
+        echo -e "\t''${LIME}   -  󱚡  --   --  🙼 🙼 🙼      󱢇     🙽 🙽 🙽   --    --  󱚡  --    -" && \
+        echo -e "\t''${PINK}  neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/neofetch-long.conf\t''${RESET}" && \
+        echo -e "\t''${CYAN}   -  󱚡  --   --  🙼 🙼 🙼   󱢇     󱢇  🙽 🙽 🙽   --    --  󱚡  --    -" && \
+        neofetch --config "$ZDOTDIR/neofetch/neofetch-long.conf"
+      '';
+      neo4 = ''echo -e "\t''${PINK} neofetch w/ ''${LILA}\ta for loop of themes\t/home/project/neofetch-themes''${RESET}" && bash -c /home/project/neofetch-themes/for-loop.sh'';
+    })
+
+    # --- pandoc ---
+    (mkIf (builtins.hasAttr "pandoc" pkgs) {
+      # NOTE: $1 works here only if called as: MD2pdf file.md
+      # For real arg passing, see YTA/YTV functions in interactiveShellInit
+      MD2pdf = ''pandoc "$1" -o "''${1%.md}.pdf" --template=$HOME/dokumente/vorlagen/MDtoPDF.tex'';
+    })
+ 
 ];
 
 # Funktionen (alphabetisch sortiert)
@@ -297,6 +324,27 @@ environment.interactiveShellInit = ''
       local title="$(basename "$(dirname "$(pwd)")")@$(date +%F)"
       mkdir -p asciinema
       asciinema rec --overwrite --idle-time-limit=1 --title="$title" "asciinema/$title.cast"
+    }
+
+
+    # Download YouTube audio as MP3 (192k), removes SponsorBlock segments
+    YTA() {
+      yt-dlp --audio-quality 192k --audio-format mp3 \
+        --progress --sponsorblock-remove all \
+        -x --embed-metadata --embed-thumbnail --no-mtime --console-title \
+        --restrict-filenames --output "%(title).48s.%(ext)s" \
+        --progress-template "%(progress._percent_str)s of 100% | with %(progress._speed_str)s | %(progress._eta_str)s remaining" \
+        "$1"
+    }
+
+    # Download YouTube video as MP4, removes SponsorBlock segments
+    YTV() {
+      yt-dlp --audio-quality 192k --remux-video mp4 \
+        --progress --sponsorblock-remove all \
+        --embed-metadata --embed-thumbnail --no-mtime --console-title \
+        --restrict-filenames --output "%(title).48s.%(ext)s" \
+        --progress-template "%(progress._percent_str)s of 100% | with %(progress._speed_str)s | %(progress._eta_str)s remaining" \
+        "$1"
     }
   '';
 

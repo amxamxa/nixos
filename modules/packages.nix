@@ -337,9 +337,9 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     linearicons-free          # Free linearicons
     icon-library              # Symbolic icons
     pantheon.elementary-iconbrowser  # Icon browser
-    # kora-icon-theme           # Kora icons
-    #brose-pine-icon-theme      # Rose Pine icons
-    # papirus-icon-theme        # Papirus icons
+    kora-icon-theme           # Kora icons
+    brose-pine-icon-theme      # Rose Pine icons
+    papirus-icon-theme        # Papirus icons
     andromeda-gtk-theme       # Dark theme
 
     # ─────────────────────────
