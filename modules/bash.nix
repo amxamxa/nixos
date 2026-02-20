@@ -1,16 +1,15 @@
+#bash.nix
 { config, pkgs, ... }: {
-  #______________________________________________________
-  # 		888                     888      
-  # 		888                     888      
-  #  		888                     888      
-  #  		88888b.  8888b. .d8888b 88888b.  
-  #  		888 "88b    "88b88K     888 "88b 
-  #  		888  888.d888888"Y8888b.888  888 
-  #  		888 d88P888  888     X88888  888 
-  #	  	88888P" "Y888888 88888P'888  888
-  #______________________________________________________                              
-
-  # Enable nix-index integration for bash
+ #      888                     888      
+ #      888                     888      
+ #      888                     888      
+ #	88888b.  8888b. .d8888b 88888b.  
+ #	888 "88b    "88b88K     888 "88b 
+ #	888  888.d888888"Y8888b.888  888 
+ #	888 d88P888  888     X88888  888 
+ # 	88888P" "Y888888 88888P'888  888
+ # ______________________________________
+ 
   programs.nix-index.enableBashIntegration = true;
 
   # Main Bash configuration
@@ -59,21 +58,6 @@
   #    if command -v starship &> /dev/null; then
   #      eval "$(starship init bash)"
   #    fi
-
-  # Custom functions
-      # Create directory and cd into it
-      mcd() {
-        mkdir -p "$1" && cd "$1"
-      }
-
-      # Disk usage helpers
-      du1() {
-        du -h --max-depth=1 "$@"
-      }
-
-      du2() {
-        du -h --max-depth=2 "$@"
-      }
 
    # Extract various archive formats
       extract() {

@@ -12,20 +12,22 @@ channel probs:
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/boot.nix # grub2 & lightDM
-        #    ./test.nix # zum Testen neuer Konfig
+    #    ./test.nix # zum Testen neuer Konfig
     ./modules/enviroment.nix # ENV
-  #  ./modules/color-env.nix
     ./modules/user-n-permissions.nix
-    ./modules/zsh.nix # shell
-    ./modules/bash.nix # shell
     ./modules/cosmic.nix # Display/Window-Mgr
     ./modules/packages.nix # env.pkgs
     ./modules/audio.nix
-    #./modules/docker.nix
-    #   ./modules/npm.nix
     ./modules/fonts.nix
     ./modules/logs.nix
+
+    ./modules/zsh.nix # shell
+    ./modules/bash.nix # shell
+        ./modules/aliases.nix
+    ./modules/rust.nix # 
     #   ./modules/python.nix # ehem.	./ld.nix
+    #./modules/docker.nix
+    #   ./modules/npm.nix
     ./modules/read-only/adBloxx.nix # ehem. ./AdBloxx.nix
     ./modules/read-only/tuxpaint.nix
     

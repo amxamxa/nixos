@@ -91,12 +91,19 @@
     xdg-desktop-portal-cosmic # XDG Desktop Portal for the COSMIC
     
     # WAYLAND Stuff
-    wlr-layout-ui #Simple GUI to setup the screens layout on wlroots based systems
+    wlr-protocols # Wayland roots protocol extensions
+    wlr-which-key # Keymap manager for wlroots-based compositors
+    wlr-layout-ui # Simple GUI to setup the screens layout on wlroots based systems
     wl-color-picker # Wayland color picker that also works on wlroots
+    hyprpicker # Wlroots-compatible Wayland color picker that does not suck
     wlprop # Xprop clone for wlroots based compositors
     wlr-randr # Xrandr clone for wlroots compositors
+    wlrctl # Command line utility for miscellaneous wlroots Wayland extensions
     wlroots_0_19 # Modular Wayland compositor library
-
+    wl-clipboard 
+  nwg-look # GTK settings editor, designed to work properly in wlroots-based Wayland environment
+  wayshot # Native, blazing-fast screenshot tool for wlroots based compositors such as sway and river
+  nwg-wrapper # Wrapper to display a script output or a text file content on the desktop in sway or other wlroots-based compositor
 
   ];
 

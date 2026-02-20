@@ -337,9 +337,9 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     linearicons-free          # Free linearicons
     icon-library              # Symbolic icons
     pantheon.elementary-iconbrowser  # Icon browser
-    kora-icon-theme           # Kora icons
-    rose-pine-icon-theme      # Rose Pine icons
-    papirus-icon-theme        # Papirus icons
+    # kora-icon-theme           # Kora icons
+    #brose-pine-icon-theme      # Rose Pine icons
+    # papirus-icon-theme        # Papirus icons
     andromeda-gtk-theme       # Dark theme
 
     # ─────────────────────────
@@ -353,9 +353,10 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     linux-firmware            # Firmware files
     pay-respects              # Command correction utility
      
-    helix # Post-modern modal text editor
-    helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
-     
+    #dev
+    codex # Lightweight coding agent that runs in your terminal
+    #helix # Post-modern modal text editor
+    #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
     # ─────────────────────────
     # UNSTABLE CHANNEL PACKAGES
     # Packages from nixos-unstable for newer versions
