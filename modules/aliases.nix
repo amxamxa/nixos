@@ -23,64 +23,6 @@ Mehrzeilige Strings: In Nix werden mehrzeilige Strings mit zwei einfachen Anfüh
 Escaping: Sonderzeichen wie ", $, und \ müssen ggf. escaped werden, falls sie in der Shell-Interpretation zu Konflikten führen.
 ---------------------------------------------------------
 
-
-alias nano='echo -e "\t${PINK}Verwende micro anstelle von nano${RESET}" && micro || nano'
-alias edit='echo -e "\t${PINK}Verwende micro als Standard-Editor${RESET}" && micro'
-alias DATE='echo -e "\t${PINK}Zeige das aktuelle Datum  $(date "+%A, %-d. %B %Y"):{$RESET}" && echo -e "${GELB} $(date "+%A, %-d. %B %Y")${RESET} \n "&& echo -e "${PINK} oder $ (date +%F_%H-%M)\t ${RESET}" 	&& echo -e "${GELB} $(date "+%F_%H-%M") ${RESET}"'
-
-alias COL='terminal-colors -n && echo -e "${NIGHT}\n...für Hex-Codes der Farben:${RED}%${LILA} terminal-colors -l ${RESET}\n"'
-alias Col='for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'"'"'\n'"'"';}; done'
-alias hack='echo -e "\t${PINK}Starte Hackertyper${RESET}" && hackertyper'
-#	_______________________________neofetch_______________________________
-alias neo='echo -e "\t${PINK} neofetch w/ ${LILA} \t $ZDOTDIR/neofetch/spaceinv.conf\t${RESET}" && neofetch --config "$ZDOTDIR/neofetch/spaceinv.conf"'
-alias neo0='neo'
-alias neo1='echo -e "\t  ${PINK}neofetch w/ ${LILA} \t 	$ZDOTDIR/neofetch/neofetch-short.conf\t${RESET}" && neofetch --config "$ZDOTDIR/neofetch/neofetch-short.conf"'
-alias neo2='echo -e "\t${PINK} neofetch w/ ${LILA} \t	$ZDOTDIR/neofetch/config2.conf\t${RESET}" && neofetch --config "$ZDOTDIR/neofetch/config2.conf"'
-alias neo3='echo -e "\t${LIME}   -  󱚡  --   --  🙼 🙼 🙼      󱢇     🙽 🙽 🙽   --    --  󱚡  --    -" && echo -e "\t${PINK}  neofetch w/ ${LILA} \t	$ZDOTDIR/neofetch/neofetch-long.conf\t${RESET}" && echo -e "\t${CYAN}   -  󱚡  --   --  🙼 🙼 🙼   󱢇     󱢇  🙽 🙽 🙽   --    --  󱚡  --    -" &&  neofetch --config "$ZDOTDIR/neofetch/neofetch-long.conf"'
-alias neo4='echo -e "\t${PINK} neofetch w/ ${LILA} \t  a for loop of themes	/home/project/neofetch-themes${RESET}" && bash -c /home/project/neofetch-themes/for-loop.sh'
-
-alias h='history'
-alias history='history -t "%H:%MUhr am %d.%b: "'
-alias g2history='cat "$HISTFILE" | grep -i --colour=always'
-alias g2h=g2history
-alias h2g=g2history
-
-#	____________________________________________________________________
-
-alias WMinfo='echo -e "\n\t${PINK}...2xklicken! mittels${GELB} cmd xprop und xwininfo${PINK}, zeigt Parameter des Windows an!${RESET}\n" && \
-    xprop | grep --color=auto -E WM_CLASS && \
-    xwininfo | grep --color=auto geometry'
-alias WMverbose='echo -e "\n\t${PINK}\n 2xklicken! mittels${GELB} cmd xprop und xwininfo${PINK}... zeigt Parameter des Windows an!${RESET}\n" && \
-    xprop | grep --color=auto -e "WM_CLASS(STRING)" -e "*SIZE*" -e "WM_PROTOCOLS(ATOM):" -e "geometry" -e "_NET_WM_ALLOWED_ACTIONS(ATOM)" && \
-    xwininfo | grep --color=auto geometry'
-# --- Diverse Werkzeuge & Helfer ---
-# alias MD2html='pandoc $1 -s --to html --css=$HOME/.templates/cyberpunk-DM.css | w3m -T text/html'alias mangconf='echo -e "\t${PINK}Öffne MangoHud Konfigurationsdatei${RESET}" && micro -filetype bash "$XDG_CONFIG_HOME/MangoHud/MangoHud.conf"'
-alias MD2pdf='pandoc $1 -o ${1%.md}.pdf --template=$HOME/dokumente/vorlagen/MDtoPDF.tex'
-alias bat1='bat --wrap=auto --plain --terminal-width 76 --theme=ansi'
-alias bat2='bat --wrap=auto --plain --terminal-width 80 --theme=Dracula'
-alias bat3='bat --wrap=auto --decorations=always --theme=Coldark-Dark'
-alias bat4='bat --wrap=auto --number --decorations=always --theme=OneHalfDark'
-alias bat5='bat --wrap=never --number --decorations=always --theme=base16'
-alias BATconf='echo -e "\t${PINK}Öffne bat Konfigurationsdatei${RESET}" && edit /share/bat/config.toml'
-alias Bconf='BATconf'
-alias free='echo -e "\t${PINK}free -gt {RESET}\n" && free -gt'
-alias gll='echo -e "${GELB}\nFarbig formatierte Ausgabe der Commit-Historie in Graph-Darstellung${RESET}\n" && git log --graph --format=format:"%C(bold blue)%h%C(reset) - %C(bold NIGHT)(%ar)%C(reset) %C(white)%an%C(reset)%C(bold yellow)%d%C(reset) %C(dim white)- %s%C(reset)" --all'
-# ### ---------------------------  ####
-# Lädt Audio von YouTube als MP3 (192k), entfernt Sponsorblock-Segmente, bettet Metadaten/Thumbnail ein, begrenzt Dateinamen auf 48 Zeichen, zeigt benutzerdefinierten Download-Fortschritt.
-alias -g YTA='yt-dlp --audio-quality 192k  --audio-format mp3 \ 
-                 --progress --sponsorblock-remove all \
-                 -x --embed-metadata --embed-thumbnail --no-mtime --console-title  \ 
-                 --restrict-filenames --output "%(title).48s.%(ext)s" \
-                 --progress-template "%(progress._percent_str)s of 100% | with %(progress._speed_str)s | %(progress._eta_str)s remaining" "$1"'
-
-# Lädt Video von YouTube als MP4, entfernt Sponsorblock-Segmente, bettet Metadaten/Thumbnail ein, begrenzt Dateinamen auf 48 Zeichen, zeigt benutzerdefinierten Download-Fortschritt.
-alias -g YTV='yt-dlp --audio-quality 192k --remux-video mp4 \ 
-                 --progress --sponsorblock-remove all \
-                 -x --embed-metadata --embed-thumbnail --no-mtime --console-title  \ 
-                 --restrict-filenames --output "%(title).48s.%(ext)s" \
-                 --progress-template "%(progress._percent_str)s of 100% | with %(progress._speed_str)s | %(progress._eta_str)s remaining" "$1"'
-
-
 #       e x a / e z a .. ls  ll  lh  ld ...
 alias eweb='echo -e "\t${PINK}eza-Ansicht für Web-Projekte (z.B. Hugo)${RESET}" && eza --no-git --total-size --git-ignore -A -tree'
 alias e-hugo='eweb'
@@ -227,7 +169,7 @@ NIXoi = ''
       grb  = ''echo -e "''${GELB}\nRemote Branches''${RESET}\n" && git branch -r'';
       grs  = ''echo -e "''${GELB}\nRemote Info''${RESET}\n" && git remote show'';
 
-      gss  = ''cowsay -nW 60 "$(echo -e "''${NIGHT}[Git Status]''${RESET}\n$(git status -s)")" && echo -e "\n''${PINK}Legende:''${RESET}\nM Modified\nA Staged\nD Deleted\nR Renamed\nC Copied\n? Untracked"'';
+      gss  = ''cowsay -nW 60 "$(echo -e "''${NIGHT}[Git Status]''${RESET}\n$(git status -s)")" && echo -e "\n''${PINK}Legende:''${RESET}\nM Modified A Staged\nD Deleted R Renamed\nC Copied\n? Untracked"'';
       gsss = ''echo -e "''${PINK}\n git status --short ''${RESET}" && git status -s'';
     })
 
