@@ -42,7 +42,7 @@ environment.variables.SHARE = SHARE;
 environment.variables.PRO = PRO; 
 environment.variables.NDIR = NDIR; 
 
-# B: CustomRC = builtins.readFile ../includes/init.vim;
+# B: Custo/mRC = builtins.readFile ../includes/init.vim;
 
  #### Dateien nach /share/zsh deployen ####
  # environment.etc wird verwendet, um Dateien in /etc zu platzieren 
@@ -55,10 +55,7 @@ environment.etc."zsh/zshActiveDirExist.sh".source = "${here}/../assets/shell/zsh
 #environment.etc."zsh/aliases.zsh".source = "${here}/../assets/shell/aliases.zsh";
 # environment.shell sourct bereits: environment.etc."zsh/aliases.sh".source = "${here}/../assets/shell/aliases.sh";
 
-#environment.etc."zsh/truecolor.sh".source = "${here}/../assets/shell/truecolor.sh";
 environment.etc."zsh/zsh-highlight-styles.zsh".source = "${here}/../assets/shell/zsh-highlight-styles.zsh";
-
-
 # Disable command-not-found in favor of nix-index    
  programs.command-not-found.enable = false; # -> nix-index 
  programs.nix-index = {  # damit command: nix-locate pattern
@@ -66,10 +63,10 @@ environment.etc."zsh/zsh-highlight-styles.zsh".source = "${here}/../assets/shell
     	package = pkgs.nix-index;
     	enableZshIntegration = true;    
     	};
+
 #-------------------
 #  pay-respects insteadt  programs.thefuck
 #-------------------
-
   programs.pay-respects.enable = true;
   # You can also set a custom API endpoint, large language model and locale for command corrections. Simply access the aiIntegration.url, aiIntegration.model and aiIntegration.locale options, as described in the example.
   #    Take a look at the services.ollama NixOS module if you wish to host a local large language model for pay-respects.
@@ -234,21 +231,20 @@ environment.etc."zsh/fzf-config.sh".text = ''
         $fpath
       )
      
-      ########################################################
-      # Zsh‑spezifische Variablen
+    # -------------------------
+    # Zsh‑spezifische Variablen
       export HISTIGNORE="ls:cd:pwd:exit:tldr:cheat::cat:man:eza:lsd:cp:echo:z:bap:bat:git:"
       export HISTTIMEFORMAT="%Y-%m-%d %H:%M "
       export DIRSTACKSIZE=9
       export REPORTTIME=3
       export COLUMNS=80
-      ########################################################
-      # EZA Konfiguration
+    
+    #--------------------------------
       export EZA_ICONS_AUTO="auto"
       export EZA_ICON_SPACING=1
       export EZA_GRID_ROWS=3
       export EZA_GRID_COLUMNS=4
       export EZA_MIN_LUMINANCE=50
-      
       export EZA_COLORS="$LS_COLORS:hd=38;5;226:\
       uu=38;5;202:gu=38;5;208:da=38;5;111:\
       uR=38;5;197:uG=38;5;198"
@@ -270,6 +266,14 @@ environment.etc."zsh/fzf-config.sh".text = ''
   source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
      '';
 
+
+/*---------------------------------------------------------------
+    _        __                              __  .__              
+  |__| _____/  |_  ________________    _____/  |_|__|__  __ ____  
+  |  |/    \   __\/ __ \_  __ \__  \ _/ ___\   __\  \  \/ // __ \ 
+  |  |   |  \  | \  ___/|  | \// __ \\  \___|  | |  |\   /\  ___/ 
+  |__|___|  /__|  \___  >__|  (____  /\___  >__| |__| \_/  \___  >
+          \/          \/           \/     \/                   \/*/
 # entspricht der .zshrc ------
 interactiveShellInit = ''
 # Load FZF configuration
@@ -280,10 +284,80 @@ interactiveShellInit = ''
 
 # if [[ -f "${pkgs.nix-index}/etc/profile.d/command-not-found.sh"  ]]; then 
 # source "${pkgs.nix-index}/etc/profile.d/command-not-found.sh"
- 
+
+#-------------------------- .__   ----  
+#         _______  _______  |  |  
+#       _/ __ \  \/ /\__  \ |  |  
+#        \  ___/\   /  / __ \|  |__
+#         \___  >\_/  (____  /____/
+#            \/           \/      
+# Initialize completion systems with error handling -  Tool-specific completions
+command -v navi &>/dev/null && eval "$(navi widget zsh)"
+command -v hugo &>/dev/null && eval "$(hugo completion zsh)"
+command -v npm &>/dev/null && eval "$(npm completion)"
+command -v rg &>/dev/null && eval "$(rg --generate=complete-zsh)"
+command -v glow  &>/dev/null && eval "$(glow completion zsh)"
+command -v pay-respects &>/dev/null && eval "$(pay-respects zsh)"
+
+#------------------------------------------------
+#  _______        _____ _______ _______ ______
+#  |_____| |        |   |_____| |______ |______
+#  |     | |_____ __|__ |     | ______| |______
+#                                              
+#  Globale Aliase (werden überall in der Zeile expandiert)
+### -------------------------------  ####
+# 	  usage% file G 'pattern'
 ##  ZSH DIRECTORY STACK - DS
      alias -g D='dirs -v'
      for index ({1..9}) alias "$index"="cd -$index"
+
+alias -g EDnew='gnome-text-editor --ignore-session --new-window --standalone 2> /dev/null &'
+alias -g ED='gnome-text-editor 2> /dev/null &'
+
+alias -g gedit='gnome-text-editor 2> /dev/null &'
+# --ignore-session	Startet mit leerer Tab-Leiste (ignoriert ~/.local/share/gnome-text-editor/session.json).
+# --standalone	Erzeugt eine eigene PID; keine Kommunikation mit dem Shared-Process/Daemon.
+# --new-window	Verhindert das Öffnen als Tab in einer bereits sichtbaren Instanz.
+alias -g CMD='command'
+alias -g SRC='source'
+alias -g L='| less'
+alias -g LL='| less -X -j5 --tilde --save-marks \
+    --incsearch --RAW-CONTROL-CHARS \
+    --LINE-NUMBERS --line-num-width=3 \
+    --quit-if-one-screen --use-color \
+    --color=NWr --color=EwR --color=PbC --color=Swb'
+alias -g G='| grep --ignore-case --color=auto'
+alias -g HH='--help 2>&1 | grep'
+alias -g H='--help'
+alias -g D0='2> /dev/null'
+alias -g 00='&& echo "Success" || echo "Failed"'
+
+# dahinter PKGS name, er letzte Pfad ist der vollständige Pfad zum gebauten Paket im Nix-Store. Ohne --no-out-link würde Nix einen Symlink namens result im aktuellen Verzeichnis erstellen, der auf diesen Pfad zeigt.
+alias -g NN="nix-build --no-out-link '<nixpkgs>' -A"  
+
+### -------------------------------  ####
+#   Suffix-Aliase 
+## (werden ausgeführt, wenn ein Dateiname als Befehl eingegeben wird)
+### -------------------------------  ####
+alias -s {ape,avi,flv,m4a,mkv,mov,mp3,mp4,mpeg,mpg,ogg,ogm,wav,webm,opus,flac}='vlc'
+# alias -s mp4='vlc --fullscreen --no-video-title-show --no-video-border'
+alias -s {jpg,jpeg,png,bmp,svg,gif,webp}='kitty +kitten icat &'
+alias -s {js,json,env,html,css,toml}='bat -p'
+alias -s {conf}='micro -filetype bash'
+alias -s {nix}='gnome-text-editor &'
+alias -s html='firefox &'
+alias -s py='python &'
+alias -s log='ccze'
+# Die folgende Definition überschreibt die vorherige für .md-Dateien.
+alias -s {md}='glow -p || marker --preview --display=:0 &'
+alias -s {pdf,PDF}='open_pdf'
+alias -s {txt}='micro -filetype bash'
+
+
+alias Zconf='gnome-text-editor -s "$ZDOTDIR/.zshrc" && source "$ZDOTDIR/.zshrc" && \
+    echo -e "\n\t''${PINK}source $ZDOTDIR/.zshrc ''${RED}s erfolgreich!''${RESET}\n" || \
+    echo -e "\n\t''${RED}source $ZDOTDIR/.zshrc   ---NICHT---  erfolgreich!''${RESET}\n"'
+alias ZRC='Zconf'
 
 # not needed, because sourcing zshrc (normally automatic)
 #if [[ -f "$ZDOTDIR/.zshrc" ]]; then 
@@ -348,9 +422,11 @@ environment.systemPackages = with pkgs; [
     dust                        # Modern du replacement
     procs                       # Modern ps replacement
     bar # cli progress
-    ncdu # Disk usage analyzer with an ncurses interface
-    mupdf # Lightweight PDF, XPS, and E-book viewer and toolkit written in portable C
-pdfgrep # Commandline utility to search text in PDF files
+  ncdu # Disk usage analyzer with an ncurses interface
+  mupdf # Lightweight PDF, XPS, and E-book viewer and toolkit written in portable C
+  pdfgrep # Commandline utility to search text in PDF files
+  mdcat #  cat for markdown  cat for markdown
+     glow #md
 ### Terminal and Shell Utilities
 micro-with-wl-clipboard # Modern and intuitive terminal-based text editor
   kitty # Terminal emulator

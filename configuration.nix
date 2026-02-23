@@ -23,8 +23,11 @@ channel probs:
 
     ./modules/zsh.nix # shell
     ./modules/bash.nix # shell
-        ./modules/aliases.nix
+    ./modules/aliases.nix
     ./modules/rust.nix # 
+    ./modules/treefmt.nix # 
+   
+    # ./modules/dns.nix # 
     #   ./modules/python.nix # ehem.	./ld.nix
     #./modules/docker.nix
     #   ./modules/npm.nix

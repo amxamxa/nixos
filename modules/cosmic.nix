@@ -23,19 +23,24 @@
    Konsequenz:kein globales Farbprofil, kein ICC-basierter Desktop-Farbraum
          COSMIC vermeidet aktuell bewusst „halb-funktionales HDR“.
   */
-
-  services.desktopManager.cosmic.enable = true;
   services.displayManager.cosmic-greeter.enable = true;
-
+  services.desktopManager.cosmic.enable = true;
+  services.desktopManager.cosmic.xwayland.enable = true;
+  
   # Performance-Optimierung (System76 Integration)
   services.system76-scheduler.enable = true;
 
   #  Disable warning about excluded packages
-  services.desktopManager.cosmic.showExcludedPkgsWarning = false;
+  services.desktopManager.cosmic.showExcludedPkgsWarning = false;  
 
   # Clipboard Manager not working, so zwlr_data_control_manager_v1 protocol needs to be available.
-  environment.sessionVariables.COSMIC_DATA_CONTROL_ENABLED = 1;
-
+  # Macht die Variable systemweit verfügbar (auch außerhalb von Login-Shells)
+  environment.variables.COSMIC_DATA_CONTROL_ENABLED = "1";
+  
+  # disable libadwaita theming for Firefox
+    programs.firefox.preferences."widget.gtk.libadwaita-colors.enabled" = false;
+  
+  
   nix.settings = {
     # Erlaubt das Beziehen von fertigen COSMIC-Builds ohne Flakes
     substituters = [ "https://cosmic.cachix.org" ];
@@ -58,10 +63,7 @@
     lxqt.enable = false;
     xfce.enable = false;
   };
-  programs.firefox.preferences = {
-    # disable libadwaita theming for Firefox
-    "widget.gtk.libadwaita-colors.enabled" = false;
-  };
+
   # make Qt 5 applications look similar to GTK ones
   qt.enable = true;
   qt.platformTheme = "gtk2";
@@ -100,14 +102,17 @@
     wlr-randr # Xrandr clone for wlroots compositors
     wlrctl # Command line utility for miscellaneous wlroots Wayland extensions
     wlroots_0_19 # Modular Wayland compositor library
+    imv # Command line image viewer for tiling window managers
     wl-clipboard 
   nwg-look # GTK settings editor, designed to work properly in wlroots-based Wayland environment
   wayshot # Native, blazing-fast screenshot tool for wlroots based compositors such as sway and river
   nwg-wrapper # Wrapper to display a script output or a text file content on the desktop in sway or other wlroots-based compositor
 
   ];
+  # Enable Flatpak support for COSMIC Store
+  services.flatpak.enable = true;
+ # Add Flathub repository (per user) $ flatpak remote-add --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
- 
  environment.cosmic.excludePackages = with pkgs; [
     cosmic-player # Media player for the COSMIC Desktop Environment
     cosmic-edit # Text Editor

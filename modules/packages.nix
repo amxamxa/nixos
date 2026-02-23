@@ -9,7 +9,10 @@
 # - Packages specific to desktop environments are in their respective modules
 # - This file contains general system utilities and applications
 # Note: Check for duplicates before adding packages here
-
+programs.appimage = {
+  enable = true;
+  binfmt = true;  # registriert AppImage als ausführbares Format via binfmt_misc
+};
 
   # to install from unstable-channel, siehe packages.nix
   nixpkgs.config = {
@@ -20,7 +23,7 @@
         "memtest86-efi"        "sublimetext"
         "obsidian"             "typora"
         "decent-sampler"        "vst2-sdk"
-        "kiro"
+        "kiro"  "claude-code"
       ];
     allowUnfree = false;
 
@@ -170,7 +173,6 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     nix-tree                   # Browse Nix store interactively
     nix-info                   # System information for Nix
     nix-prefetch-github       # Prefetch GitHub sources
-    nixfmt-tree               # Nix formatter with treefmt
     statix                     # Nix linter
     deadnix                    # Find unused Nix code
     nixos-icons               # NixOS logo icons
@@ -338,7 +340,7 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     icon-library              # Symbolic icons
     pantheon.elementary-iconbrowser  # Icon browser
     kora-icon-theme           # Kora icons
-    brose-pine-icon-theme      # Rose Pine icons
+    rose-pine-icon-theme      # Rose Pine icons
     papirus-icon-theme        # Papirus icons
     andromeda-gtk-theme       # Dark theme
 
@@ -348,6 +350,8 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     zenity                     # Display dialogs from CLI
     libnotify                  # Desktop notifications
     file-roller               # Archive manager
+    proot # User-space implementation of chroot, mount --bind and binfmt_misc
+
 
     # Miscellaneous
     linux-firmware            # Firmware files
@@ -355,9 +359,13 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
      
     #dev
     codex # Lightweight coding agent that runs in your terminal
+    claude-code # Agentic coding tool that lives in your terminal
+    mistralclient # OpenStack Mistral Command-line Client
     #helix # Post-modern modal text editor
     #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
     # ─────────────────────────
+    
+    
     # UNSTABLE CHANNEL PACKAGES
     # Packages from nixos-unstable for newer versions
     # ─────────────────────────

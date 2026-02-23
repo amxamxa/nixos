@@ -5,6 +5,11 @@
 - Maskierung von Sonderzeichen (Escaping) beachten \"
 - semikolon und kein leerzeichen
 - FIX: Shell-Variablen ${VAR} in ''...'' als ''${VAR} escapen
+
+
+Mehrzeilige Strings: In Nix werden mehrzeilige Strings mit zwei einfachen Anführungszeichen ('') umschlossen.
+Escaping: Sonderzeichen wie ", $, und \ müssen ggf. escaped werden, falls sie in der Shell-Interpretation zu Konflikten führen.
+---------------------------------------------------------
 */
 
 let
@@ -19,112 +24,132 @@ in
         █  █ ███▄ ▐█ █  █  ▀▄▄▄▄▀    
            █     ▀ ▐    █            
           ▀            ▀            
-Mehrzeilige Strings: In Nix werden mehrzeilige Strings mit zwei einfachen Anführungszeichen ('') umschlossen.
-Escaping: Sonderzeichen wie ", $, und \ müssen ggf. escaped werden, falls sie in der Shell-Interpretation zu Konflikten führen.
----------------------------------------------------------
-
 #       e x a / e z a .. ls  ll  lh  ld ...
-alias eweb='echo -e "\t${PINK}eza-Ansicht für Web-Projekte (z.B. Hugo)${RESET}" && eza --no-git --total-size --git-ignore -A -tree'
+alias eweb='echo -e "\t''${EMBER}eza-Ansicht für Web-Projekte (z.B. Hugo)''${RESET}" && eza --no-git --total-size --git-ignore -A -tree'
 alias e-hugo='eweb'
-
-alias lp='echo -e "\t${PINK}eza-Auflistung mit Fokus auf Git-Status${RESET}" && eza --octal-permissions --git -Al --git-repos --no-permissions --time-style=relative --group-directories-first --smart-group'
+alias lp='echo -e "\t''${EMBER}eza-Auflistung mit Fokus auf Git-Status''${RESET}" && eza --octal-permissions --git -Al --git-repos --no-permissions --time-style=relative --group-directories-first --smart-group'
 alias ep=lp
-
-alias e1='echo -e "\t${GELB} eza --tree -level 1 ${RESET}\n" && \
-    eza --all --long --group-directories-first \
-        --color-scale --no-time --octal-permissions --width 76 \
-        --tree --level 1 --color-scale-mode gradient'
-alias e2='echo -e "\t${GELB} eza --tree -level 2${RESET}\n" && \
-    eza --all --long --group-directories-first \
-        --color-scale --no-time --octal-permissions --width 76 \
-        --tree --level 2  --color-scale-mode gradient'
-alias e3='echo -e "\t${GELB} eza --tree -level 3  ${RESET}\n" && \
-    eza --all --long --group-directories-first \
-        --color-scale --no-time --octal-permissions --width 76 \
-        --tree --level 3 --color-scale-mode gradient'
-alias e4='echo -e "\t${GELB} eza --tree -level 4 --git ${RESET}\n" && \
-    eza --all --long --group-directories-first \
-        --no-time --octal-permissions --width 76 \
-        --color-scale age --color-scale-mode gradient \
-        --tree --level 4 --git -color-scale-mode gradient'
-alias eee='echo -e "\t${GELB} eza --tree -level 99 --git ${RESET}\n" && \
-    eza --all --long --group-directories-first \
-        --colour-scale all --color-scale-mode gradient --no-time \
-        --octal-permissions --tree --level 99 --git --width 76'
-alias ee='echo -e "eza  ... läuft"  && \
-    eza --git --almost-all --long --group-directories-first \
-        --colour-scale all --color-scale-mode gradient --octal-permissions'
-
 */
 
-  environment.shellAliases = mkMerge [
+environment.shellAliases = mkMerge [       
+{
+    # --- Always available aliases ---
+     h = "history";
+     ex = "exit";
+     c = "clear";
+ env2g = "g2env";
+ ali2g = "g2ali";
+ g2lol = "g2ali";
+ lol2g = "g2ali";
+  ".." = "cd .."; 
+   AUS = "shutdown now";
+   EIN = "shutdown -r now";
+Reboot = "shutdown -r now";
+lol = "alias | sort | blahaj -c bi -b";
 
-    # --- Always available aliases (alphabetisch) ---
-    {
-
-NIXoi = ''
-      echo -e "\t''${NIGHT}sudo nixos-rebuild switch --profile-name xam4boom --upgrade -I nixos-config=/etc/nixos/configuration.nix ''${PINK}" && \
-      sudo nixos-rebuild switch --show-trace --upgrade --profile-name "xam4boom" -I nixos-config=/etc/nixos/configuration.nix && \
+   
+  NIXoi = ''
+      echo -e "\t''${NIGHT}sudo nixos-rebuild switch --profile-name xam4boom --upgrade -I nixos-config=/etc/nixos/configuration.nix ''${EMBER}" && \
+      sudo nixos-rebuild switch \
+      --show-trace --upgrade --profile-name "xam4boom" \
+      -I nixos-config=/etc/nixos/configuration.nix && \
       echo -e "__________end ''${RESET}"
     '';
     NIXboom = ''
-      echo -e "\t''${NIGHT}sudo nixos-rebuild boot --profile-name \"xam4boot\" --upgrade -I nixos-config=/etc/nixos/configuration.nix ''${PINK}" && \
-      sudo nixos-rebuild boot --show-trace --upgrade --profile-name "xam4boot" -I nixos-config=/etc/nixos/configuration.nix && \
+      echo -e "\t''${NIGHT}sudo nixos-rebuild boot --profile-name \"xam4boot\" --upgrade -I nixos-config=/etc/nixos/configuration.nix ''${EMBER}" && \
+      sudo nixos-rebuild boot \
+        --show-trace --upgrade --profile-name "xam4boot" \
+        -I nixos-config=/etc/nixos/configuration.nix && \
       echo -e "__________end ''${RESET}"
     '';
-    
-    diff = ''
+  NIXcmd = ''
+        echo -e "\t''${NIGHT}Active system-generation binaries → Nix store symlinks''${RESET}"  && \
+eza -A --long --no-permissions --no-user --no-time --no-filesize --icons /run/current-system/sw/bin \ 
+        || command ls -l --color=always /run/current-system/sw/bin | awk 'NR>1 {print ''$9, ''$10, ''$11}'
+        '';
+ NIXbin = "NIXcmd";
+ 
+ NIXinfo = "nix-info --host-os --sandbox --markdown";
+
+  NIXboot = ''
+        echo -e "\t ''${EMBER}NixOS - Bootbare Konfigurationen ''${RESET}" && \
+        cd /nix/var/nix/profiles/ && \
+        eza --octal-permissions -U --header --long --tree --almost-all /nix/var/nix/profiles/
+        '';
+  
+  NIXref = ''
+ 	echo -e "\t''${EMBER}Zeige die direkten Abhängigkeiten eines Nix-Store-Pfades an''${RESET}" \
+ 	&& \nix-store -q --references /nix/store/'
+        '';
+      
+    DIFF = ''
       echo -e "\t''${NIGHT}colordiff mit erweiterten Ignore-Optionen''${RESET}" && \
       colordiff --ignore-case --ignore-tab-expansion \
         --ignore-trailing-space --ignore-space-change \
         --ignore-all-space --ignore-blank-lines
     '';
-    LSblk = ''
-      echo -e "\t''${NIGHT}enhanced lsblk .. als Tabelle mit --merge --zoned --ascii --topology ''${RESET}" && \
-      lsblk --width 80 --merge --zoned --ascii --topology \
-            --output MODEL,MOUNTPOINTS,PATH,SIZE,TRAN,LABEL,FSTYPE,TYPE
-    '';
-    
-    LSmod = ''
-      echo -e "\t''${NIGHT}enhanced ls mod w/ Kernel-Modul -Name and -description ''${RESET}" && \
-      while IFS= read -r name; do printf "%s\t\t%s\n" "''${name}" "''$(sudo modinfo "''$name" | grep "description" | cut -c17-)"; done <<< "$(lsmod | cut -d " " -f1 | tail -n +2)"
-    '';
-    
-  NIXboot = ''echo -e "\t''${PINK}Bootbare Konfigurationen ''${RESET}" && eza -U --header --long --tree --almost-all /nix/var/nix/profiles/'';
-  
-  NIXrun  = ''eza --tree --only-dirs /run/current-system/sw/share'';
- 
-  NIXref = ''
- 	echo -e "\t''${PINK}Zeige die direkten Abhängigkeiten eines Nix-Store-Pfades an''${RESET}" 
- 	&& \nix-store -q --references /nix/store/'
-'';
-      ".." = "cd ..";
-
-        "COL+" = ''theme.sh --dark -i2 >> color-theme.md && echo -e "''${BROWN}theme.sh --dark -i2 >> color-theme.md ''${RESET}"'';
-
-       COL256 = ''
+    COL256 = ''
         for i in {0..255}; do
           printf "\e[38;5;''${i}mcolor%-5i\e[0m" "$i"
           if (( ($i + 1) % 8 == 0 )); then echo; fi
         done
         echo -e "\n\tSYNTAX: 38;5;<colorXYZ>:\n\tz.B.: 38;5;125"
       '';
-      COLsw = ''color-theme-switch && echo -e "''${BROWN}color-theme-switch aus my-function.zsh''${RESET}"'';
-      "FC-list" = ''FClist.sh || $HOME/bin/FClist.sh'';
-      FARBE = ''echo -e "\t''${PINK}Lade Farbskript''${RESET}" && source "$ZDOTDIR/functions/colors.sh"'';
-      EIN    = "shutdown -r now";
-      Reboot = "shutdown -r now";
-      AUS    = "shutdown now";
-      RM = ''echo -e "\t''${PINK}Lösche *~ Dateien''${RESET}" && find . -type f -name "*~" -delete'';
+       
+      FClist = ''FClist.sh || $HOME/bin/FClist.sh'';
+      FARBE = ''echo -e "\t''${EMBER}Lade Farbskript''${RESET}" && source "$ZDOTDIR/functions/colors.sh"'';   
     }
-
+    
+       # --- fd ---
+    (mkIf (builtins.hasAttr "fd" pkgs) {
+   fd = ''
+        fd --exclude "/dev" --exclude "/nix/var" \
+            --exclude "/proc" --exclude "/sys"    \
+            --exclude "/run" --exclude "/var/lib"
+        '';
+   })
+   
+   # --- glow -. markdown ---
+    (mkIf (builtins.hasAttr "glow" pkgs) {
+      MD  = "glow -p README.md";          
+    })
+    
 
     # --- bat ---
-
     (mkIf (builtins.hasAttr "bat" pkgs) {
-      bap  = "bat -p";
       bat  = "bat6";
+      bap  = "bat -pp";
       bat6 = "command bat --wrap=auto --decorations=always --theme=gruvbox-dark";
+      # Additional themes — use 'command bat' to avoid alias recursion
+      bat1 = "command bat --wrap=auto --plain --terminal-width 76 --theme=ansi";
+      bat2 = "command bat --wrap=auto --plain --terminal-width 80 --theme=Dracula";
+      bat3 = "command bat --wrap=auto --decorations=always --theme=Coldark-Dark";
+      bat4 = "command bat --wrap=auto --number --decorations=always --theme=OneHalfDark";
+      bat5 = "command bat --wrap=never --number --decorations=always --theme=base16";
+      # Config opener — uses 'edit' alias (micro)
+      BATconf = ''echo -e "\t''${EMBER}Öffne bat Konfigurationsdatei''${RESET}" && micro /share/bat/config.toml'';
+      Bconf   = "BATconf";
+    })
+
+    # --- git ---
+    (mkIf (builtins.hasAttr "git" pkgs) {
+      ga   = ''echo -e "''${VIOLE}\nFügt Änderungen hinzu''${RESET}\n" && git add'';
+      gc   = ''echo -e "''${VIOLE}\ncommit''${RESET}\n" && git commit '';
+      gb   = ''echo -e "''${VIOLE}\nZeigt Branches''${RESET}\n" && git branch'';
+      gblog = ''git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(refname:short) - %(objectname:short) - %(contents:subject) - %(authorname) (%(committerdate:relative))"'';
+      glol = ''echo -e "''${VIOLE}\nCommit-Historie''${RESET}\n" && git log --graph --abbrev-commit --oneline --decorate'';
+      gp   = ''echo -e "''${VIOLE}\nPush''${RESET}\n" && git push'';
+      gr   = ''echo -e "''${VIOLE}\nRemote Repos''${RESET}\n" && git remote'';
+      grb  = ''echo -e "''${VIOLE}\nRemote Branches''${RESET}\n" && git branch -r'';
+      grs  = ''echo -e "''${VIOLE}\nRemote Info''${RESET}\n" && git remote show'';
+      gll = ''
+        echo -e "''${VIOLE}\nFarbig formatierte Ausgabe der Commit-Historie in Graph-Darstellung''${RESET}\n" && \
+        git log --graph \
+          --format=format:"%C(bold blue)%h%C(reset) - %C(bold NIGHT)(%ar)%C(reset) %C(white)%an%C(reset)%C(bold yellow)%d%C(reset) %C(dim white)- %s%C(reset)" \
+          --all
+          '';
+      gss  = ''cowsay -nW 60 "$(echo -e "''${NIGHT}[Git Status]''${RESET}\n$(git status -s)")" && echo -e "\n''${EMBER}Legende:''${RESET}\nM Modified A Staged\nD Deleted R Renamed\nC Copied\n? Untracked"'';
+      gs = ''echo -e "''${EMBER}\n git status --short ''${RESET}" && git status -s'';
     })
 
     # --- btop ---
@@ -135,63 +160,87 @@ NIXoi = ''
    
     # --- duf ---
     (mkIf (builtins.hasAttr "duf" pkgs) {
-      df = ''echo -e "\t''${PINK} duf''${RESET}" && duf'';
+      df = ''echo -e "\t''${EMBER} duf''${RESET}" && duf'';
     })
 
     # --- eza ---
     (mkIf (builtins.hasAttr "eza" pkgs) {
-      e=''echo "eza (´FILE*´ for execute perm. ´DIR/´ for directory)" && eza --all --classify'';
-    ed=''echo "eza (only directories)" && eza --all --classify --only-dirs'';
-    ld = "ed --long";
-    ef=''echo "eza (only files)" && eza --all --classify --only-files'';
-    lf = "ef --long";
-    et=''echo "eza (sorted by time)" && eza --all --classify --sort time'';
-    lt = "et --long";    
-    ex=''echo "eza (sorted by extension)" && eza --all --classify --sort extension'';
-    lx = "ex --long";
-    es=''echo "eza (sorted by size)" && eza --all --classify --sort size'';
-    ls = "es --long";
-    el=''echo "eza (long format)" && eza --all --classify --long'';
-    le=''echo "eza (tree view)" && eza --all --classify --tree --level=2'';
-    eg=''echo "eza (git status)" && eza --all --classify --git'';
-    lg = "eg --long";
-    })
+    e = ''
+    echo -e "\t ''${EMBER} eza (´FILE*´ for execute perm. ´DIR/´ for directory)''${RESET}" && \
+    eza --all --classify
+  '';
+ ee = ''
+    echo -e "\t ''${EMBER} eza mit One enty per line, w/out Icons''${RESET}" && \
+        e1 eza --oneline --icons never
+      '';
+  Eg = ''
+    echo -e "''${EMBER}eza (git status)''${RESET}" && \
+    eza --all --classify --git --long --octal-permissions --icons auto
+  '';
+    lg = "eza --long --group --smart-group -@ --octal-permissions --icons auto";
+    Egl = "lg";
 
-    # --- git ---
-    (mkIf (builtins.hasAttr "git" pkgs) {
-      # FIX: ''${GELB}, ''${RESET} in allen git-Aliases
-      ga   = ''echo -e "''${GELB}\nFügt Änderungen hinzu''${RESET}\n" && git add'';
-      gc   = ''echo -e "''${GELB}\ncommit''${RESET}\n" && git commit '';
-            gb   = ''echo -e "''${GELB}\nZeigt Branches''${RESET}\n" && git branch'';
-      gblog = ''git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(refname:short) - %(objectname:short) - %(contents:subject) - %(authorname) (%(committerdate:relative))"'';
-      glol = ''echo -e "''${GELB}\nCommit-Historie''${RESET}\n" && git log --graph --abbrev-commit --oneline --decorate'';
-      gp   = ''echo -e "''${GELB}\nPush''${RESET}\n" && git push'';
-      gr   = ''echo -e "''${GELB}\nRemote Repos''${RESET}\n" && git remote'';
-      grb  = ''echo -e "''${GELB}\nRemote Branches''${RESET}\n" && git branch -r'';
-      grs  = ''echo -e "''${GELB}\nRemote Info''${RESET}\n" && git remote show'';
-    gll = ''
-        echo -e "''${GELB}\nFarbig formatierte Ausgabe der Commit-Historie in Graph-Darstellung''${RESET}\n" && \
-        git log --graph \
-          --format=format:"%C(bold blue)%h%C(reset) - %C(bold NIGHT)(%ar)%C(reset) %C(white)%an%C(reset)%C(bold yellow)%d%C(reset) %C(dim white)- %s%C(reset)" \
-          --all
-      gss  = ''cowsay -nW 60 "$(echo -e "''${NIGHT}[Git Status]''${RESET}\n$(git status -s)")" && echo -e "\n''${PINK}Legende:''${RESET}\nM Modified A Staged\nD Deleted R Renamed\nC Copied\n? Untracked"'';
-      gsss = ''echo -e "''${PINK}\n git status --short ''${RESET}" && git status -s'';
+  Ex = ''
+    echo -e "''${EMBER}eza (sorted by extension)''${RESET}" && \
+    eza --all --classify --sort extension --long --octal-permissions --icons auto
+  '';
+  lx = "eza --long --group --smart-group -@ --octal-permissions --icons auto";
+  Exl = "lx";
+    
+  Es = ''
+    echo -e "''${EMBER}eza (sorted by size)''${RESET}" && \
+    eza --all --classify --total-size --sort size
+  '';
+  ls = "eza --long --group --smart-group -@ --octal-permissions --icons auto";
+  Esl = "ls"; 
+  
+  Ef=''
+    echo -e "''${EMBER}"eza (only files)''${RESET}" && \
+                eza --all --classify --only-files'';
+  lf = "Ef --long --octal-permissions --icons auto --group --smart-group";
+  Efl = "lf";
+   
+  Et=''
+    echo -e "''${EMBER}"eza (sorted by time)''${RESET}" && \
+                eza --all --classify --sort time
+        '';
+  lt = "eza --long --group --smart-group -@ --octal-permissions --icons auto";    
+  Etl = "lt"; 
+        
+  E1= '' 
+    echo -e "\t''${VIOLE} eza --tree -level 1 ''${RESET}\n" && \
+    eza --all --long --group --smart-group -@ --group-directories-first \
+    --color-scale --no-time --octal-permissions --width 76 \
+    --tree --level 1 --color-scale-mode gradient"
+        '';
+  E2= '' 
+    echo -e "\t''${VIOLE} eza --tree -level 2 ''${RESET}\n" && \
+    eza --all --long --group --smart-group -@ --group-directories-first \
+    --color-scale --no-time --octal-permissions --width 76 \
+    --tree --level 2 --color-scale-mode gradient"
+        '';
+  E4= '' echo -e "\t''${VIOLE} eza --tree -level 77 -git ''${RESET}\n" && \
+        eza --all --group --smart-group -@ --long --group-directories-first \
+          --color-scale --no-time --octal-permissions --width 76 \
+          --tree --level 77 --color-scale-mode gradient --git
+        '';
+        
     })
 
     # --- kitty ---
     (mkIf (builtins.hasAttr "kitty" pkgs) {
-      # FIX: ''${PINK}, ''${RESET}
+      # FIX: ''${EMBER}, ''${RESET}
       # HINWEIS: gnome-text-editor ist nicht in systemPackages → Fallback auf micro greift
-      KITTYconf = ''echo -e "\t''${PINK}Öffne kitty.conf''${RESET}" && gnome-text-editor "$XDG_CONFIG_HOME/kitty/kitty.conf" 2>/dev/null || micro "$KITTY_CONFIG_DIRECTORY/kitty.conf"'';
+      KITTYconf = ''echo -e "\t''${EMBER}Öffne kitty.conf''${RESET}" && gnome-text-editor "$XDG_CONFIG_HOME/kitty/kitty.conf" 2>/dev/null || micro "$KITTY_CONFIG_DIRECTORY/kitty.conf"'';
       Kconf     = "KITTYconf";
-      KITTYmap  = ''echo -e "\t''${PINK}Zeige Tastaturbelegungen''${RESET}" && bapNoComment "$KITTY_CONFIG_DIRECTORY/kitty.conf" || grep "map"'';
+      KITTYmap  = ''echo -e "\t''${EMBER}Zeige Tastaturbelegungen''${RESET}" && bapNoComment "$KITTY_CONFIG_DIRECTORY/kitty.conf" || grep "map"'';
       Kbind     = "KITTYmap";
       Kmap      = "KITTYmap";
     })
 
     # --- lsd ---
     (mkIf (builtins.hasAttr "lsd" pkgs) {
-      NIXpkgs = ''echo -e "\t''${PINK}Liste installierte Pakete''${RESET}" && lsd --oneline --classify --no-symlink /run/current-system/sw/bin/'';
+      NIXpkgs = ''echo -e "\t''${EMBER}Liste installierte Pakete''${RESET}" && lsd --oneline --classify --no-symlink /run/current-system/sw/bin/'';
     })
 
     # --- wget ---
@@ -201,10 +250,10 @@ NIXoi = ''
 
     # --- zoxide ---
     (mkIf (builtins.hasAttr "zoxide" pkgs) {
-      za  = ''echo -e "\t''${PINK}Add to zoxide''${RESET}" && zoxide add'';
-      zq  = ''echo -e "\t''${PINK}Query zoxide''${RESET}" && zoxide query'';
-      zqi = ''echo -e "\t''${PINK}Interactive query''${RESET}" && zoxide query -i'';
-      zr  = ''echo -e "\t''${PINK}Remove from zoxide''${RESET}" && zoxide remove'';
+      za  = ''echo -e "\t''${EMBER}Add to zoxide''${RESET}" && zoxide add'';
+      zq  = ''echo -e "\t''${EMBER}Query zoxide''${RESET}" && zoxide query'';
+      zqi = ''echo -e "\t''${EMBER}Interactive query''${RESET}" && zoxide query -i'';
+      zr  = ''echo -e "\t''${EMBER}Remove from zoxide''${RESET}" && zoxide remove'';
     })
    
        
@@ -212,52 +261,39 @@ NIXoi = ''
 (mkIf (builtins.hasAttr "broot" pkgs) {
 
   # --- launch ---
-  br    = "broot";                             # standard launch (installs shell func on first run)
-  brd   = "broot --sizes";                     # show directory sizes
-  brg   = "broot --gitignore yes";             # respect .gitignore
-  brh   = "broot --hidden";                    # show hidden files
-  brhs  = "broot --hidden --sizes";            # hidden + sizes
-  bri   = "broot --show-root-fs";              # show filesystem info at root
+  BR    = "broot";                             # standard launch (installs shell func on first run)
+  BRd   = "broot --sizes";                     # show directory sizes
+  BRg   = "broot --gitignore yes";             # respect .gitignore
+  BRh   = "broot --hidden";                    # show hidden files
+  BRhs  = "broot --hidden --sizes";            # hidden + sizes
+  BRi   = "broot --show-root-fs";              # show filesystem info at root
   # --- git integration ---
-  brgs  = "broot --git-status";               # show git status flags
-  brgl  = "broot --gitignore no";             # ignore .gitignore (show all)
+  BRgs  = "broot --git-status";               # show git status flags
+  BRgl  = "broot --gitignore no";             # ignore .gitignore (show all)
   # --- permissions / ownership ---
-  brp   = "broot --permissions";              # show permissions column
-  bro   = "broot --show-permissions";         # alias variant
-  # --- sorting ---
-  brsd  = "broot --sort-by-date";             # sort by modification date
-  brss  = "broot --sort-by-size";             # sort by size
-  brsn  = "broot --sort-by-name";             # sort by name (default)
-  brsc  = "broot --sort-by-count";            # sort by file count (dirs)
-  # --- specific start paths ---
-  brhome  = "broot $HOME";
-  brnix   = "broot /etc/nixos";
-  brlog   = "broot /var/log";
+  BRp   = "broot --permissions";              # show permissions column
  })
  # --- neofetch ---
     (mkIf (builtins.hasAttr "neofetch" pkgs) {
-      neo  = ''echo -e "\t''${PINK} neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/spaceinv.conf\t''${RESET}" && neofetch --config "$ZDOTDIR/neofetch/spaceinv.conf"'';
+      neo  = ''echo -e "\t''${EMBER} neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/spaceinv.conf\t''${RESET}" && neofetch --config "$ZDOTDIR/neofetch/spaceinv.conf"'';
       neo0 = "neo";
-      neo1 = ''echo -e "\t  ''${PINK}neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/neofetch-short.conf\t''${RESET}" && neofetch --config "$ZDOTDIR/neofetch/neofetch-short.conf"'';
-      neo2 = ''echo -e "\t''${PINK} neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/config2.conf\t''${RESET}" && neofetch --config "$ZDOTDIR/neofetch/config2.conf"'';
+      neo1 = ''echo -e "\t  ''${EMBER}neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/neofetch-short.conf\t''${RESET}" && neofetch --config "$ZDOTDIR/neofetch/neofetch-short.conf"'';
+      neo2 = ''echo -e "\t''${EMBER} neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/config2.conf\t''${RESET}" && neofetch --config "$ZDOTDIR/neofetch/config2.conf"'';
       neo3 = ''
         echo -e "\t''${LIME}   -  󱚡  --   --  🙼 🙼 🙼      󱢇     🙽 🙽 🙽   --    --  󱚡  --    -" && \
-        echo -e "\t''${PINK}  neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/neofetch-long.conf\t''${RESET}" && \
+        echo -e "\t''${EMBER}  neofetch w/ ''${LILA}\t$ZDOTDIR/neofetch/neofetch-long.conf\t''${RESET}" && \
         echo -e "\t''${CYAN}   -  󱚡  --   --  🙼 🙼 🙼   󱢇     󱢇  🙽 🙽 🙽   --    --  󱚡  --    -" && \
         neofetch --config "$ZDOTDIR/neofetch/neofetch-long.conf"
       '';
-      neo4 = ''echo -e "\t''${PINK} neofetch w/ ''${LILA}\ta for loop of themes\t/home/project/neofetch-themes''${RESET}" && bash -c /home/project/neofetch-themes/for-loop.sh'';
+      neo4 = ''echo -e "\t''${EMBER} neofetch w/ ''${LILA}\ta for loop of themes\t/home/project/neofetch-themes''${RESET}" && bash -c /home/project/neofetch-themes/for-loop.sh'';
     })
 
     # --- pandoc ---
     (mkIf (builtins.hasAttr "pandoc" pkgs) {
-      # NOTE: $1 works here only if called as: MD2pdf file.md
       # For real arg passing, see YTA/YTV functions in interactiveShellInit
-      MD2pdf = ''pandoc "$1" -o "''${1%.md}.pdf" --template=$HOME/dokumente/vorlagen/MDtoPDF.tex'';
+      MD2pdf = ''pandoc "$1" -o "''${1%.md}.pdf" --template=''$HOME/dokumente/vorlagen/MDtoPDF.tex'';
     })
- 
-];
-
+    ];
 # Funktionen (alphabetisch sortiert)
 #  ▄████ ▄      ▄   ▄█▄      ▄▄▄▄▀ ▄█ ████▄    ▄      ▄▄▄▄▄   
 #  █▀   ▀ █      █  █▀ ▀▄ ▀▀▀ █    ██ █   █     █    █     ▀▄ 
@@ -287,8 +323,7 @@ environment.interactiveShellInit = ''
     }
 
     g2ali() {
-      # FIX: ''${RED}, ''${RESET} — Farb-Variablen zur Laufzeit aus colorEnvExport.sh
-      if [[ -z "$1" ]]; then
+        if [[ -z "$1" ]]; then
         echo -e "\t''${RED}Fehler: Kein Suchbegriff angegeben.''${RESET}"
         return 1312
       fi
@@ -311,10 +346,22 @@ environment.interactiveShellInit = ''
       fi
     }
 
-      NIXinfo() {
-      nix-shell -p nix-info --run "nix-info -m"
-    }
-
+     
+    
+# ">/dev/null 2>&1° leitet alle Ausgaben (stdout und stderr) ins Nirvana u Terminal bleibt sauber
+open_pdf() {
+    if command -v okular >/dev/null 2>&1; then
+        okular "$@" >/dev/null 2>&1 &
+    elif command -v xreader >/dev/null 2>&1; then
+        xreader -w "$@" >/dev/null 2>&1 &
+    elif command -v evince >/dev/null 2>&1; then
+        evince "$@" >/dev/null 2>&1 &
+    else
+        echo "Kein PDF-Viewer gefunden" >&2
+        return 1
+    fi
+}
+#-------- ASCIINEMA -----------#
     PLAY() {
       local title="$(basename "$(dirname "$(pwd)")")@$(date +%F)"
       asciinema play "asciinema/$title.cast"
@@ -326,26 +373,144 @@ environment.interactiveShellInit = ''
       asciinema rec --overwrite --idle-time-limit=1 --title="$title" "asciinema/$title.cast"
     }
 
-
+#-------- YT-DLP -----------#
     # Download YouTube audio as MP3 (192k), removes SponsorBlock segments
     YTA() {
       yt-dlp --audio-quality 192k --audio-format mp3 \
         --progress --sponsorblock-remove all \
         -x --embed-metadata --embed-thumbnail --no-mtime --console-title \
         --restrict-filenames --output "%(title).48s.%(ext)s" \
-        --progress-template "%(progress._percent_str)s of 100% | with %(progress._speed_str)s | %(progress._eta_str)s remaining" \
+        --progress-template "%(progress._percent_str)s of 100% \
+        | with %(progress._speed_str)s | %(progress._eta_str)s remaining" \
         "$1"
     }
-
     # Download YouTube video as MP4, removes SponsorBlock segments
     YTV() {
       yt-dlp --audio-quality 192k --remux-video mp4 \
         --progress --sponsorblock-remove all \
         --embed-metadata --embed-thumbnail --no-mtime --console-title \
         --restrict-filenames --output "%(title).48s.%(ext)s" \
-        --progress-template "%(progress._percent_str)s of 100% | with %(progress._speed_str)s | %(progress._eta_str)s remaining" \
+        --progress-template "%(progress._percent_str)s of 100% \
+        | with %(progress._speed_str)s | %(progress._eta_str)s remaining" \
         "$1"
     }
+#-------- ---------------# 
+# Manage color themes: select dark theme or switch theme
+TERMcolors() {
+    case "$1" in
+        select)
+            theme.sh --dark -i2 >> color-theme.md && \
+                echo -e "''${BROWN}theme.sh --dark -i2 >> color-theme.md ''${RESET}"
+            ;;
+        sw)
+            color-theme-switch && \
+                echo -e "''${BROWN}color-theme-switch aus my-function.zsh''${RESET}"
+            ;;
+        *)
+            echo -e "''${BROWN}Usage: Terminal Color Theme w/ "theme.sh" [select|switch]''${RESET}"
+            ;;
+    esac
+}
+#-------- LS BLK /MOD -----------#       
+        # Funktion für enhanced lsblk
+        lsblk_enhanced() {
+            echo -e "\t''${NIGHT}enhanced lsblk .. als Tabelle mit \
+            --merge --zoned --ascii --topology''${RESET}" \
+            lsblk --width 80 --merge --zoned --ascii --topology \
+                  --output MODEL,MOUNTPOINTS,PATH,SIZE,TRAN,LABEL,FSTYPE,TYPE
+        }
+
+        # Funktion für enhanced lsmod
+        lsmod_enhanced() {
+            if ! command -v sudo &> /dev/null; then
+                echo "Fehler: sudo ist nicht installiert oder nicht verfügbar."
+                return 1
+            fi
+            echo -e "\t''${NIGHT}enhanced ls mod w/ Kernel-Modul \
+            -Name and -description''${RESET}"
+            lsmod | awk 'NR>1 {print $1}' | while read -r name; do
+                printf "%s\t\t%s\n" "''${name}" "$(sudo modinfo "''${name}" 2>/dev/null \
+                | awk '/description:/ {sub(/^description:\s*/, ""); print}')"
+            done
+}
+    
+#______________________________________________________
+#   ███████╗ ██████╗ ██╗   ██╗██████╗  ██████╗███████╗
+#   ██╔════╝██╔═══██╗██║   ██║██╔══██╗██╔════╝██╔════╝
+#   ███████╗██║   ██║██║   ██║██████╔╝██║     █████╗
+#   ╚════██║██║   ██║██║   ██║██╔══██╗██║     ██╔══╝
+#   ███████║╚██████╔╝╚██████╔╝██║  ██║╚██████╗███████╗
+#   ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚══════╝
+# Function: source_or_error .sh / .zsh files with extensive validation
+# Usage   : source_or_error file.sh|file.zsh
+
+source_or_error() {
+  # --- UI colors (ANSI) ---
+  local RED="\033[38;2;240;128;128m\033[48;2;139;0;0m"
+  local GELB="\e[33m"
+  local GREEN="\033[38;2;0;255;0m\033[48;2;0;100;0m"
+  local RESET="\e[0m"
+
+  # --- logging helper ---
+  _log() {
+    # ''$1 = level, , ''$2 = filename ''$3 = message
+   printf "[%s] %-12s %-5s %s\n" "''$(date '+%c')" "''$1" "''$2" "''$3"  >> "''$ZDOTDIR/zsh.log" 1> /dev/null
+    }
+
+  local file="''$1"
+  # Validation checks
+    # --- argument sanity ---
+  [[ -z "''$file" ]] && { _log ERROR "" "No file argument provided"; return 2; }
+    # --- existence (any type) ---
+  [[ ! -e "''$file" ]] && { _log ERROR "" "File does not exist: ''$file"; return 3; }
+    # --- empty file check ---
+  [[ ! -s "''$file" ]] && { _log ERROR "" "File is empty: ''$file"; return 4; }
+    # is file?
+  [[ ! -f "''$file" ]] && { _log ERROR "" "Not a regular file: ''$file"; return 5; }
+    # is readable?
+  [[ ! -r "''$file" ]] && { _log ERROR "" "File not readable: ''$file"; return 6; }
+
+  # --- symlink handling ---
+  if [[ -L "''$file" ]]; then
+    local real_file="''${file:A}"
+    _log INFO "" "Symlink resolved: ''$file -> ''$real_file"
+    printf "\t''${GELB}→ Symlink resolved: ''$real_file''${RESET}\n"
+    file="''$real_file"
+  fi
+ # --- extension whitelist ---
+  case "''$file" in
+    (*.sh|*.zsh|*.zsh-theme)
+      _log INFO "" "Accepted extension"
+      ;;
+    (*)
+      _log ERROR "" "Unsupported extension: ''$file"
+      printf "\t''${RED}✖ Unsupported file type (only .sh/.zsh allowed): ''$file''${RESET}\n"
+      return 7
+      ;;
+  esac
+  # --- basic plausibility (optional syntax probe) ---
+  # Note: zsh has no true "lint"; this catches gross parser errors
+ # if ! zsh -n "''$file" 2>/dev/null; then
+ #   _log ERROR "" "Syntax check failed: ''$file"
+ #   printf "\t''${RED}✖ Syntax check failed: ''$file''${RESET}\n"
+ #   return 8
+  # fi
+  # --- source ---
+  _log INFO "" "Sourcing file: ''$file"
+  source "''$file"
+
+  local rc=''$?
+  if (( rc != 0 )); then
+    _log ERROR "" "Sourcing returned non-zero exit code (''$rc): ''$file"
+    printf "\t''${RED}✖ Error while sourcing: ''$file''${RESET}\n"
+    return ''$rc
+  fi
+  printf "''${MINT}󰞷 src pass: ''${CYAN} ''$file :''${SLATE} ✔ ''${RESET}\n"
+#  printf "''${GREEN}󰞷 src pass: ''${NIGHT} ''$file :''${GREEN} ✔ ''${RESET}\n"
+  return 0
+}
+#----------------------------------------------------------------------
+   
   '';
 
 }

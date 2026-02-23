@@ -53,6 +53,9 @@ environment.etc."colorEnvExport.sh" = {
       #!/usr/bin/env bash
         # kitty term supports 24-bit RGB colors 
         export RED=$'\033[38;2;240;128;128m\033[48;2;139;0;0m'
+        export BOLD=$'\033[1m'
+        export BLINK=$'\033[5m'
+        export UNDER=$'\033[4m'
         export GELB=$'\e[33m'
         export GREEN=$'\033[38;2;0;255;0m\033[48;2;0;100;0m'
         export PINK=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
@@ -83,9 +86,6 @@ environment.etc."colorEnvExport.sh" = {
         export SLATE=$'\033[38;2;150;160;170m\033[48;2;40;50;60m'
         export INDIG=$'\033[38;2;90;0;130m\033[48;2;30;0;50m'
         export EMBER=$'\033[38;2;255;80;40m\033[48;2;60;20;10m'
-        export BOLD=$'\033[1m'
-        export BLINK=$'\033[5m'
-        export UNDER=$'\033[4m'
         export RESET=$'\033[0m'
    
       '';
@@ -108,11 +108,18 @@ environment.etc."colorEnvExport.sh" = {
     # Build-time package path interpolation
     EDITOR = "${pkgs.micro}/bin/micro";
     SYSTEMD_EDITOR = "${pkgs.micro}/bin/micro";
-    MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat -l man -p'";
     PAGER = "${pkgs.less}/bin/less -R";
-    
+    MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat --paging=always --style=changes -l man'";
+    MANROFFOPT="-c";
+    MANWIDTH="60";
+        # Default applications
+    VISUAL = "${pkgs.gnome-text-editor}/bin/gnome-text-editor";
     # Static configuration values
-    LESS = "R --use-color -Dd+r -Du+b";
+    LESS="--long-prompt --RAW-CONTROL-CHARS    \
+           --quit-if-one-screen --quit-on-intr  \
+           --no-init --ignore-case --mouse      \ 
+           --hilite-search --use-color -Dd+r -Du+b";
+           
     NIX_INDEX_DATABASE = "/share/nix-index";
     
     # Shared system-wide paths (not user-dependent)
@@ -144,9 +151,6 @@ environment.etc."colorEnvExport.sh" = {
     XDG_DATA_HOME = "$HOME/.local/share";
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_RUNTIME_DIR = "/run/user/$UID";
-    
-    # Default applications
-    VISUAL = "${pkgs.gnome-text-editor}/bin/gnome-text-editor";
     
     # Wayland/COSMIC session configuration
     XDG_SESSION_TYPE = "wayland";
@@ -253,6 +257,8 @@ environment.etc."colorEnvExport.sh" = {
     "d %h/bilder 0755 - - -"
     "d %h/videos 0755 - - -"
     "d %h/public 0755 - - -"
+    "L+ %h/bin/batNoComment - - - - %h/bin/batNoComment.sh"
+    "L+ %h/bin/bNC - - - - %h/bin/batNoComment.sh"
 
     "L+ %h/bin/WO - - - - %h/bin/NIXwo.sh"
     "L+ %h/desktop/pix.desktop - - - - /run/current-system/sw/share/applications/pix.desktop"
