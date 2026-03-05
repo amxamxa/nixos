@@ -1,3 +1,6 @@
 *.cast
 bkp/
 .codex/
+AGENTS.md
+hardware-configuration.nix
+

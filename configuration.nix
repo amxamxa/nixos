@@ -255,11 +255,30 @@ channel probs:
       userServices = true; # Nutzerdienste sichtbar machen
     };
   };
-  /* services.samba.enable = true;
-     services.samba.package = pkgs.sambaFull; # Statt des minimalen `samba`
-     services.samba.nsswins = true;
-     services.samba-wsdd.enable = true;
-  */
+  services.samba = {
+    enable = true;
+    package = pkgs.sambaFull; # Statt des minimalen `samba`
+    nsswins = true;
+
+    settings = {
+      global = {
+        workgroup = "WORKGROUP";
+      };
+
+      videos = {
+        path = "/home/amxamxa/videos";
+        browseable = "yes";
+        "read only" = "yes";
+        "guest ok" = "yes";
+      };
+    };
+  };
+  services.samba-wsdd.enable = true;
+
+  # If you enable the firewall, allow Samba ports:
+  # networking.firewall.allowedTCPPorts = [ 139 445 ];
+  # networking.firewall.allowedUDPPorts = [ 137 138 ];
+  
   # Some applicationsare built for X11. XWayland acts as a translator, allowing 
   # these X11 windows to run inside my Wayland session
   programs.xwayland.enable = true; 
@@ -286,4 +305,3 @@ channel probs:
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
-

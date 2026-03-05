@@ -182,9 +182,7 @@ environment.etc."colorEnvExport.sh" = {
     
     # Additional Wayland backends
     CLUTTER_BACKEND = "wayland";
-    ELM_ENGINE = "wayland_egl";
-    
-    LESSHISTFILE = "$HOME/.cache/less_history";
+    ELM_ENGINE = "wayland_egl";      
     
     PYTHONSTARTUP = "$HOME/.config/python/pythonrc";
     PYTHON_HISTORY = "$HOME/.local/share/python/history";
@@ -207,17 +205,16 @@ environment.etc."colorEnvExport.sh" = {
   GOPATH = "$HOME/.local/share/go";
     
     # Application-specific XDG paths
-    ANDROID_HOME = "$HOME/.local/share/android";
-  FFMPEG_DATADIR = "$HOME/.config/ffmpeg";
-  GNUPGHOME = "$HOME/.local/share/gnupg";
+  ANDROID_HOME =        "$HOME/.local/share/android";
+  FFMPEG_DATADIR =      "$HOME/.config/ffmpeg";
+  GNUPGHOME =           "$HOME/.local/share/gnupg";
   GRADLE_USER_HOME = "$HOME/.local/share/gradle";
-#  GTK2_RC_FILES = "$HOME/.config/gtk-2.0/gtkrc-2.0";
   NUGET_PACKAGES = "$HOME/.cache/NuGetPackages";
   PARALLEL_HOME = "$HOME/.config/parallel";
   VAGRANT_HOME = "$HOME/.local/share/vagrant";
   W3M_DIR = "$HOME/.local/share/w3m";
   WGETRC = "$HOME/.config/wget/wgetrc";
-  
+  LESSHISTFILE = "$HOME/.cache/less_history";
   };
   ##########################################################
   # SECTION SCHEMA: environment.etc

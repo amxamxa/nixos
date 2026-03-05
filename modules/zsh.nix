@@ -298,7 +298,7 @@ command -v npm &>/dev/null && eval "$(npm completion)"
 command -v rg &>/dev/null && eval "$(rg --generate=complete-zsh)"
 command -v glow  &>/dev/null && eval "$(glow completion zsh)"
 command -v pay-respects &>/dev/null && eval "$(pay-respects zsh)"
-
+command -v mdcat &>/dev/null && eval "$(mdcat --completions=zsh)"
 #------------------------------------------------
 #  _______        _____ _______ _______ ______
 #  |_____| |        |   |_____| |______ |______
@@ -311,7 +311,7 @@ command -v pay-respects &>/dev/null && eval "$(pay-respects zsh)"
      alias -g D='dirs -v'
      for index ({1..9}) alias "$index"="cd -$index"
 
-alias -g EDnew='gnome-text-editor --ignore-session --new-window --standalone 2> /dev/null &'
+alias -g EDadd='gnome-text-editor --ignore-session --new-window --standalone 2> /dev/null &'
 alias -g ED='gnome-text-editor 2> /dev/null &'
 
 alias -g gedit='gnome-text-editor 2> /dev/null &'
