@@ -115,10 +115,7 @@ environment.etc."colorEnvExport.sh" = {
         # Default applications
     VISUAL = "${pkgs.gnome-text-editor}/bin/gnome-text-editor";
     # Static configuration values
-    LESS="--long-prompt --RAW-CONTROL-CHARS    \
-           --quit-if-one-screen --quit-on-intr  \
-           --no-init --ignore-case --mouse      \ 
-           --hilite-search --use-color -Dd+r -Du+b";
+    LESS="--long-prompt --RAW-CONTROL-CHARS --quit-if-one-screen --quit-on-intr --no-init --ignore-case --mouse --hilite-search --use-color -Dd+r -Du+b";
            
     NIX_INDEX_DATABASE = "/share/nix-index";
     
@@ -353,4 +350,3 @@ System-Profil (vereint):
   ├── Papirus/ → zeigt auf /nix/store/abc-papirus/...
   └── Kora/ → zeigt auf /nix/store/def-kora/...
 */
-

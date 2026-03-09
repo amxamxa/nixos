@@ -28,8 +28,12 @@ let
   #       --octal-permissions replaces it with octal notation.
   #       Both flags are included as requested — eza resolves the conflict
   #       by letting the last flag win (behaviour may vary by version).
-  eza-flags = "--long --group --smart-group -@ --octal-permissions --no-permissions"
-             + " --icons auto --colour-scale all --color-scale-mode gradient --links";
+  eza-flags = "--long --group" 
+  +           "--smart-group -@"
+  +           "--octal-permissions --no-permissions"
+  +           " --icons auto --links" 
+  +           "--color-scale-mode gradient --colour-scale all";
+  
 
 in
 {
@@ -52,7 +56,7 @@ environment.shellAliases = mkMerge [
   {
     # --- Always available aliases ---
     h       = "history";
-    ex      = "exit";
+    q      = "exit";
     c       = "clear";
     env2g   = "g2env";
     ali2g   = "g2ali";
@@ -113,7 +117,14 @@ environment.shellAliases = mkMerge [
   }
 
 
-(mkIf (builtins.hasAttr "eza" pkgs) {
+(mkIf (builtins.hasAttr "eza" pkgs) (let
+  eza-git = ''echo -e "''${EMBER}eza (git status)''${RESET}" && eza --all --classify --git ${eza-flags}'';
+  eza-ext = ''echo -e "''${EMBER}eza (sorted by extension)''${RESET}" && eza --all --classify --sort extension ${eza-flags}'';
+  eza-size = ''echo -e "''${EMBER}eza (sorted by size)''${RESET}" && eza --all --classify --total-size --sort size ${eza-flags}'';
+  eza-size-warn = eza-size + '' && echo -e "''${ORANG}WARNING: ls shadows POSIX ls — rename to 'el' if scripts break''${RESET}"'';
+  eza-files = ''echo -e "''${EMBER}eza (only files)''${RESET}" && eza --all --classify --only-files ${eza-flags}'';
+  eza-time = ''echo -e "''${EMBER}eza (sorted by time)''${RESET}" && eza --all --classify --sort time ${eza-flags}'';
+in {
  # --- Basic views ---
   # All aliases include the shared base flags from the 'eza-flags' let-binding above.
   # Default: all entries with type indicators
@@ -121,49 +132,37 @@ environment.shellAliases = mkMerge [
     echo -e "\t ''${EMBER} eza (´FILE*´ for execute perm. ´DIR/´ for directory)''${RESET}" && \
     eza --all --classify
   '';
-  # One entry per line (--oneline overrides --long from eza-flags, harmless)
   ee = ''
-    echo -e "\t ''${EMBER} eza — one entry per line''${RESET}" && \
+    echo -e "\t ''${EMBER} eza (´FILE*´ for execute perm. ´DIR/´ for directory)''${RESET}" && \
+    eza --long -A --classify
+  '';
+  # One entry per line (--oneline overrides --long from eza-flags, harmless)
+  eee = ''
+    echo -e "\t ''${EMBER} ''${BLINK} eza — one entry per line''${RESET}" && \
+    leep 2 && \
     eza --all --oneline
   '';
   # --- Long/detail views ---
   # Git-status view
-  Eg = ''
-    echo -e "''${EMBER}eza (git status)''${RESET}" && \
-    eza --all --classify --git ${eza-flags}
-  '';
-  lg  = "Eg";
-  Egl = "lg";
+  Eg = eza-git;
+  lg = eza-git;
+  eg = eza-git;
   # Sorted by extension
-  Ex = ''
-    echo -e "''${EMBER}eza (sorted by extension)''${RESET}" && \
-    eza --all --classify --sort extension ${eza-flags}
-  '';
-  lx  = "Ex";
-  Exl = "lx";
+  Ex = eza-ext;
+  lx = eza-ext;
+  ex = eza-ext;
   # Sorted by size (with recursive total-size)
-  Es = ''
-    echo -e "''${EMBER}eza (sorted by size)''${RESET}" && \
-    eza --all --classify --total-size --sort size ${eza-flags}
-  '';
-  ls = ''
-    Es && echo -e "''${ORANG}WARNING: ls shadows POSIX ls — rename to 'el' if scripts break''${RESET}"
-  '';
-  Esl = "ls";
+  Es = eza-size;
+  ls = eza-size-warn;
+  es = eza-size-warn;
   # Only files (no directories)
-  Ef = ''
-    echo -e "''${EMBER}eza (only files)''${RESET}" && \
-    eza --all --classify --only-files ${eza-flags}
-  '';
-  lf  = "Ef";
-  Efl = "lf";
+  Ef = eza-files;
+  lf = eza-files;
+  ef = eza-files;
   # Sorted by modification time
-  Et = ''
-    echo -e "''${EMBER}eza (sorted by time)''${RESET}" && \
-    eza --all --classify --sort time ${eza-flags}
-  '';
-  lt  = "Et";
-  Etl = "lt";
+  Et = eza-time;
+  lt = eza-time;
+  et = eza-time;
   # --- Tree views ---
   # Shallow overview (level 1)
   e1 = ''
@@ -185,7 +184,7 @@ environment.shellAliases = mkMerge [
     echo -e "\t''${VIOLE} eza --tree --level unlimited (77) --git''${RESET}\n" && \
     eza --all --tree --level 77 --group-directories-first --width 76 --git ${eza-flags}
   '';
-  })
+  }))
   
   # --- fd ---
   (mkIf (builtins.hasAttr "fd" pkgs) {
@@ -248,7 +247,7 @@ environment.shellAliases = mkMerge [
   (mkIf (builtins.hasAttr "kitty" pkgs) {
     KITTYconf = ''echo -e "\t''${EMBER}Öffne kitty.conf''${RESET}" && gnome-text-editor "$XDG_CONFIG_HOME/kitty/kitty.conf" 2>/dev/null || micro "$KITTY_CONFIG_DIRECTORY/kitty.conf"'';
     Kconf     = "KITTYconf";
-    KITTYmap  = ''echo -e "\t''${EMBER}Zeige Tastaturbelegungen''${RESET}" && bapNoComment "$KITTY_CONFIG_DIRECTORY/kitty.conf" || grep "map"'';
+    KITTYmap  = ''echo -e "\t''${EMBER}Zeige Tastaturbelegungen''${RESET}" && batNoComment "$KITTY_CONFIG_DIRECTORY/kitty.conf" || grep "map"'';
     Kbind     = "KITTYmap";
     Kmap      = "KITTYmap";
   })
@@ -515,4 +514,3 @@ source_or_error() {
   '';
 
 }
-
