@@ -28,12 +28,10 @@ let
   #       --octal-permissions replaces it with octal notation.
   #       Both flags are included as requested — eza resolves the conflict
   #       by letting the last flag win (behaviour may vary by version).
-  eza-flags = "--long --group" 
-  +           "--smart-group -@"
+  eza-flags = "--long --group --header" 
+  +           "--smart-group -@ --group-directories-first"
   +           "--octal-permissions --no-permissions"
-  +           " --icons auto --links" 
-  +           "--color-scale-mode gradient --colour-scale all";
-  
+  +           "--icons auto --links" 
 
 in
 {
@@ -210,7 +208,7 @@ in {
     bat3    = "command bat --wrap=auto --decorations=always --theme=Coldark-Dark";
     bat4    = "command bat --wrap=auto --number --decorations=always --theme=OneHalfDark";
     bat5    = "command bat --wrap=never --number --decorations=always --theme=base16";
-    BATconf = ''echo -e "\t''${EMBER}Öffne bat Konfigurationsdatei''${RESET}" && micro /share/bat/config.toml'';
+    BATconf = ''echo -e "\t''${EMBER}Öffne bat Konfigurationsdatei''${RESET}" && micro /etc/bat/config.toml'';
     Bconf   = "BATconf";
   })
 
@@ -241,6 +239,11 @@ in {
   # --- duf ---
   (mkIf (builtins.hasAttr "duf" pkgs) {
     df = ''echo -e "\t''${EMBER} duf''${RESET}" && duf'';
+  })
+
+  # --- ccze ---
+  (mkIf (builtins.hasAttr "ccze" pkgs) {
+    ccze = "command ccze -F /etc/ccze/cczerc";
   })
 
   # --- kitty ---

@@ -1,0 +1,53 @@
+# config file for "bat"
+# original file-name: config.toml
+--file-name '{{ .FilePath }}'
+--tabs=4
+# -- Color and Style -----------------------------------------------------------
+
+--color=always
+# for a list of all available themes:  Run `bat --list-themes`
+#--theme=ansi
+#--theme=OneHalfDark
+#--theme=Dracula
+--theme=Coldark-Dark
+#--theme="TwoDark"
+
+# bessere Lesbarkeit von Codeblöcken durch Trennlinien
+--show-all-separators
+--italic-text=always 
+--wrap=auto # Zeilenumbruch                                    |
+
+# zusätzliche Informationen wie Änderungsindikatoren für zB git
+# --style=changes,grid
+ --style=full
+
+# -- Paging --------------------------------------------------------------------
+# Uncomment the following line to disable automatic paging:                                    
+--paging=never
+
+# Ändern der Schriftart in Codeblöcken
+# $ fc-list; $ fc-match "HackNerdFont"
+#--font="FiraCode Nerd Font Mono"
+
+# --no-init verhindert, dass der Pager den Bildschirm nach dem Beenden "säubert".
+--pager="less --long-prompt --RAW-CONTROL-CHARS --ignore-case --quit-if-one-screen --quit-on-intr --no-init  --mouse"
+
+# -- Syntax mappings -----------------------------------------------------------
+# map a certain filename pattern to a language.
+# Use ".gitignore"-style highlighting for ".ignore" files
+--map-syntax ".ignore:Git Ignore"
+# Nutze für Files w/ EXT
+--map-syntax "*.toml:TOML"
+--map-syntax "Dockerfile:Dockerfile"
+--map-syntax "*.yaml:YAML"
+--map-syntax "*.yml:YAML"
+--map-syntax "*.json:JSON"
+--map-syntax "*.md,*.markdown:Markdown"
+--map-syntax "*.py:Python"
+--map-syntax "*.rs:Rust"
+--map-syntax "*.unknown:bash"
+#--map-syntax "*.zsh:bash"
+--map-syntax "*.conf:TOML"
+
+# Dateien anhand ihres Inhalts highlighten möchtest (unabhängig von der Dateiendung)
+--auto-detect

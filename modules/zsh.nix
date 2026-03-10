@@ -409,6 +409,7 @@ environment.systemPackages = with pkgs; [
   nix-zsh-completions # Nix completions for Zsh
 
 # --- --> 4 either Shell <-- ----
+
     bat-extras.batgrep          # Grep with bat
     bat-extras.batman # batgrep, batman, batpipe (less), batwatch, batdiff, prettybat 
     bat-extras.batdiff          # Diff with bat

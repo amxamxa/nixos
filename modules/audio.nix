@@ -119,7 +119,6 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
   # Testing
   # TESTING AUDIO:
   # - Test PipeWire: pw-top
-  # - Test JACK: jack_lsp (should work via PipeWire JACK emulation)
   # - Test ALSA: aplay -l
   # - Test volume: wpctl status
   # - Monitor latency: pw-top (watch "RATE/QUAN" column)
@@ -163,10 +162,10 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
     chown amxamxa:mxx -R /home/project/AUDIO/plugins
 
     # Symlinks für LV2-Plugins
-    ln -sfn ${pkgs.lsp-plugins}/lib/lv2 /home/project/AUDIO/plugins/lv2/lsp-plugins
-    ln -sfn ${pkgs.zam-plugins}/lib/lv2 /home/project/AUDIO/plugins/lv2/zam-plugins
-    ln -sfn ${pkgs.dragonfly-reverb}/lib/lv2 /home/project/AUDIO/plugins/lv2/dragonfly-reverb
-  '';
+    ln -sfn ${pkgs.lsp-plugins}/lib/lv2 /home/project/AUDIO/plugins/lv2/
+    ln -sfn ${pkgs.zam-plugins}/lib/lv2 /home/project/AUDIO/plugins/lv2/
+    ln -sfn ${pkgs.dragonfly-reverb}/lib/lv2 /home/project/AUDIO/plugins/lv2/
+ '';
 
   environment.sessionVariables = {
     LV2_PATH = "/home/project/AUDIO/plugins/lv2";
@@ -191,7 +190,7 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
 
     # JACK und Audio-Routing
     jack2 # JACK audio connection kit, version 2 with jackdbus
-    #  jamin 		# JACK Audio Mastering interface
+    # jamin 		# JACK Audio Mastering interface
     # jack_rack # An effects "rack" for the JACK low latency audio API
     # jackmix # Matrix-Mixer for the Jack-Audio-connection-Kit
     meterbridge # Audio metering tools for JACK
@@ -199,10 +198,10 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
     xtuner # Tuner for Jack Audio Connection Kit
 
     # FIREWIRE
-    # ffado 		# FireWire audio drivers
-    # ffado-mixer
-    # jujuutils 	# Utilities around FireWire devices connected to a Linux computer
-    # dvgrab 		# Receive and store audio & video over IEEE1394
+     ffado 		# FireWire audio drivers
+     ffado-mixer
+     jujuutils 	# Utilities around FireWire devices connected to a Linux computer
+     dvgrab 		# Receive and store audio & video over IEEE1394
 
     # PATCHFELD  
     helvum # GTK patchbay for PipeWire
@@ -218,27 +217,27 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~    
 
     # MIDI- Drum-, Loop-Machines,  MIDI-Sequencing und virtuelle Instrumente
     # mamba # Virtual MIDI keyboard for Jack Audio Connection Kit
-   # hydrogen # Advanced drum machine for beat production
-    #  drumgizmo   # Drum sampler with high-quality samples
+    hydrogen # Advanced drum machine for beat production
+    drumgizmo   # Drum sampler with high-quality samples
     zita-resampler # Resample library by Fons Adriaensen
     sooperlooper # Live looping tool for performances
-    # oxefmsynth # Open source VST 2.4 instrument plugin
-    # ninjas2    # sample slicer plugin
-    # qtractor    # MIDI/Audio sequencer with recording/editing
+    oxefmsynth # Open source VST 2.4 instrument plugin
+    ninjas2    # sample slicer plugin
+    qtractor    # MIDI/Audio sequencer with recording/editing
     helm # Polyphonic synthesizer with a powerful interface
-    #  zynaddsubfx # Advanced software synthesizer
+    zynaddsubfx # Advanced software synthesizer
     # muse       # MIDI/Audio sequencer with recording/editing
     # petrifoo   # MIDI controllable audio sampler
-    #  bespokesynth-with-vst2 # sw modular synth with controllers
-    # decent-sampler   # Audio sample player
-    # zita-resampler   # Resample library by Fons Adriaensen	
-    #  sooperlooper # Live looping tool for performances
+    bespokesynth-with-vst2 # sw modular synth with controllers
+    decent-sampler   # Audio sample player
+    zita-resampler   # Resample library by Fons Adriaensen	
+    sooperlooper # Live looping tool for performances
 
     # EFFETCS 
     guitarix # Virtual guitar amplifier for Linux running with JACK
     calf # Collection of high-quality audio plugins (EQ, compressor, etc.)
     rakarrack # Guitar effects processor
-     lsp-plugins # Collection of open-source audio plugins
+    lsp-plugins # Collection of open-source audio plugins
     zam-plugins # Collection of LV2/LADS audio plugins by ZamAudio
     dragonfly-reverb # High-quality reverb effects
     # japa # 'perceptual' or 'psychoacoustic' audio spectrum analyser for JACK and ALSA

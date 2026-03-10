@@ -115,7 +115,9 @@ environment.etc."colorEnvExport.sh" = {
         # Default applications
     VISUAL = "${pkgs.gnome-text-editor}/bin/gnome-text-editor";
     # Static configuration values
-    LESS="--long-prompt --RAW-CONTROL-CHARS --quit-if-one-screen --quit-on-intr --no-init --ignore-case --mouse --hilite-search --use-color -Dd+r -Du+b";
+    LESS="--long-prompt --RAW-CONTROL-CHARS --squeeze-blank --QUIT-AT-EOF --quit-if-one-screen --quit-on-intr --file-size --dumb --status-column --quiet --ignore-case --mouse --hilite-search --lines --use-color -Dd+r -Du+b";
+           
+           
            
     NIX_INDEX_DATABASE = "/share/nix-index";
     
@@ -123,7 +125,7 @@ environment.etc."colorEnvExport.sh" = {
     TEALDEER_CONFIG_DIR = "/share/zsh/tldr";
     NAVI_CONFIG = "/share/zsh/navi/config.yaml";
     GIT_CONFIG = "/share/zsh/git/config";
-    BAT_CONFIG_FILE = "/share/bat/config.toml";
+    BAT_CONFIG_FILE = "/etc/bat/config.toml";
     KITTY_CONFIG_DIRECTORY = "/share/kitty";
   };
 
@@ -222,6 +224,8 @@ environment.etc."colorEnvExport.sh" = {
   #   - Deterministic content only
   # Security:
   #   - Read-only in /etc
+  environment.etc."ccze/cczerc".source = ../assets/cczerc;
+  environment.etc."bat/config.toml".source = ../assets/batrc.toml;
   environment.etc."zsh/less-termcap.sh".text = ''
     export LESS_TERMCAP_mb=$(printf '\033[1;31m')
     export LESS_TERMCAP_md=$(printf '\033[1;36m')

@@ -203,21 +203,22 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     # ─────────────────────────
     asciiquarium-transparent  # ASCII aquarium animation
     ascii-image-converter     # Images to ASCII
-    pablodraw                  # ANSI/ASCII editor
-    ascii-draw                 # ASCII drawing tool
-    uni2ascii                  # UTF-8 to ASCII conversion
-    jp2a                       # JPG to ASCII
-    artem                      # Images to ASCII art
-    gifsicle                   # GIF manipulation
+    pablodraw                 # ANSI/ASCII editor
+    ascii-draw                # ASCII drawing tool
+    uni2ascii                 # UTF-8 to ASCII conversion
+    jp2a                      # JPG to ASCII
+    artem                     # Images to ASCII art
+    gifsicle                  # GIF manipulation
     gif-for-cli               # Render GIFs as ASCII
 
     # ─────────────────────────
     # MULTIMEDIA & VIDEO TOOLS
     # ─────────────────────────
-    asciinema                  # Record terminal sessions
+    asciinema                 # Record terminal sessions
     asciinema-scenario        # Create asciinema from text
     asciinema-agg             # Generate GIFs from asciinema
-    agg                        # Rendering engine
+    agg                       # Rendering engine
+    
     losslesscut-bin           # Lossless video/audio editor
 
     # ─────────────────────────
@@ -242,15 +243,15 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     # ─────────────────────────
     # DOCUMENT PROCESSING
     pdfarranger               # Rearrange PDF pages
-    pandoc                     # Document format converter
-    v4l-utils                  # Video4Linux utilities
+    pandoc                    # Document format converter
+    v4l-utils                 # Video4Linux utilities
 
     # ─────────────────────────
     # TEXT EDITORS & NOTE-TAKING
     gnome-text-editor         # Simple GNOME text editor
-    cherrytree                 # Hierarchical note-taking
-    obsidian                   # Networked thought notes
-    typora                     # Markdown editor
+    cherrytree                # Hierarchical note-taking
+    obsidian                  # Networked thought notes
+    typora                    # Markdown editor
     # Note: micro is in zsh.nix as a shell tool
 
     # ─────────────────────────
@@ -261,7 +262,7 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     gitstats                   # Repository statistics
     gitleaks                   # Scan for secrets
     gitlint                    # Commit message linting
-    delta                      # Better git diff with syntax highlighting
+    delta                      # "Better" git diff with syntax highlighting
     gitnr                      # .gitignore generator
     # ─────────────────────────
     # TEXT PROCESSING
@@ -278,7 +279,8 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     # DESKTOP UTILITIES
     # GNOME Tools
     gnome-online-accounts     # Single sign-on
-    # gnome-logs                 # Log viewer
+    gnome-online-accounts-gtk # Online accounts configuration utility
+    # gnome-logs              # Log viewer
     gnome-keyring             # Keyring/secrets manager
     dconf-editor              # Configuration editor
     gnome-firmware            # Firmware updater
@@ -320,10 +322,10 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     # ─────────────────────────
     # VIRTUALIZATION
     # ─────────────────────────
-    vagrant                    # VM manager
-    qemu                       # Emulator/virtualizer
-    OVMFFull                  # UEFI firmware for QEMU
-    qtemu                      # Qt frontend for QEMU
+    # vagrant                    # VM manager
+    # qemu                       # Emulator/virtualizer
+    # OVMFFull                  # UEFI firmware for QEMU
+    # qtemu                      # Qt frontend for QEMU
 
     # ─────────────────────────
     # THEMING & APPEARANCE
@@ -352,7 +354,6 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     file-roller               # Archive manager
     proot # User-space implementation of chroot, mount --bind and binfmt_misc
 
-
     # Miscellaneous
     linux-firmware            # Firmware files
     pay-respects              # Command correction utility
@@ -364,7 +365,6 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     #helix # Post-modern modal text editor
     #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
     # ─────────────────────────
-    
     
     # UNSTABLE CHANNEL PACKAGES
     # Packages from nixos-unstable for newer versions
