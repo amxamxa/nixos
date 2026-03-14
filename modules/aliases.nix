@@ -28,10 +28,10 @@ let
   #       --octal-permissions replaces it with octal notation.
   #       Both flags are included as requested — eza resolves the conflict
   #       by letting the last flag win (behaviour may vary by version).
-  eza-flags = "--long --group --header" 
-  +           "--smart-group -@ --group-directories-first"
-  +           "--octal-permissions --no-permissions"
-  +           "--icons auto --links" 
+  eza-flags = " --long  --group  --header "
+  +           " --smart-group  -@  --group-directories-first "
+  +           " --octal-permissions   --no-permissions  "
+  +           " --icons auto   --links  ";
 
 in
 {
@@ -92,7 +92,7 @@ environment.shellAliases = mkMerge [
       echo -e "\t ''${EMBER}NixOS - Bootbare Konfigurationen ''${RESET}" && \
       cd /nix/var/nix/profiles/ && \
       eza --octal-permissions -U --header --long --tree --almost-all /nix/var/nix/profiles/
-    '';   
+    '';
     NIXref = ''
       echo -e "\t''${EMBER}Z Alias accepts the store path as an argument: NIXref       nix-store -q --references /nix/store/<hash>''${RESET}" && \
       nix-store -q --references
@@ -121,6 +121,8 @@ environment.shellAliases = mkMerge [
   eza-size = ''echo -e "''${EMBER}eza (sorted by size)''${RESET}" && eza --all --classify --total-size --sort size ${eza-flags}'';
   eza-size-warn = eza-size + '' && echo -e "''${ORANG}WARNING: ls shadows POSIX ls — rename to 'el' if scripts break''${RESET}"'';
   eza-files = ''echo -e "''${EMBER}eza (only files)''${RESET}" && eza --all --classify --only-files ${eza-flags}'';
+  eza-dirs = ''echo -e "''${EMBER}eza (only dirs)''${RESET}" && eza --all --classify --only-dirs ${eza-flags}'';
+
   eza-time = ''echo -e "''${EMBER}eza (sorted by time)''${RESET}" && eza --all --classify --sort time ${eza-flags}'';
 in {
  # --- Basic views ---
@@ -137,7 +139,7 @@ in {
   # One entry per line (--oneline overrides --long from eza-flags, harmless)
   eee = ''
     echo -e "\t ''${EMBER} ''${BLINK} eza — one entry per line''${RESET}" && \
-    leep 2 && \
+    sleep 2 && \
     eza --all --oneline
   '';
   # --- Long/detail views ---
@@ -157,6 +159,11 @@ in {
   Ef = eza-files;
   lf = eza-files;
   ef = eza-files;
+  # Only directories)
+    Ed = eza-dirs;
+    ld = eza-dirs;
+    ed = eza-dirs;
+
   # Sorted by modification time
   Et = eza-time;
   lt = eza-time;
@@ -175,15 +182,17 @@ in {
   # Medium depth (level 3)
   e3 = ''
     echo -e "\t''${VIOLE} eza --tree --level 3''${RESET}\n" && \
+    sleep 2 &&  \
     eza --all --tree --level 3 --group-directories-first --width 76 ${eza-flags}
   '';
   # Full recursive tree with git status (level 77 = effectively unlimited)
   e4 = ''
-    echo -e "\t''${VIOLE} eza --tree --level unlimited (77) --git''${RESET}\n" && \
+  echo -e "\t''${VIOLE} eza --tree --level unlimited (77) --git''${RESET}\n" && \
+    sleep 2 && \
     eza --all --tree --level 77 --group-directories-first --width 76 --git ${eza-flags}
   '';
   }))
-  
+
   # --- fd ---
   (mkIf (builtins.hasAttr "fd" pkgs) {
     fd = ''
@@ -298,13 +307,13 @@ in {
 ];
 
 # Funktionen (alphabetisch sortiert)
-#  ▄████ ▄      ▄   ▄█▄      ▄▄▄▄▀ ▄█ ████▄    ▄      ▄▄▄▄▄   
-#  █▀   ▀ █      █  █▀ ▀▄ ▀▀▀ █    ██ █   █     █    █     ▀▄ 
-#  █▀▀ █   █ ██   █ █   ▀     █    ██ █   █ ██   █ ▄  ▀▀▀▀▄   
-#  █   █   █ █ █  █ █▄  ▄▀   █     ▐█ ▀████ █ █  █  ▀▄▄▄▄▀    
-#  █  █▄ ▄█ █  █ █ ▀███▀   ▀       ▐       █  █ █            
-#   ▀  ▀▀▀  █   ██                         █   ██        
-# -------------------------------------------------------- 
+#  ▄████ ▄      ▄   ▄█▄      ▄▄▄▄▀ ▄█ ████▄    ▄      ▄▄▄▄▄
+#  █▀   ▀ █      █  █▀ ▀▄ ▀▀▀ █    ██ █   █     █    █     ▀▄
+#  █▀▀ █   █ ██   █ █   ▀     █    ██ █   █ ██   █ ▄  ▀▀▀▀▄
+#  █   █   █ █ █  █ █▄  ▄▀   █     ▐█ ▀████ █ █  █  ▀▄▄▄▄▀
+#  █  █▄ ▄█ █  █ █ ▀███▀   ▀       ▐       █  █ █
+#   ▀  ▀▀▀  █   ██                         █   ██
+# --------------------------------------------------------
 environment.interactiveShellInit = ''
     CHmod() {
       local dir="''${1:-.}"
@@ -349,8 +358,8 @@ environment.interactiveShellInit = ''
       fi
     }
 
-     
-    
+
+
 # ">/dev/null 2>&1° leitet alle Ausgaben (stdout und stderr) ins Nirvana u Terminal bleibt sauber
 open_pdf() {
     if command -v okular >/dev/null 2>&1; then
@@ -397,7 +406,7 @@ open_pdf() {
         | with %(progress._speed_str)s | %(progress._eta_str)s remaining" \
         "$1"
     }
-#-------- ---------------# 
+#-------- ---------------#
 # Manage color themes: select dark theme or switch theme
 TERMcolors() {
     case "$1" in
@@ -414,7 +423,7 @@ TERMcolors() {
             ;;
     esac
 }
-#-------- LS BLK /MOD -----------#       
+#-------- LS BLK /MOD -----------#
         # Funktion für enhanced lsblk
         lsblk_enhanced() {
             echo -e "\t''${NIGHT}enhanced lsblk .. als Tabelle mit \
@@ -436,7 +445,7 @@ TERMcolors() {
                 | awk '/description:/ {sub(/^description:\s*/, ""); print}')"
             done
 }
-    
+
 #______________________________________________________
 #   ███████╗ ██████╗ ██╗   ██╗██████╗  ██████╗███████╗
 #   ██╔════╝██╔═══██╗██║   ██║██╔══██╗██╔════╝██╔════╝
@@ -513,7 +522,7 @@ source_or_error() {
   return 0
 }
 #----------------------------------------------------------------------
-   
+
   '';
 
 }

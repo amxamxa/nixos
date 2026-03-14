@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 ## nix-env -qaP '*' --description # You can get a list of the available packages as follows:
-# lsblk -f --topology --ascii --all --list 
+# lsblk -f --topology --ascii --all --list
 # setxkbmap -query -v
 /*
 channel probs:
@@ -12,28 +12,28 @@ channel probs:
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/boot.nix # grub2 & lightDM
-    #    ./test.nix # zum Testen neuer Konfig
     ./modules/enviroment.nix # ENV
     ./modules/user-n-permissions.nix
     ./modules/cosmic.nix # Display/Window-Mgr
     ./modules/packages.nix # env.pkgs
     ./modules/audio.nix
+
     ./modules/fonts.nix
-    ./modules/logs.nix
+#    ./modules/logs.nix
 
     ./modules/zsh.nix # shell
     ./modules/bash.nix # shell
     ./modules/aliases.nix
-    ./modules/rust.nix # 
-    ./modules/treefmt.nix # 
-   
-    # ./modules/dns.nix # 
+    ./modules/rust.nix #
+    ./modules/treefmt.nix #
+
+    # ./modules/dns.nix #
     #   ./modules/python.nix # ehem.	./ld.nix
     #./modules/docker.nix
     #   ./modules/npm.nix
     ./modules/read-only/adBloxx.nix # ehem. ./AdBloxx.nix
     ./modules/read-only/tuxpaint.nix
-    
+
   ];
 #-p, --priority: (1 aus:) emerg, alert, crit, err, warning, notice, info, debug , or #a value between 0 and 7
 #-t, --identifier: (STRING) eindeutiger Identifier (Tag), als Filter
@@ -49,9 +49,24 @@ channel probs:
     fsType = "ext4";
   };
 
+
+
+
   hardware.cpu.intel.updateMicrocode =
     true; # update the CPU microcode for Intel processors.
+
+      # ZRAM zur Entlastung des DDR3-Arbeitsspeichers
+      zramSwap.enable = true;
+      zramSwap.memoryPercent = 25;
+
   networking.hostName = "localhorst"; # Offiziell reservierte Domains (RFC 6761)
+# IPv6-Deaktivierung: lokale Netzwerk IPv4 basiert. Deaktivierung von IPv6 den Overhead des Netzwerk-Stacks und die Anzahl der Kernel-Threads
+boot.kernel.sysctl."net.ipv6.conf.all.disable_ipv6" = 1;
+boot.kernel.sysctl."net.ipv6.conf.default.disable_ipv6" = 1;
+  boot.tmp.cleanOnBoot = true; # Wipe /tmp on boot.
+
+  boot.supportedFilesystems = [ "ntfs" ];
+
   # Enable networking
   networking.networkmanager.enable = true;
   networking.usePredictableInterfaceNames = false; # eth0 statt ensp0
@@ -79,7 +94,24 @@ channel probs:
   # networking.interfaces.enp4s0.name = [ "eth0" ];
   hardware.usb-modeswitch.enable =
     false; # to support certain USB WLAN and WWAN adapters.  These network adapters initial present themselves as Flash Drives containing their drivers. This option enables automatic switching to the networking mode
-  #   Use services.logind.settings.Login instead.  # services.logind.extraConfig = ''     	HandlePowerKey = poweroff;    	HandlePowerKeyLongPress = reboot;	'';	
+
+  #   Use services.logind.settings.Login instead.  # services.logind.extraConfig = ''     	HandlePowerKey = poweroff;    	HandlePowerKeyLongPress = reboot;	'';
+
+  # Balanciert Hardware-Interrupts dynamisch über alle 4 Kerne
+  services.irqbalance.enable = true;
+
+  # RFS (Receive Flow Steering) - Globale Kernel-Einstellungen
+  boot.kernel.sysctl = {
+    # Maximale Anzahl an gleichzeitig verfolgten Flows (Sonden)
+    # Empfohlener Wert für Workstations: 32768
+    "net.core.rps_sock_flow_entries" = 32768;
+  };
+# Entlastung des Schreib-I/O: Durch das Verschieben des `/tmp`-Verzeichnisses in den Arbeitsspeicher (RAM) werden unnötige Schreibzugriffe auf die SSD und CPU-Interrupts durch den I/O-Controller reduziert:
+boot.tmp.useTmpfs = true;
+boot.tmp.tmpfsSize = "2G";
+
+  # Speicheroptimierung für ältere SSDs/HDDs
+  services.fstrim.enable = true; # Wichtig für die Langlebigkeit alter SSDs
   security.polkit.enable =
     true; # Framework, um privilegierte Aktionen auszuführen
   services.udisks2.enable =
@@ -87,7 +119,6 @@ channel probs:
   services.fwupd.enable = true;
   gtk.iconCache.enable =
     true; # Improve GTK icon cache generation to ensure immediate visibility
-  boot.supportedFilesystems = [ "ntfs" ];
 
   services.gvfs.enable = true;
   services.upower.enable = lib.mkForce
@@ -95,11 +126,15 @@ channel probs:
   services.power-profiles-daemon.enable = lib.mkForce false;
   services.tlp.enable = lib.mkForce
     true; # Energieoptimierung, CPU-freq, Aktivitäts-Timeouts für Festplatten und USB-Ports
-  boot.tmp.cleanOnBoot = true; # Wipe /tmp on boot.
-  hardware.ksm.enable =
-    true; # Aktiviert den Kernel Samepage Merging (KSM)-Dienst, durchsucht den RAM nach identischen Speicherseiten (Pages), spart Speicher, aber CPU-Last. Für Virtualisierungsumgebungen mit  ähnlichen VMs ... oder redundanten Speicher allozieren
 
-#    color-env.nix
+  hardware.ksm.enable =
+    true; # Aktiviert den Kernel Samepage Merging (KSM)-Dienst, durchsucht den RAM nach identischen Speicherseiten (Pages), spart Speicher, aber CPU-Last. Für Virtualisierungsumgebungen mit  ähnlichen VMs ... oder redundanten Speicher alloziere
+
+
+# Lower CPU priority for nix-daemon builds
+nix.daemonCPUSchedPolicy = "batch";
+# Lowest I/O priority → system stays responsive
+nix.daemonIOSchedClass   = "idle";
 
   nix.nixPath = [
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
@@ -148,12 +183,16 @@ channel probs:
     };
   }; # de_DE/ISO-8859-1  en_US.UTF-8/UTF-8 en_US/ISO-8859-1  de_DE.UTF-8/UTF-8 de_DE/ISO-8859-1 \de_DE@euro/ISO-8859-15
 
- #############################################################################
-# Modern Intel GPUs use the iHD driver, which can be installed with:
-# hardware.graphics.extraPackages = [ intel-media-driver ]; 
 # Older Intel GPUs use the i965 driver, which can be installed with:
- hardware.graphics.extraPackages = with pkgs; [ driversi686Linux.intel-vaapi-driver];
- 
+   # Grafikbeschleunigung (Intel HD Graphics 2500/4000)
+   hardware.graphics = {
+     enable = true;
+     extraPackages = with pkgs; [
+     # Hardware-Dekodierung von H.264 und VC-1.
+      driversi686Linux.intel-vaapi-driver # Spezifischer Treiber für Ivy Bridge (VA-API)
+       libvdpau-va-gl
+     ];
+};
 
   services.xserver.displayManager.startx.enable =
     true; # Whether to enable the dummy “startx” pseudo-display manager, which allows users to start X manually via the startx command from a virtual terminal.
@@ -165,23 +204,23 @@ channel probs:
     true; # whether to run XDG autostart files for sessions without a desktop manager (with only a window manager), these sessions usually don’t handle XDG autostart files by defaul
 
   services.xserver.displayManager.sessionCommands = ''
-    xcowsay " 
+    xcowsay "
     "Hello World!" this is $USER
          Greetings from your GUI and
 ============================================================
    .S_sSSs     .S   .S S.     sSSs_sSSs      sSSs
    .SS~YS%%b   .SS  .SS SS.   d%%SP~YS%%b    d%%SP
    S%S   `S%b  S%S  S%S S%S  d%S'     `S%b  d%S'
-   S%S    S%S  S%S  S%S S%S  S%S       S%S  S%| 
+   S%S    S%S  S%S  S%S S%S  S%S       S%S  S%|
    S%S    S&S  S&S  S%S S%S  S&S       S&S  S&S
    S&S    S&S  S&S   SS SS   S&S       S&S  Y&Ss
    S&S    S&S  S&S    S_S    S&S       S&S  `S&&S
-   S&S    S&S  S&S   SS~SS   S&S       S&S    `S*S  
-   S*S    S*S  S*S  S*S S*S  S*b       d*S     l*S  
-   S*S    S*S  S*S  S*S S*S  S*S.     .S*S    .S*P  
-   S*S    S*S  S*S  S*S S*S   SSSbs_sdSSS   sSS*S   
-   S*S    SSS  S*S  S*S S*S    YSSP~YSSY    YSS'    
-   SP          SP   SP                              
+   S&S    S&S  S&S   SS~SS   S&S       S&S    `S*S
+   S*S    S*S  S*S  S*S S*S  S*b       d*S     l*S
+   S*S    S*S  S*S  S*S S*S  S*S.     .S*S    .S*P
+   S*S    S*S  S*S  S*S S*S   SSSbs_sdSSS   sSS*S
+   S*S    SSS  S*S  S*S S*S    YSSP~YSSY    YSS'
+   SP          SP   SP
  ============================================================
     '';
   nix.settings = {
@@ -196,7 +235,7 @@ channel probs:
     experimental-features =
       [ "nix-command" ]; # Aktiviert Cmds: nix search, nix run, nix shell
     #  extra-sandbox-paths = [ "/dev/nvidiactl" "/dev/nvidia0" "/dev/nvidia-uvm" ];
-  #  Nix automatically detects files in the store that have identical contents, and replaces them with hard links to a single copy. This saves disk space. 
+  #  Nix automatically detects files in the store that have identical contents, and replaces them with hard links to a single copy. This saves disk space.
     auto-optimise-store = true;
     sandbox = true;
     require-sigs =true;
@@ -227,7 +266,7 @@ channel probs:
   # Firewall für Warpinator-Ports öffnen
   #networking.firewall = {
   #allowedTCPPorts = [ 42000 ]; # Standard-Port für Warpinator
-  #allowedUDPPorts = [ 42000 ];  
+  #allowedUDPPorts = [ 42000 ];
   #};
 
   /* # Enable the Flatpak
@@ -266,7 +305,7 @@ channel probs:
       };
 
       videos = {
-        path = "/home/amxamxa/videos";
+        path = "/share";
         browseable = "yes";
         "read only" = "yes";
         "guest ok" = "yes";
@@ -278,30 +317,30 @@ channel probs:
   # If you enable the firewall, allow Samba ports:
   # networking.firewall.allowedTCPPorts = [ 139 445 ];
   # networking.firewall.allowedUDPPorts = [ 137 138 ];
-  
-  # Some applicationsare built for X11. XWayland acts as a translator, allowing 
+
+  # Some applicationsare built for X11. XWayland acts as a translator, allowing
   # these X11 windows to run inside my Wayland session
-  programs.xwayland.enable = true; 
+  programs.xwayland.enable = true;
   # Deaktiviere Thunar
-  programs.thunar.enable = lib.mkForce false; 
-  #  programs.traceroute.enable = true; 
-  programs.gnome-disks.enable = true; 
+  programs.thunar.enable = lib.mkForce false;
+  #  programs.traceroute.enable = true;
+  programs.gnome-disks.enable = true;
   programs.git = {
     enable = true;
     prompt.enable = true; # Git-Prompt aktivieren
   };
 
-  services.postgresql.enable = 
+  services.postgresql.enable =
     true;
   # Aktivieren `vnstat`-Dienst für "Console-based network statistics"
   services.vnstat.enable =
     true; #
  # ac/dc/enable the playerctld daemon.
-  
-  services.playerctld.enable = 
-    false; 
-  
-  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration, 
+
+  services.playerctld.enable =
+    false;
+
+  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }

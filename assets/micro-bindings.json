@@ -1,0 +1,42 @@
+{
+    // --- Remap: Ctrl+A is intercepted by kitty (select-all shortcut) ---
+    // Disable default binding to prevent silent no-op inside micro
+    "Ctrl-a": "None",
+
+    // Replacement: Alt+a is safe (not used by COSMIC or kitty)
+    "Alt-a": "SelectAll",
+
+    // --- File operations (no conflicts) ---
+    "Ctrl-s": "Save",
+    "Ctrl-q": "Quit",
+    "Ctrl-e": "CommandMode",
+
+    // --- Search (Ctrl+F is safe; Alt+F3 belongs to kitty, avoid Alt+Fn) ---
+    "Ctrl-f": "Find",
+    "Ctrl-n": "FindNext",
+    "Ctrl-p": "FindPrevious",
+
+    // --- Edit ---
+    "Ctrl-z": "Undo",
+    "Ctrl-y": "Redo",
+    "Ctrl-c": "Copy",
+    "Ctrl-x": "Cut",
+    "Ctrl-v": "Paste",
+    "Ctrl-d": "DuplicateLine",
+    "Ctrl-k": "KillLine",
+
+    // --- Navigation ---
+    "Ctrl-Home": "CursorStart",
+    "Ctrl-End": "CursorEnd",
+    "Ctrl-g": "GoToLine",
+    "Ctrl-Left": "WordLeft",
+    "Ctrl-Right": "WordRight",
+
+    // --- Splits / Tabs ---
+    "Ctrl-w": "NextSplit",
+    "Ctrl-t": "NewTab",
+
+    // --- Indentation ---
+    "Tab": "IndentSelection",
+    "Backtab": "OutdentSelection"
+}

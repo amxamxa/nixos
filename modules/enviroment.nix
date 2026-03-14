@@ -1,11 +1,11 @@
 # /etc/nixos/modules/environment.nix
 /*-----------------------------------------------------------------
-▄███▄      ▄       ▄   ▄█ █▄▄▄▄ ████▄ █▀▄▀█ ▄███▄      ▄     ▄▄▄▄▀ 
-█▀   ▀      █       █  ██ █  ▄▀ █   █ █ █ █ █▀   ▀      █ ▀▀▀ █    
-██▄▄    ██   █ █     █ ██ █▀▀▌  █   █ █ ▄ █ ██▄▄    ██   █    █    
-█▄   ▄▀ █ █  █  █    █ ▐█ █  █  ▀████ █   █ █▄   ▄▀ █ █  █   █     
-▀███▀   █  █ █   █  █   ▐   █            █  ▀███▀   █  █ █  ▀      
-        █   ██    █▐       ▀            ▀           █   ██         
+▄███▄      ▄       ▄   ▄█ █▄▄▄▄ ████▄ █▀▄▀█ ▄███▄      ▄     ▄▄▄▄▀
+█▀   ▀      █       █  ██ █  ▄▀ █   █ █ █ █ █▀   ▀      █ ▀▀▀ █
+██▄▄    ██   █ █     █ ██ █▀▀▌  █   █ █ ▄ █ ██▄▄    ██   █    █
+█▄   ▄▀ █ █  █  █    █ ▐█ █  █  ▀████ █   █ █▄   ▄▀ █ █  █   █
+▀███▀   █  █ █   █  █   ▐   █            █  ▀███▀   █  █ █  ▀
+        █   ██    █▐       ▀            ▀           █   ██
 #---------------   ▐   ------------------------------------------ */
 # System-wide environment configuration for NixOS
 # This module manages:
@@ -35,23 +35,23 @@
     '';
   };
 
-#    ▄▄▄▄▀ ▄███▄   █▄▄▄▄ █▀▄▀█     
-# ▀▀▀ █    █▀   ▀  █  ▄▀ █ █ █     
-#     █    ██▄▄    █▀▀▌  █ ▄ █     
-#    █     █▄   ▄▀ █  █  █   █     
-#   ▀      ▀███▀     █      █      
-#                   ▀      ▀                                      
-# ▄█▄    ████▄ █    ████▄ █▄▄▄▄   ▄▄▄▄▄   
-# █▀ ▀▄  █   █ █    █   █ █  ▄▀  █     ▀▄ 
-# █   ▀  █   █ █    █   █ █▀▀▌ ▄  ▀▀▀▀▄   
-# █▄  ▄▀ ▀████ ███▄ ▀████ █  █  ▀▄▄▄▄▀    
-# ▀███▀            ▀        █             
-#                          ▀       
-# export cols for echo, printf                                                   
+#    ▄▄▄▄▀ ▄███▄   █▄▄▄▄ █▀▄▀█
+# ▀▀▀ █    █▀   ▀  █  ▄▀ █ █ █
+#     █    ██▄▄    █▀▀▌  █ ▄ █
+#    █     █▄   ▄▀ █  █  █   █
+#   ▀      ▀███▀     █      █
+#                   ▀      ▀
+# ▄█▄    ████▄ █    ████▄ █▄▄▄▄   ▄▄▄▄▄
+# █▀ ▀▄  █   █ █    █   █ █  ▄▀  █     ▀▄
+# █   ▀  █   █ █    █   █ █▀▀▌ ▄  ▀▀▀▀▄
+# █▄  ▄▀ ▀████ ███▄ ▀████ █  █  ▀▄▄▄▄▀
+# ▀███▀            ▀        █
+#                          ▀
+# export cols for echo, printf
 environment.etc."colorEnvExport.sh" = {
       text = ''
       #!/usr/bin/env bash
-        # kitty term supports 24-bit RGB colors 
+        # kitty term supports 24-bit RGB colors
         export RED=$'\033[38;2;240;128;128m\033[48;2;139;0;0m'
         export BOLD=$'\033[1m'
         export BLINK=$'\033[5m'
@@ -87,11 +87,11 @@ environment.etc."colorEnvExport.sh" = {
         export INDIG=$'\033[38;2;90;0;130m\033[48;2;30;0;50m'
         export EMBER=$'\033[38;2;255;80;40m\033[48;2;60;20;10m'
         export RESET=$'\033[0m'
-   
+
       '';
       mode = "0444"; # read-only
     };
-    
+
   ###################################################
   # SECTION SCHEMA: environment.variables
   # Scope:
@@ -104,23 +104,28 @@ environment.etc."colorEnvExport.sh" = {
   #   - Only absolute paths or Nix store references
   environment.variables = {
   # Absolute Pfade ohne User-Abhängigkeit gehören in variables.
-    
+
     # Build-time package path interpolation
     EDITOR = "${pkgs.micro}/bin/micro";
     SYSTEMD_EDITOR = "${pkgs.micro}/bin/micro";
     PAGER = "${pkgs.less}/bin/less -R";
-    MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat --paging=always --style=changes -l man'";
+#    MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat --paging=always --style=changes -l man'";
+
+    MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat --paging=auto --style=changes -l man'";
     MANROFFOPT="-c";
     MANWIDTH="60";
-        # Default applications
+    BROWSWER="${pkgs.firefox}/bin/firefox";
+
+  # Default applications
     VISUAL = "${pkgs.gnome-text-editor}/bin/gnome-text-editor";
     # Static configuration values
-    LESS="--long-prompt --RAW-CONTROL-CHARS --squeeze-blank --QUIT-AT-EOF --quit-if-one-screen --quit-on-intr --file-size --dumb --status-column --quiet --ignore-case --mouse --hilite-search --lines --use-color -Dd+r -Du+b";
-           
-           
-           
+    # Keep LESS options on one line to avoid stray control chars in the env value.
+    LESS="--RAW-CONTROL-CHARS --long-prompt --squeeze-blank --QUIT-AT-EOF --quit-if-one-screen --quit-on-intr --status-column --quiet --ignore-case --mouse --use-color -Dd+r -Du+b";
+
+
+
     NIX_INDEX_DATABASE = "/share/nix-index";
-    
+
     # Shared system-wide paths (not user-dependent)
     TEALDEER_CONFIG_DIR = "/share/zsh/tldr";
     NAVI_CONFIG = "/share/zsh/navi/config.yaml";
@@ -150,45 +155,45 @@ environment.etc."colorEnvExport.sh" = {
     XDG_DATA_HOME = "$HOME/.local/share";
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_RUNTIME_DIR = "/run/user/$UID";
-    
+
     # Wayland/COSMIC session configuration
     XDG_SESSION_TYPE = "wayland";
     XDG_CURRENT_DESKTOP = "COSMIC";
     XDG_SESSION_DESKTOP = "COSMIC";
-    
+
     # GTK configuration
     GDK_BACKEND = "wayland,x11";
     GDK_SCALE = "1";
     GDK_DPI_SCALE = "1.0";
     GTK2_RC_FILES = "$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0";
-    
+
     # Qt configuration
     QT_QPA_PLATFORM = "wayland;xcb";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     QT_AUTO_SCREEN_SCALE_FACTOR = "0";
-    
+
     # SDL configuration
     SDL_VIDEODRIVER = "wayland,x11";
     SDL_JOYSTICK_HIDAPI = "1";
-    
+
     # Mozilla applications
     MOZ_ENABLE_WAYLAND = "1";
     MOZ_USE_XINPUT2 = "1";
-    
+
     # Chromium/Electron Wayland support
     NIXOS_OZONE_WL = "1";
     OZONE_PLATFORM = "wayland";
-    
+
     # Additional Wayland backends
     CLUTTER_BACKEND = "wayland";
-    ELM_ENGINE = "wayland_egl";      
-    
+    ELM_ENGINE = "wayland_egl";
+
     PYTHONSTARTUP = "$HOME/.config/python/pythonrc";
     PYTHON_HISTORY = "$HOME/.local/share/python/history";
-    # X11 configuration files (XDGWayland-Compositor initialisiert direkt ohne 
+    # X11 configuration files (XDGWayland-Compositor initialisiert direkt ohne
     # .xinitrc. XWayland wird automatisch vom Compositor gestartet)
     XINITRC =  "$HOME/.config/x11/xinitrc";
-    # .xprofile wird nur bei X11-Sessions durch Display-Manager geparst. 
+    # .xprofile wird nur bei X11-Sessions durch Display-Manager geparst.
     # Wayland-Sessions nutzen andere Mechanismen (systemd user services, compositor configs)
     XPROFILE = "$HOME/.config/x11/xprofile";
     # Native Wayland-Apps: Ignorieren .Xresources komplett.
@@ -202,7 +207,7 @@ environment.etc."colorEnvExport.sh" = {
   GOBIN = "$HOME/.local/share/go/bin";
   GOMODCACHE = "$HOME/.cache/go/mod";
   GOPATH = "$HOME/.local/share/go";
-    
+
     # Application-specific XDG paths
   ANDROID_HOME =        "$HOME/.local/share/android";
   FFMPEG_DATADIR =      "$HOME/.config/ffmpeg";
@@ -236,7 +241,7 @@ environment.etc."colorEnvExport.sh" = {
     export LESS_TERMCAP_ue=$(printf '\033[0m')
   '';
 ##########################################################
-  
+
   # SECTION SCHEMA: systemd.user.tmpfiles.rules
   # Purpose:
   #   - Ensure standard user directories exist
@@ -309,7 +314,7 @@ environment.etc."colorEnvExport.sh" = {
   # Constraints:
   #   - Linked paths must be immutable or store-backed
  ##########################################################
-  
+
   environment.homeBinInPath = true;
   environment.localBinInPath = true;
 
@@ -328,12 +333,12 @@ environment.etc."colorEnvExport.sh" = {
 /*
 
 
- # environment.extraSetup 
+ # environment.extraSetup
 
 /*
 **`/share/icons`** → Dein Desktop (COSMIC) findet:
    - Papirus Icons
-   - Kora Icons  
+   - Kora Icons
    - Alle anderen installierten Icon-Themes
    - **Ohne dies:** Broken Icons in Apps!
 
