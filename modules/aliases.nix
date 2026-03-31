@@ -112,23 +112,7 @@ environment.shellAliases = mkMerge [
     '';
     FClist = "FClist.sh || $HOME/bin/FClist.sh";
     FARBE  = ''echo -e "\t''${EMBER}Lade Farbskript''${RESET}" && source "$ZDOTDIR/functions/colors.sh"'';
-  }
-
-
-(mkIf (builtins.hasAttr "eza" pkgs) (let
-  eza-git = ''echo -e "''${EMBER}eza (git status)''${RESET}" && eza --all --classify --git ${eza-flags}'';
-  eza-ext = ''echo -e "''${EMBER}eza (sorted by extension)''${RESET}" && eza --all --classify --sort extension ${eza-flags}'';
-  eza-size = ''echo -e "''${EMBER}eza (sorted by size)''${RESET}" && eza --all --classify --total-size --sort size ${eza-flags}'';
-  eza-size-warn = eza-size + '' && echo -e "''${ORANG}WARNING: ls shadows POSIX ls — rename to 'el' if scripts break''${RESET}"'';
-  eza-files = ''echo -e "''${EMBER}eza (only files)''${RESET}" && eza --all --classify --only-files ${eza-flags}'';
-  eza-dirs = ''echo -e "''${EMBER}eza (only dirs)''${RESET}" && eza --all --classify --only-dirs ${eza-flags}'';
-
-  eza-time = ''echo -e "''${EMBER}eza (sorted by time)''${RESET}" && eza --all --classify --sort time ${eza-flags}'';
-in {
- # --- Basic views ---
-  # All aliases include the shared base flags from the 'eza-flags' let-binding above.
-  # Default: all entries with type indicators
-  e = ''
+e = ''
     echo -e "\t ''${EMBER} eza (´FILE*´ for execute perm. ´DIR/´ for directory)''${RESET}" && \
     eza --all --classify
   '';
@@ -142,6 +126,31 @@ in {
     sleep 2 && \
     eza --all --oneline
   '';
+
+
+  }
+
+
+(mkIf (builtins.hasAttr "eza" pkgs) (let
+  eza-git = ''echo -e "''${EMBER}eza (git status)''${RESET}" && eza --all --classify --git ${eza-flags}'';
+
+  eza-ext = ''echo -e "''${EMBER}eza (sorted by extension)''${RESET}" && eza --all --classify --sort extension ${eza-flags}'';
+
+  eza-size = ''echo -e "''${EMBER}eza (sorted by size)''${RESET}" && eza --all --classify --total-size --sort size ${eza-flags}'';
+
+  eza-size-warn = eza-size + '' && echo -e "''${ORANG}WARNING: ls shadows POSIX ls — rename to 'el' if scripts break''${RESET}"'';
+
+  eza-files = ''echo -e "''${EMBER}eza (only files)''${RESET}" && eza --all --classify --only-files ${eza-flags}'';
+
+  eza-dirs = ''echo -e "''${EMBER}eza (only dirs)''${RESET}" && eza --all --classify --only-dirs ${eza-flags}'';
+
+  eza-time = ''echo -e "''${EMBER}eza (sorted by time)''${RESET}" && eza --all --classify --sort time ${eza-flags}'';
+in {
+
+
+ # --- Basic views ---
+  # All aliases include the shared base flags from the 'eza-flags' let-binding above.
+  # Default: all entries with type indicators
   # --- Long/detail views ---
   # Git-status view
   Eg = eza-git;
@@ -154,16 +163,15 @@ in {
   # Sorted by size (with recursive total-size)
   Es = eza-size;
   ls = eza-size-warn;
-  es = eza-size-warn;
+  es = eza-size;
   # Only files (no directories)
   Ef = eza-files;
   lf = eza-files;
   ef = eza-files;
   # Only directories)
-    Ed = eza-dirs;
-    ld = eza-dirs;
-    ed = eza-dirs;
-
+  Ed = eza-dirs;
+  ld = eza-dirs;
+  ed = eza-dirs;
   # Sorted by modification time
   Et = eza-time;
   lt = eza-time;
@@ -427,7 +435,7 @@ TERMcolors() {
         # Funktion für enhanced lsblk
         lsblk_enhanced() {
             echo -e "\t''${NIGHT}enhanced lsblk .. als Tabelle mit \
-            --merge --zoned --ascii --topology''${RESET}" \
+            --merge --zoned --ascii --topology''${RESET}" && \
             lsblk --width 80 --merge --zoned --ascii --topology \
                   --output MODEL,MOUNTPOINTS,PATH,SIZE,TRAN,LABEL,FSTYPE,TYPE
         }

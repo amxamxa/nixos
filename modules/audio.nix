@@ -62,7 +62,7 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~
   services.jack.jackd.enable = false;
 
   # Disable PulseAudio (PipeWire replaces it):
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   # Enable RealtimeKit for real-time audio scheduling
   # This allows audio processes to get real-time priority on demand

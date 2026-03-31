@@ -31,6 +31,7 @@ channel probs:
     #   ./modules/python.nix # ehem.	./ld.nix
     #./modules/docker.nix
     #   ./modules/npm.nix
+        ./modules/tftp-samba.nix
     ./modules/read-only/adBloxx.nix # ehem. ./AdBloxx.nix
     ./modules/read-only/tuxpaint.nix
 
@@ -44,7 +45,7 @@ channel probs:
     fsType = "btrfs";
   };
 
-  fileSystems."/home/project/AUDIO/samples+" = {
+  fileSystems."/home/project" = {
     device = "/dev/disk/by-uuid/4d274de6-7e6b-4f01-ab6a-696ea91abec8";
     fsType = "ext4";
   };
@@ -64,7 +65,6 @@ channel probs:
 boot.kernel.sysctl."net.ipv6.conf.all.disable_ipv6" = 1;
 boot.kernel.sysctl."net.ipv6.conf.default.disable_ipv6" = 1;
   boot.tmp.cleanOnBoot = true; # Wipe /tmp on boot.
-
   boot.supportedFilesystems = [ "ntfs" ];
 
   # Enable networking
@@ -283,40 +283,6 @@ nix.daemonIOSchedClass   = "idle";
      	# -> flatpak.github.io/xdg-desktop-portal/
      # Flatpak Ende
   */
-
-  # Avahi für Netzwerk-Discovery aktivieren
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true; # mDNS-Unterstützung
-    publish = {
-      enable = true;
-      addresses = true; # IP-Adresse veröffentlichen
-      userServices = true; # Nutzerdienste sichtbar machen
-    };
-  };
-  services.samba = {
-    enable = true;
-    package = pkgs.sambaFull; # Statt des minimalen `samba`
-    nsswins = true;
-
-    settings = {
-      global = {
-        workgroup = "WORKGROUP";
-      };
-
-      videos = {
-        path = "/share";
-        browseable = "yes";
-        "read only" = "yes";
-        "guest ok" = "yes";
-      };
-    };
-  };
-  services.samba-wsdd.enable = true;
-
-  # If you enable the firewall, allow Samba ports:
-  # networking.firewall.allowedTCPPorts = [ 139 445 ];
-  # networking.firewall.allowedUDPPorts = [ 137 138 ];
 
   # Some applicationsare built for X11. XWayland acts as a translator, allowing
   # these X11 windows to run inside my Wayland session

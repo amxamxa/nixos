@@ -45,7 +45,9 @@ programs.appimage = {
   # ====================================
   # SYSTEM PACKAGES
     environment.systemPackages = with pkgs; [
-kiro-fhs # Wrapped variant of kiro which launches in a FHS compatible environment, should allow for easy usage of extensions without nix-specific modifications
+        gnome-disk-utility
+    
+# kiro-fhs # Wrapped variant of kiro which launches in a FHS compatible environment, should allow for easy usage of extensions without nix-specific modifications
   webfont-bundler # Create @font-face kits easily
 font-manager # Simple font management for GTK desktop environments
 texlivePackages.missaali # A late medieval OpenType textura font
