@@ -55,20 +55,31 @@
     description = "user account for DAW-PC with Firewire module";
     initialHashedPassword = "$6$HNT32bO29gVtrQad$kanyT7X4pD.IcrE3obH9c3wmWfv4ZPAJ933Pw4NI.TNIvCmP1E9US47lmVz8iuR.VrtbmB1cXwSQ/PD.sQXRw.";
     group = "mxx";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+    	"networkmanager"
+    	"audio"
+    	"jackaudio"
+    	];
     packages = with pkgs; [ ];
   };
 
   # Secondary user account
   users.users.gast = {
-    name = "l33";
+    name = "gast";
     isNormalUser = true;
     description = "user account for DAW-PC with Firewire module";
     initialHashedPassword = "$6$HNT32bO29gVtrQad$kanyT7X4pD.IcrE3obH9c3wmWfv4ZPAJ933Pw4NI.TNIvCmP1E9US47lmVz8iuR.VrtbmB1cXwSQ/PD.sQXRw.";
     group = "mxx";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ ];
+
+        extraGroups = [
+        	"networkmanager"
+        	"audio"
+        	"jackaudio"
+        	];
+        	packages = with pkgs; [ ];
   };
+
+
   # ============================================================================
   # SUDO CONFIGURATION
   security.sudo = {
@@ -151,3 +162,4 @@ _________________________________________________________________________ */
   };
 
 }
+

@@ -1,15 +1,16 @@
 # tftp-samba.nix
 { config, pkgs, ... }:
 {
+/*
 # TFTP server for router flashing
 services.atftpd = {
   enable = true;
 #  root = "/srv/tftp";
 root = "/home/project/openWRT";
 };
-
+*/
 # Firewall: allow TFTP port
-networking.firewall.allowedUDPPorts = [ 69 ];
+#networking.firewall.allowedUDPPorts = [ 69 ];
 
   services.samba = {
     enable = true;
@@ -22,19 +23,19 @@ networking.firewall.allowedUDPPorts = [ 69 ];
       };
 
       videos = {
-        path = "/home/amxamxa/videos";
+        path = "/home/video";
         browseable = "yes";
         "read only" = "yes";
         "guest ok" = "yes";
       };
-       share = {
-        path = "/share";
-        browseable = "yes";
-        "read only" = "no"; # write
-        "guest ok" = "yes";
-      };
+  #     share = {
+  #      path = "/share";
+  #      browseable = "yes";
+  #      "read only" = "no"; # write
+  #      "guest ok" = "yes";
+  #    };
        public = {
-        path = "/home/amxamxa/public";
+        path = "/share";
         browseable = "yes";
         "read only" = "no"; # write
         "guest ok" = "yes";
@@ -46,8 +47,8 @@ networking.firewall.allowedUDPPorts = [ 69 ];
   # If you enable the firewall, allow Samba ports:
    #networking.firewall.allowedTCPPorts = [ 139 445 ];
    #networking.firewall.allowedUDPPorts = [ 137 138 ];
-   
-   
+
+
   # Avahi für Netzwerk-Discovery aktivieren
   services.avahi = {
     enable = true;
@@ -55,7 +56,7 @@ networking.firewall.allowedUDPPorts = [ 69 ];
     publish = {
       enable = true;
       workstation = true; # macht PC im lokalen Netzwerk „sichtbar“ als generische Workstation über mDNS/DNS-SD.
-      domain = true; 
+      domain = true;
       hinfo = true; # hw,cpu
       addresses = true; # IP-Adresse veröffentlichen
       userServices = true; # Nutzerdienste sichtbar machen

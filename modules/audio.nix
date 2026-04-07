@@ -24,11 +24,6 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~
 { config, pkgs, ... }:
 {
   # ============================================
-  # USER GROUPS
-  # Add audio-related groups for the primary user
-  users.users.amxamxa.extraGroups = [ "jackaudio" "audio" ];
-  users.users.l33.extraGroups = [ "jackaudio" "audio" ];
-  users.users.gast.extraGroups = [ "jackaudio" "audio" ];
 
   # ============================================
   # KERNEL CONFIGURATION
@@ -256,6 +251,7 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~
     carla # komplexere Alternative zu Helvum
     #alt:  patchage # Modular patch bay for Jack and ALSA systems
     qjackctl  # application to control the JACK sound server daemon
+	 liblo # Lightweight library to handle the sending and receiving of messages according to the Open Sound Control (OSC) protocol
 
     # DAWs und Audio-Editoren
     vlc # Media player
@@ -293,7 +289,8 @@ O~~         O~~  O~~O~~ O~~ O~~O~~   O~~
     # jamesdsp # mit native PipeWire
 
     # SONSTIGES
-    cava # console-based Audio Visualizer for Alsa
+ sonic-pi # Free live coding synth for everyone originally designed to support computing and music lessons within schools "sonic-pi.net"
+     cava # console-based Audio Visualizer for Alsa
     cavalier # visualize audio with CAVA
     playerctl # cmd utility and lib for media players that implement MPRIS
 

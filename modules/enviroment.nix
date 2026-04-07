@@ -251,20 +251,23 @@ environment.etc."colorEnvExport.sh" = {
   # Tests:
   #   - systemd-tmpfiles --user --create
 ####
-  systemd.user.tmpfiles.rules = [
-    "d %h/desktop 0755 - - -"
-    "d %h/downloads 0755 - - -"
-    "d %h/dokumente 0755 - - -"
-    "d %h/dokumente/vorlagen 0755 - - -"
-    "d %h/music 0755 - - -"
-    "d %h/bilder 0755 - - -"
-    "d %h/videos 0755 - - -"
-    "d %h/public 0755 - - -"
-    "L+ %h/bin/batNoComment - - - - %h/bin/batNoComment.sh"
-    "L+ %h/bin/bNC - - - - %h/bin/batNoComment.sh"
+systemd.user.tmpfiles.rules = [
 
-    "L+ %h/bin/WO - - - - %h/bin/NIXwo.sh"
-    "L+ %h/desktop/pix.desktop - - - - /run/current-system/sw/share/applications/pix.desktop"
+  "d %h/top 0755 - - -"                     # DESKTOP=top
+  "d %h/top/downloads 0755 - - -"           # DOWNLOAD=top/downloads
+  "d %h/top/dokumente 0755 - - -"           # DOCUMENTS=top/dokumente
+  "d %h/top/dokumente/templates 0755 - - -"  # TEMPLATES
+  "d %h/top/media 0755 - - -"              # parent for media subdirs
+  "d %h/top/media/music 0755 - - -"         # MUSIC
+  "d %h/top/media/bilder 0755 - - -"        # PICTURES
+  "d %h/bin 0755 - - -"                     # custom bin dir
+  # PUBLICSHARE=/share    → Mountpoint, managed by fileSystems
+  # VIDEOS=/home/video    → Mountpoint, managed by fileSystems
+  # /home/project         → Mountpoint, managed by fileSystems
+  "L+ %h/bin/batNoComment - - - - %h/bin/batNoComment.sh"
+  "L+ %h/bin/bNC - - - - %h/bin/batNoComment.sh"
+  "L+ %h/bin/WO - - - - %h/bin/NIXwo.sh"
+  "L+ %h/top/pix.desktop - - - - /run/current-system/sw/share/applications/pix.desktop"
   ];
 
 ##########################################################
@@ -274,15 +277,15 @@ environment.etc."colorEnvExport.sh" = {
   # Constraints:
   #   - Must match tmpfiles layout
   ########################################################
-  environment.etc."xdg/user-dirs.defaults".text = ''
-    DESKTOP=desktop
-    DOWNLOAD=downloads
-    TEMPLATES=dokumente/vorlagen
-    PUBLICSHARE=public
-    DOCUMENTS=dokumente
-    MUSIC=music
-    PICTURES=bilder
-    VIDEOS=videos
+  environment.etc."xdg/user-dirs.dirs".text = ''
+  DESKTOP=top
+  DOWNLOAD=top/downloads
+  TEMPLATES=top/dokumente/templates
+  PUBLICSHARE=/share
+  DOCUMENTS=top/dokumente
+  MUSIC=/top/media/music
+  PICTURES=/top/media/bilder
+  VIDEOS=/home/video
   '';
 
   environment.etc."xdg/user-dirs.conf".text = ''

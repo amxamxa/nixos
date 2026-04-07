@@ -230,8 +230,7 @@ environment.etc."zsh/fzf-config.sh".text = ''
         $ZDOTDIR(N)
         $fpath
       )
-     
-    # -------------------------
+         # -------------------------
     # Zsh‑spezifische Variablen
       export HISTIGNORE="ls:cd:pwd:exit:tldr:cheat::cat:man:eza:lsd:cp:echo:z:bap:bat:git:"
       export HISTTIMEFORMAT="%Y-%m-%d %H:%M "

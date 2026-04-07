@@ -40,16 +40,22 @@ channel probs:
 #-t, --identifier: (STRING) eindeutiger Identifier (Tag), als Filter
 #-u, --unit:  Verknüpft die Nachricht mit einer bestimmten systemd-Unit.
 
-  fileSystems."/share" = {
+
+# SSD 21 GB
+  fileSystems."/public" = {
     device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
     fsType = "btrfs";
   };
-
+# SSD 136 GB /dev/sda4
   fileSystems."/home/project" = {
     device = "/dev/disk/by-uuid/4d274de6-7e6b-4f01-ab6a-696ea91abec8";
     fsType = "ext4";
   };
-
+  # HDD /dev/sdb1 320 GB
+    fileSystems."/home/video" = {
+      device = "/dev/disk/by-uuid/f6ebb1cc-3fff-422a-8be4-ed8dd4cb1e61";
+      fsType = "ext4";
+    };
 
 
 
