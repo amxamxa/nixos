@@ -30,7 +30,7 @@ channel probs:
     # ./modules/dns.nix #
     #   ./modules/python.nix # ehem.	./ld.nix
     #./modules/docker.nix
-    #   ./modules/npm.nix
+#       ./modules/npm.nix
         ./modules/tftp-samba.nix
     ./modules/read-only/adBloxx.nix # ehem. ./AdBloxx.nix
     ./modules/read-only/tuxpaint.nix

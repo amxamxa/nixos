@@ -275,6 +275,11 @@ environment.etc."zsh/fzf-config.sh".text = ''
           \/          \/           \/     \/                   \/*/
 # entspricht der .zshrc ------
 interactiveShellInit = ''
+
+# Load API-Key 
+[[ -f "/etc/nixos/assets/sec/anthropic" ]] && source "/etc/nixos/assets/sec/anthropic"
+
+
 # Load FZF configuration
     [[ -f /etc/zsh/fzf-config.sh ]] && source /etc/zsh/fzf-config.sh
       
