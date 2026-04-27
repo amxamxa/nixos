@@ -1,37 +1,37 @@
 # modules/dns.nix
 # Static DNS enforcement - completely ignores DHCP-provided DNS servers.
 # NetworkManager handles IP/routing via DHCP, but DNS management is disabled.
-{ lib, ... }:
+# DNS-over-TLS via systemd-resolved.
+# Bypasses router DNS on port 53 entirely, uses encrypted port 853.
+{ config, pkgs, lib, ... }:
 {
-  # KEY: Tell NM to not touch /etc/resolv.conf at all.
-  # "none" means NM neither reads nor writes DNS configuration.
-  # NixOS activation scripts will manage /etc/resolv.conf instead.
-  networking.networkmanager.dns = lib.mkForce "none";
 
-  # These servers are written to /etc/resolv.conf by NixOS at activation time.
-  # With NM dns="none", this file stays static across reboots and DHCP renewals.
+  networking.networkmanager.dns = lib.mkForce "systemd-resolved";
+
+  # Tell NM globally to never use DHCP-provided DNS for any connection
+  networking.networkmanager.settings.connection = {
+    "ipv4.ignore-auto-dns" = true;
+    "ipv6.ignore-auto-dns" = true;
+  };
+
   networking.nameservers = [
-    "5.9.164.112"     # digitalcourage e.V. (DE, datenschutzkonform, kein Logging)
-    "204.152.184.76"  # ISC f.6to4-servers.net (USA, stabil seit Jahrzehnten)
-    "194.150.168.168" # dns.as250.net (Berlin/Frankfurt)
+    "5.9.164.112#digitalcourage.de"
   ];
 
-  # Optional but recommended: make /etc/resolv.conf a read-only Nix-store symlink.
-  # Nothing (not even root) can overwrite it at runtime.
-  # /etc/resolv.conf → /etc/static/resolv.conf (immutable in Nix store)
-  environment.etc."resolv.conf" = {
-    text = ''
-      # Managed by NixOS - do not edit manually
-      # DHCP DNS is intentionally ignored (NetworkManager dns=none)
-      
-      nameserver 192.168.0.1
-      nameserver 8.8.8.8
-      nameserver 5.9.164.112
-      
-      nameserver 204.152.184.76
-      nameserver 194.150.168.168
-      options timeout:2 attempts:3 rotate
+  services.resolved = {
+    enable     = true;
+    domains    = [ "~." ];
+    dnsovertls = "true";
+    dnssec     = "allow-downgrade";
+    llmnr      = "false";
+    fallbackDns = [ "9.9.9.9#dns.quad9.net" ];
+    extraConfig = ''
+      Cache=yes
+      ReadEtcHosts=yes
     '';
-    mode = "0644";
   };
+  # resolved creates /etc/resolv.conf as symlink to its stub:
+  # /etc/resolv.conf -> /run/systemd/resolve/stub-resolv.conf
+  # stub listens on 127.0.0.53:53 locally
 }
+
