@@ -70,6 +70,7 @@ nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
   # ====================================
   # SYSTEM PACKAGES
     environment.systemPackages = with pkgs; [
+    dig.dnsutils
  #envfs # Fuse filesystem that returns symlinks to executables based on the PATH of the requesting process
 xdg-user-dirs # Tool to help manage well known user directories like the desktop folder and the music folder
    gnome-disk-utility
@@ -114,7 +115,7 @@ swappy # Wayland native snapshot editing tool, inspired by Snappy on macOS
     # Disk Usage Analysis
     duf                        # Modern df with better output
     dust                       # More intuitive du
-    baobab                     # Graphical disk usage analyzer (GNOME)
+    baobab        dig.dnsutils             # Graphical disk usage analyzer (GNOME)
     # Note: ncdu is in zsh.nix as it's primarily a CLI tool
 
     # Logging & System Management

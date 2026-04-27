@@ -17,17 +17,14 @@ channel probs:
     ./modules/cosmic.nix # Display/Window-Mgr
     ./modules/packages.nix # env.pkgs
     ./modules/audio.nix
-
     ./modules/fonts.nix
 #    ./modules/logs.nix
-
     ./modules/zsh.nix # shell
 #    ./modules/bash.nix # shell
     ./modules/aliases.nix
 #    ./modules/rust.nix #
     ./modules/treefmt.nix #
-
-    # ./modules/dns.nix #
+     ./modules/dns.nix #
     #   ./modules/python.nix # ehem.	./ld.nix
     #./modules/docker.nix
 #       ./modules/npm.nix
@@ -74,56 +71,40 @@ nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
       zramSwap.enable = true;
       zramSwap.memoryPercent = 25;
 
-  networking.hostName = "localhorst"; # Offiziell reservierte Domains (RFC 6761)
-# IPv6-Deaktivierung: lokale Netzwerk IPv4 basiert. Deaktivierung von IPv6 den Overhead des Netzwerk-Stacks und die Anzahl der Kernel-Threads
-boot.kernel.sysctl."net.ipv6.conf.all.disable_ipv6" = 1;
-boot.kernel.sysctl."net.ipv6.conf.default.disable_ipv6" = 1;
-  boot.tmp.cleanOnBoot = true; # Wipe /tmp on boot.
-  boot.supportedFilesystems = [ "ntfs" ];
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-  networking.usePredictableInterfaceNames = false; # eth0 statt ensp0
-  networking.nameservers = [
-    # www.ccc.de/censorship/dns-howto
-    "5.9.164.112" # (digitalcourage, Informationsseite)
-    "204.152.184.76" # (f.6to4-servers.net, ISC, USA)
-    "2001:4f8:0:2::14" # (f.6to4-servers.net, IPv6, ISC)
-    "194.150.168.168" # (dns.as250.net; Berlin/Frankfurt)
-  ];
-  networking.networkmanager.appendNameservers = [
-    # www.ccc.de/censorship/dns-howto
-    "5.9.164.112" # (digitalcourage, Informationsseite)
-    "204.152.184.76" # (f.6to4-servers.net, ISC, USA)
-    "2001:4f8:0:2::14" # (f.6to4-servers.net, IPv6, ISC)
-    "194.150.168.168" # (dns.as250.net; Berlin/Frankfurt)
-  ];
-
-  networking.networkmanager.settings.connectivity.uri =
-    "http://nmcheck.gnome.org/check_network_status.txt";
-
-  networking.networkmanager.dns =
-    "default"; # default", "dnsmasq", "systemd-resolved", "none"
-  # networking.interfaces.enp4s0.useDHCP = true;
-  # networking.interfaces.enp4s0.name = [ "eth0" ];
-  hardware.usb-modeswitch.enable =
-    false; # to support certain USB WLAN and WWAN adapters.  These network adapters initial present themselves as Flash Drives containing their drivers. This option enables automatic switching to the networking mode
-
-  #   Use services.logind.settings.Login instead.  # services.logind.extraConfig = ''     	HandlePowerKey = poweroff;    	HandlePowerKeyLongPress = reboot;	'';
-
-  # Balanciert Hardware-Interrupts dynamisch über alle 4 Kerne
-  services.irqbalance.enable = true;
-
+  # Deaktivierung IPv6: lokale Netzwerk IPv4. Deaktivierung -> Overhead des Netzwerk-Stacks sinkt
+  boot.kernel.sysctl."net.ipv6.conf.all.disable_ipv6" = 1;
+  boot.kernel.sysctl."net.ipv6.conf.default.disable_ipv6" = 1;
   # RFS (Receive Flow Steering) - Globale Kernel-Einstellungen
   boot.kernel.sysctl = {
     # Maximale Anzahl an gleichzeitig verfolgten Flows (Sonden)
     # Empfohlener Wert für Workstations: 32768
     "net.core.rps_sock_flow_entries" = 32768;
   };
-# Entlastung des Schreib-I/O: Durch das Verschieben des `/tmp`-Verzeichnisses in den Arbeitsspeicher (RAM) werden unnötige Schreibzugriffe auf die SSD und CPU-Interrupts durch den I/O-Controller reduziert:
-boot.tmp.useTmpfs = true;
-boot.tmp.tmpfsSize = "2G";
+  boot.tmp.cleanOnBoot = true; # Wipe /tmp on boot.
+  boot.supportedFilesystems = [ "ntfs" ];
+ 
+ # Balanciert Hardware-Interrupts dynamisch über alle 4 Kerne
+  services.irqbalance.enable = true;
+  
+  # Entlastung des Schreib-I/O: Durch das Verschieben des `/tmp`-Verzeichnisses in den   Arbeitsspeicher (RAM) werden unnötige Schreibzugriffe auf die SSD und CPU-Interrupts durch den I/O-Controller reduziert:
+  boot.tmp.useTmpfs = true;
+  boot.tmp.tmpfsSize = "2G";
 
+  # Enable networking
+  networking.networkmanager.enable = true;
+  networking.usePredictableInterfaceNames = false; # eth0 statt ensp0
+  networking.hostName = "localhorst"; # Offiziell reservierte Domains (RFC 6761)
+#
+  networking.networkmanager.settings.connectivity.uri =
+    "http://nmcheck.gnome.org/check_network_status.txt";
+
+ # to support certain USB WLAN and WWAN adapters.  These network adapters initial present themselves as Flash Drives containing their drivers. This option enables automatic switching to the networking mode
+  hardware.usb-modeswitch.enable =
+    false;
+
+  #   Use services.logind.settings.Login instead.  # services.logind.extraConfig = ''     	HandlePowerKey = poweroff;    	HandlePowerKeyLongPress = reboot;	'';
+
+ 
   # Speicheroptimierung für ältere SSDs/HDDs
   services.fstrim.enable = true; # Wichtig für die Langlebigkeit alter SSDs
   security.polkit.enable =
@@ -144,7 +125,23 @@ boot.tmp.tmpfsSize = "2G";
   hardware.ksm.enable =
     true; # Aktiviert den Kernel Samepage Merging (KSM)-Dienst, durchsucht den RAM nach identischen Speicherseiten (Pages), spart Speicher, aber CPU-Last. Für Virtualisierungsumgebungen mit  ähnlichen VMs ... oder redundanten Speicher alloziere
 
-
+ nix.settings = {
+    download-buffer-size = 268435456; # 256 MB
+    #134217728;
+    http-connections = 25; # Max parallel HTTP connections
+    max-jobs = 2; # Parallel builds
+    cores = 2; # use N  cores
+      # Enable the Flakes feature and the accompanying new nix command-line tool
+  # nixos.org/manual/nix/stable/contributing/experimental-features
+  # "flakes"
+    experimental-features =
+      [ "nix-command" ]; # Aktiviert Cmds: nix search, nix run, nix shell
+    #  extra-sandbox-paths = [ "/dev/nvidiactl" "/dev/nvidia0" "/dev/nvidia-uvm" ];
+  #  Nix automatically detects files in the store that have identical contents, and replaces them with hard links to a single copy. This saves disk space.
+    auto-optimise-store = true;
+    sandbox = true;
+    require-sigs =true;
+  };
 # Lower CPU priority for nix-daemon builds
 nix.daemonCPUSchedPolicy = "batch";
 # Lowest I/O priority → system stays responsive
@@ -210,11 +207,11 @@ nix.daemonIOSchedClass   = "idle";
       libvdpau-va-gl
      ];
 };
+system.copySystemConfiguration = true;   # Copy configuration.nix into the nix store with each build to /run/current-system/configuration.nix
 
   services.xserver.displayManager.startx.enable =
     true; # Whether to enable the dummy “startx” pseudo-display manager, which allows users to start X manually via the startx command from a virtual terminal.
 
-system.copySystemConfiguration = true;   # Copy configuration.nix into the nix store with each build to /run/current-system/configuration.nix
   services.xserver.exportConfiguration =
     true; # Makes it so the above mentioned xkb directory (and the xorg.conf file) gets exported to /etc/X11/xkb
   services.xserver.desktopManager.runXdgAutostartIfNone =
@@ -240,23 +237,7 @@ system.copySystemConfiguration = true;   # Copy configuration.nix into the nix s
    SP          SP   SP
  ============================================================
     '';
-  nix.settings = {
-    download-buffer-size = 268435456; # 256 MB
-    #134217728;
-    http-connections = 25; # Max parallel HTTP connections
-    max-jobs = 2; # Parallel builds
-    cores = 2; # 0=Use all available cores
-      # Enable the Flakes feature and the accompanying new nix command-line tool
-  # nixos.org/manual/nix/stable/contributing/experimental-features
-  # "flakes"
-    experimental-features =
-      [ "nix-command" ]; # Aktiviert Cmds: nix search, nix run, nix shell
-    #  extra-sandbox-paths = [ "/dev/nvidiactl" "/dev/nvidia0" "/dev/nvidia-uvm" ];
-  #  Nix automatically detects files in the store that have identical contents, and replaces them with hard links to a single copy. This saves disk space.
-    auto-optimise-store = true;
-    sandbox = true;
-    require-sigs =true;
-  };
+ 
   # Enable CUPS to print documents.
   services.printing.enable = false;
   # Enable touchpad support (enabled default in most desktopManager)
