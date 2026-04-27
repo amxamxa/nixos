@@ -35,63 +35,6 @@
     '';
   };
 
-#    ▄▄▄▄▀ ▄███▄   █▄▄▄▄ █▀▄▀█
-# ▀▀▀ █    █▀   ▀  █  ▄▀ █ █ █
-#     █    ██▄▄    █▀▀▌  █ ▄ █
-#    █     █▄   ▄▀ █  █  █   █
-#   ▀      ▀███▀     █      █
-#                   ▀      ▀
-# ▄█▄    ████▄ █    ████▄ █▄▄▄▄   ▄▄▄▄▄
-# █▀ ▀▄  █   █ █    █   █ █  ▄▀  █     ▀▄
-# █   ▀  █   █ █    █   █ █▀▀▌ ▄  ▀▀▀▀▄
-# █▄  ▄▀ ▀████ ███▄ ▀████ █  █  ▀▄▄▄▄▀
-# ▀███▀            ▀        █
-#                          ▀
-# export cols for echo, printf
-environment.etc."colorEnvExport.sh" = {
-      text = ''
-      #!/usr/bin/env bash
-        # kitty term supports 24-bit RGB colors
-        export RED=$'\033[38;2;240;128;128m\033[48;2;139;0;0m'
-        export BOLD=$'\033[1m'
-        export BLINK=$'\033[5m'
-        export UNDER=$'\033[4m'
-        export GELB=$'\e[33m'
-        export GREEN=$'\033[38;2;0;255;0m\033[48;2;0;100;0m'
-        export PINK=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
-        export LILA=$'\033[38;2;255;105;180m\033[48;2;75;0;130m'
-        export LIL2=$'\033[38;2;239;217;129m\033[48;2;59;14;122m'
-        export VIO=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
-        export BLUE=$'\033[38;2;252;222;90m\033[48;2;0;0;139m'
-        export NIGHT=$'\033[38;2;150;180;220m\033[48;2;10;15;30m'
-        export LIME=$'\033[38;2;6;88;96m\033[48;2;0;255;255m'
-        export YELLO=$'\033[38;2;255;215;0m\033[48;2;60;50;0m'
-        export LAVEN=$'\033[38;2;200;170;255m\033[48;2;40;30;70m'
-        export PINK2=$'\033[38;2;255;105;180m\033[48;2;60;20;40m'
-        export RASPB=$'\033[38;2;190;30;90m\033[48;2;50;10;30m'
-        export VIOLE=$'\033[38;2;170;0;255m\033[48;2;30;0;60m'
-        export ORANG=$'\033[38;2;255;140;0m\033[48;2;60;30;0m'
-        export CORAL=$'\033[38;2;255;110;90m\033[48;2;70;30;20m'
-        export GOLD=$'\033[38;2;255;200;60m\033[48;2;80;60;10m'
-        export OLIVE=$'\033[38;2;120;140;40m\033[48;2;40;50;20m'
-        export PETRO=$'\033[38;2;0;160;160m\033[48;2;0;40;40m'
-        export CYAN=$'\033[38;2;80;220;220m\033[48;2;0;50;50m'
-        export GREY=$'\033[38;2;200;200;200m\033[48;2;60;60;60m'
-        export TEAL=$'\033[38;2;0;180;140m\033[48;2;0;60;50m'
-        export MINT=$'\033[38;2;150;255;200m\033[48;2;20;60;40m'
-        export SKY=$'\033[38;2;120;200;255m\033[48;2;30;60;80m'
-        export PLUM=$'\033[38;2;180;80;200m\033[48;2;50;20;60m'
-        export BROWN=$'\033[38;2;160;110;60m\033[48;2;50;30;10m'
-        export IVORY=$'\033[38;2;255;250;220m\033[48;2;80;70;50m'
-        export SLATE=$'\033[38;2;150;160;170m\033[48;2;40;50;60m'
-        export INDIG=$'\033[38;2;90;0;130m\033[48;2;30;0;50m'
-        export EMBER=$'\033[38;2;255;80;40m\033[48;2;60;20;10m'
-        export RESET=$'\033[0m'
-
-      '';
-      mode = "0444"; # read-only
-    };
-
   ###################################################
   # SECTION SCHEMA: environment.variables
   # Scope:
@@ -240,8 +183,8 @@ environment.etc."colorEnvExport.sh" = {
     export LESS_TERMCAP_us=$(printf '\033[1;32m')
     export LESS_TERMCAP_ue=$(printf '\033[0m')
   '';
-##########################################################
 
+  ##########################################################
   # SECTION SCHEMA: systemd.user.tmpfiles.rules
   # Purpose:
   #   - Ensure standard user directories exist
@@ -250,56 +193,70 @@ environment.etc."colorEnvExport.sh" = {
   #   - Must not delete user data
   # Tests:
   #   - systemd-tmpfiles --user --create
+  /*
+  # tmpfiles-Typen im Überblick
+Typ	Bedeutung
+d	Verzeichnis erstellen, falls nicht vorhanden
+D	Verzeichnis erstellen + bei Boot leeren
+Z	Rekursiv Permissions/Ownership setzen
+z	Permissions/Ownership setzen (nicht rekursiv)
+"*", wenn alle User Zugriff bekommen sollen.*/
 ####
+/*
 systemd.user.tmpfiles.rules = [
-
-  "d %h/top 0755 - - -"                     # DESKTOP=top
-  "d %h/top/downloads 0755 - - -"           # DOWNLOAD=top/downloads
-  "d %h/top/dokumente 0755 - - -"           # DOCUMENTS=top/dokumente
-  "d %h/top/dokumente/templates 0755 - - -"  # TEMPLATES
-  "d %h/top/media 0755 - - -"              # parent for media subdirs
-  "d %h/top/media/music 0755 - - -"         # MUSIC
-  "d %h/top/media/bilder 0755 - - -"        # PICTURES
+  # Type  Path Mode User Group Age Argument
+  "d %h/schreibtisch 0755 - - -"             # DESKTOP=schreibtsch
+  "L+ %h/schreibtisch/pix.desktop - - - - /run/current-system/sw/share/applications/pix.desktop"
+  "d %h/downloads 0755 - - -"               # DOWNLOAD=downloads
+  "d %h/dokumente 0755 - - -"               # DOCUMENTS=dokumente
+  "d %h/dokumente/templates 0755 - - -"     # TEMPLATES=dokumente/templates
+  "d %h/public 0777 - - /share"                  # PUBLICSHARE=public
+  "d %h/media 0755 - - -"                   # parent for media subdirs
+  "d %h/media/music 0755 - - -"             # MUSIC=media/music
+  "d %h/media/bilder 0755 - - -"            # PICTURES=media/bilder
+  #"L+ %h/media/videos 0755 - - /home/video"
+  # VIDEOS=/home/video  → absolute path, managed by fileSystems
   "d %h/bin 0755 - - -"                     # custom bin dir
-  # PUBLICSHARE=/share    → Mountpoint, managed by fileSystems
-  # VIDEOS=/home/video    → Mountpoint, managed by fileSystems
-  # /home/project         → Mountpoint, managed by fileSystems
   "L+ %h/bin/batNoComment - - - - %h/bin/batNoComment.sh"
   "L+ %h/bin/bNC - - - - %h/bin/batNoComment.sh"
   "L+ %h/bin/WO - - - - %h/bin/NIXwo.sh"
-  "L+ %h/top/pix.desktop - - - - /run/current-system/sw/share/applications/pix.desktop"
   ];
-
-##########################################################
+*/
+# Shared absolute path outside $HOME — runs as root at system level
+# Group 'video' — adjust if needed
+systemd.tmpfiles.rules = [
+  "d /home/video  0775  root  video  -  -"
+];
+ ##########################################################
    # SECTION SCHEMA: XDG user-dirs configuration
   # Purpose:
   #   - Define localized directory names
   # Constraints:
   #   - Must match tmpfiles layout
   ########################################################
-  environment.etc."xdg/user-dirs.dirs".text = ''
-  DESKTOP=top
-  DOWNLOAD=top/downloads
-  TEMPLATES=top/dokumente/templates
-  PUBLICSHARE=/share
-  DOCUMENTS=top/dokumente
-  MUSIC=/top/media/music
-  PICTURES=/top/media/bilder
-  VIDEOS=/home/video
+  # Writes to /etc/xdg/user-dirs.dirs (system-wide default for all users)
+  environment.etc = {
+  # System-wide XDG user directory defaults
+  # Read by: xdg-user-dirs-update on first login
+  "xdg/user-dirs.defaults".text = ''
+    DESKTOP=schreibtisch
+    DOWNLOAD=downloads
+    TEMPLATES=dokumente/templates
+    PUBLICSHARE=public
+    DOCUMENTS=dokumente
+    MUSIC=media/music
+    PICTURES=media/bilder
+    VIDEOS=/home/video
   '';
+};
 
-  environment.etc."xdg/user-dirs.conf".text = ''
-    enabled=False
-    filename_encoding=UTF-8
-  '';
-
- ##########################################################
-    # SECTION SCHEMA: documentation
+  #######################################################
+  # SECTION SCHEMA: documentation
   # Purpose:
   #   - Provide offline documentation and man pages
   # Constraints:
   #   - Cache generation must be deterministic
-  ############################################################
+  #######################################################
   documentation.nixos.enable = true;
   documentation.man.enable = true;
   documentation.man.generateCaches = true;
@@ -319,7 +276,7 @@ systemd.user.tmpfiles.rules = [
  ##########################################################
 
   environment.homeBinInPath = true;
-  environment.localBinInPath = true;
+#  environment.localBinInPath = true;
 
   environment.pathsToLink = [
     "/share/icons"

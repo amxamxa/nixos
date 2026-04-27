@@ -22,9 +22,9 @@ channel probs:
 #    ./modules/logs.nix
 
     ./modules/zsh.nix # shell
-    ./modules/bash.nix # shell
+#    ./modules/bash.nix # shell
     ./modules/aliases.nix
-    ./modules/rust.nix #
+#    ./modules/rust.nix #
     ./modules/treefmt.nix #
 
     # ./modules/dns.nix #
@@ -40,7 +40,15 @@ channel probs:
 #-t, --identifier: (STRING) eindeutiger Identifier (Tag), als Filter
 #-u, --unit:  Verknüpft die Nachricht mit einer bestimmten systemd-Unit.
 
-
+nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+             "vst2-sdk"
+                "vivaldi"              "vagrant"
+        "memtest86-efi"        "sublimetext"
+        "obsidian"             "typora"
+        "decent-sampler"
+        # "kiro"
+        "claude-code"
+           ];
 # SSD 21 GB
   fileSystems."/public" = {
     device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
@@ -162,7 +170,10 @@ nix.daemonIOSchedClass   = "idle";
   console = {
     enable = true;
     font =
-      "Lat2-Terminus16"; # Beispiel  # ls  $(nix-shell -p kbd --run "ls \$out/share/kbd/consolefonts/")
+    # Get the store path first, then list it:
+    #   kbd_path=$(nix-build '<nixpkgs>' -A kbd --no-out-link 2>/dev/null)
+    #   ls "$kbd_path/share/kbd/consolefonts/"
+    "gr737b-9x16-medieval"; # "Lat2-Terminus16";
     earlySetup = true;
     useXkbConfig =
       true; # Makes it so the tty console has about the same layout as the one configured in the services.xserver options.
@@ -196,18 +207,18 @@ nix.daemonIOSchedClass   = "idle";
      extraPackages = with pkgs; [
      # Hardware-Dekodierung von H.264 und VC-1.
       driversi686Linux.intel-vaapi-driver # Spezifischer Treiber für Ivy Bridge (VA-API)
-       libvdpau-va-gl
+      libvdpau-va-gl
      ];
 };
 
   services.xserver.displayManager.startx.enable =
     true; # Whether to enable the dummy “startx” pseudo-display manager, which allows users to start X manually via the startx command from a virtual terminal.
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you accidentally delete configuration.nix.
+
+system.copySystemConfiguration = true;   # Copy configuration.nix into the nix store with each build to /run/current-system/configuration.nix
   services.xserver.exportConfiguration =
     true; # Makes it so the above mentioned xkb directory (and the xorg.conf file) gets exported to /etc/X11/xkb
   services.xserver.desktopManager.runXdgAutostartIfNone =
-    true; # whether to run XDG autostart files for sessions without a desktop manager (with only a window manager), these sessions usually don’t handle XDG autostart files by defaul
+    true; # whether to run XDG autostart files for sessions without a desktop manager (with only a window manager), these sessions usually don’t handle XDG autostart files by default
 
   services.xserver.displayManager.sessionCommands = ''
     xcowsay "

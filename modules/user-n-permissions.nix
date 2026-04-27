@@ -35,12 +35,13 @@
     name = "amxamxa";
     isNormalUser = true;
     initialHashedPassword = "$6$HNT32bO29gVtrQad$kanyT7X4pD.IcrE3obH9c3wmWfv4ZPAJ933Pw4NI.TNIvCmP1E9US47lmVz8iuR.VrtbmB1cXwSQ/PD.sQXRw.";
-    description = "administrator und lokaler Gott";
+    description = "admin";
     group = "mxx";
     extraGroups = [
       "networkmanager"
       "wheel"     # Sudo access
       "video"     # Video device access
+      "jackaudio"
       # Audio groups defined in audio.nix
     ];
     packages = with pkgs; [
@@ -56,8 +57,7 @@
     initialHashedPassword = "$6$HNT32bO29gVtrQad$kanyT7X4pD.IcrE3obH9c3wmWfv4ZPAJ933Pw4NI.TNIvCmP1E9US47lmVz8iuR.VrtbmB1cXwSQ/PD.sQXRw.";
     group = "mxx";
     extraGroups = [
-    	"networkmanager"
-    	"audio"
+    	    	"audio"
     	"jackaudio"
     	];
     packages = with pkgs; [ ];

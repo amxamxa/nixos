@@ -64,6 +64,98 @@ environment.etc."zsh/zsh-highlight-styles.zsh".source = "${here}/../assets/shell
     	enableZshIntegration = true;    
     	};
 
+#    ▄▄▄▄▀ ▄███▄   █▄▄▄▄ █▀▄▀█
+# ▀▀▀ █    █▀   ▀  █  ▄▀ █ █ █
+#     █    ██▄▄    █▀▀▌  █ ▄ █
+#    █     █▄   ▄▀ █  █  █   █
+#   ▀      ▀███▀     █      █
+#                   ▀      ▀
+# ▄█▄    ████▄ █    ████▄ █▄▄▄▄   ▄▄▄▄▄
+# █▀ ▀▄  █   █ █    █   █ █  ▄▀  █     ▀▄
+# █   ▀  █   █ █    █   █ █▀▀▌ ▄  ▀▀▀▀▄
+# █▄  ▄▀ ▀████ ███▄ ▀████ █  █  ▀▄▄▄▄▀
+# ▀███▀            ▀        █
+#                          ▀
+# export cols for echo, printf
+/*   export RED=$'\033[38;2;240;128;128m\033[48;2;139;0;0m'
+        export BOLD=$'\033[1m'
+        export BLINK=$'\033[5m'
+        export UNDER=$'\033[4m'
+        export GELB=$'\e[33m'
+        export GREEN=$'\033[38;2;0;255;0m\033[48;2;0;100;0m'
+        export PINK=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
+        export LILA=$'\033[38;2;255;105;180m\033[48;2;75;0;130m'
+        export LIL2=$'\033[38;2;239;217;129m\033[48;2;59;14;122m'
+        export VIO=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
+        export BLUE=$'\033[38;2;252;222;90m\033[48;2;0;0;139m'
+        export NIGHT=$'\033[38;2;150;180;220m\033[48;2;10;15;30m'
+        export LIME=$'\033[38;2;6;88;96m\033[48;2;0;255;255m'
+        export YELLO=$'\033[38;2;255;215;0m\033[48;2;60;50;0m'
+        export LAVEN=$'\033[38;2;200;170;255m\033[48;2;40;30;70m'
+        export PINK2=$'\033[38;2;255;105;180m\033[48;2;60;20;40m'
+        export RASPB=$'\033[38;2;190;30;90m\033[48;2;50;10;30m'
+        export VIOLE=$'\033[38;2;170;0;255m\033[48;2;30;0;60m'
+        export ORANG=$'\033[38;2;255;140;0m\033[48;2;60;30;0m'
+        export CORAL=$'\033[38;2;255;110;90m\033[48;2;70;30;20m'
+        export GOLD=$'\033[38;2;255;200;60m\033[48;2;80;60;10m'
+        export OLIVE=$'\033[38;2;120;140;40m\033[48;2;40;50;20m'
+        export PETRO=$'\033[38;2;0;160;160m\033[48;2;0;40;40m'
+        export CYAN=$'\033[38;2;80;220;220m\033[48;2;0;50;50m'
+        export GREY=$'\033[38;2;200;200;200m\033[48;2;60;60;60m'
+        export TEAL=$'\033[38;2;0;180;140m\033[48;2;0;60;50m'
+        export MINT=$'\033[38;2;150;255;200m\033[48;2;20;60;40m'
+        export SKY=$'\033[38;2;120;200;255m\033[48;2;30;60;80m'
+        export PLUM=$'\033[38;2;180;80;200m\033[48;2;50;20;60m'
+        export BROWN=$'\033[38;2;160;110;60m\033[48;2;50;30;10m'
+        export IVORY=$'\033[38;2;255;250;220m\033[48;2;80;70;50m'
+        export SLATE=$'\033[38;2;150;160;170m\033[48;2;40;50;60m'
+        export INDIG=$'\033[38;2;90;0;130m\033[48;2;30;0;50m'
+        export EMBER=$'\033[38;2;255;80;40m\033[48;2;60;20;10m'
+        export RESET=$'\033[0m' */
+environment.etc."colorEnvExport.sh" = {
+      text = ''
+      #!/usr/bin/env bash
+        # kitty term supports 24-bit RGB colors
+        readonly RED=$'\033[38;2;240;128;128m\033[48;2;139;0;0m'
+        readonly BOLD=$'\033[1m'
+        readonly BLINK=$'\033[5m'
+        readonly UNDER=$'\033[4m'
+        readonly GELB=$'\e[33m'
+        readonly GREEN=$'\033[38;2;0;255;0m\033[48;2;0;100;0m'
+        readonly PINK=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
+        readonly LILA=$'\033[38;2;255;105;180m\033[48;2;75;0;130m'
+        readonly LIL2=$'\033[38;2;239;217;129m\033[48;2;59;14;122m'
+        readonly VIO=$'\033[38;2;255;0;53m\033[48;2;34;0;82m'
+        readonly BLUE=$'\033[38;2;252;222;90m\033[48;2;0;0;139m'
+        readonly NIGHT=$'\033[38;2;150;180;220m\033[48;2;10;15;30m'
+        readonly LIME=$'\033[38;2;6;88;96m\033[48;2;0;255;255m'
+        readonly YELLO=$'\033[38;2;255;215;0m\033[48;2;60;50;0m'
+        readonly LAVEN=$'\033[38;2;200;170;255m\033[48;2;40;30;70m'
+        readonly PINK2=$'\033[38;2;255;105;180m\033[48;2;60;20;40m'
+        readonly RASPB=$'\033[38;2;190;30;90m\033[48;2;50;10;30m'
+        readonly VIOLE=$'\033[38;2;170;0;255m\033[48;2;30;0;60m'
+        readonly ORANG=$'\033[38;2;255;140;0m\033[48;2;60;30;0m'
+        readonly CORAL=$'\033[38;2;255;110;90m\033[48;2;70;30;20m'
+        readonly GOLD=$'\033[38;2;255;200;60m\033[48;2;80;60;10m'
+        readonly OLIVE=$'\033[38;2;120;140;40m\033[48;2;40;50;20m'
+        readonly PETRO=$'\033[38;2;0;160;160m\033[48;2;0;40;40m'
+        readonly CYAN=$'\033[38;2;80;220;220m\033[48;2;0;50;50m'
+        readonly GREY=$'\033[38;2;200;200;200m\033[48;2;60;60;60m'
+        readonly TEAL=$'\033[38;2;0;180;140m\033[48;2;0;60;50m'
+        readonly MINT=$'\033[38;2;150;255;200m\033[48;2;20;60;40m'
+        readonly SKY=$'\033[38;2;120;200;255m\033[48;2;30;60;80m'
+        readonly PLUM=$'\033[38;2;180;80;200m\033[48;2;50;20;60m'
+        readonly BROWN=$'\033[38;2;160;110;60m\033[48;2;50;30;10m'
+        readonly IVORY=$'\033[38;2;255;250;220m\033[48;2;80;70;50m'
+        readonly SLATE=$'\033[38;2;150;160;170m\033[48;2;40;50;60m'
+        readonly INDIG=$'\033[38;2;90;0;130m\033[48;2;30;0;50m'
+        readonly EMBER=$'\033[38;2;255;80;40m\033[48;2;60;20;10m'
+        readonly RESET=$'\033[0m'
+
+      '';
+      mode = "0444"; # read-only
+    };
+
 #-------------------
 #  pay-respects insteadt  programs.thefuck
 #-------------------
@@ -124,12 +216,15 @@ environment.etc."zsh/fzf-config.sh".text = ''
   "
   
   #----- ALT-C (Directory navigation) ------------------------------
-  export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
-  export FZF_ALT_C_OPTS="
-    --preview='eza --tree --level=2 --color=always --icons {} 2>/dev/null || tree -C -L 2 {}'
-    --header='Select directory to cd into'
-  "
-  
+ # Navigate UP via fzf (ALT-U) – add to FZF_ALT_C_OPTS
+export FZF_ALT_C_OPTS="
+  --preview='eza --tree --level=2 --color=always --icons {} 2>/dev/null'
+  --header='ALT-C: subdir | ALT-U: parent dirs'
+  --bind='alt-u:reload(
+    fd --type d --hidden --follow --exclude .git . \
+    $(dirname $(pwd)) $(dirname $(dirname $(pwd))) / 2>/dev/null
+  )'
+"
   #----- CTRL-R (History) ------------------------------------------
   export FZF_CTRL_R_OPTS="
     --no-preview
@@ -138,8 +233,7 @@ environment.etc."zsh/fzf-config.sh".text = ''
     --header='󰅍 Command history (CTRL-Y: Copy)'
     --bind='ctrl-y:execute-silent(echo -n {2..} | wl-copy)+abort'
   "
-  
-  #----- TAB Completion Settings -----------------------------------
+ #----- TAB Completion Settings -----------------------------------
   # Trigger für ** (wird durch programs.fzf.fuzzyCompletion aktiviert)
   export FZF_COMPLETION_TRIGGER='**'
   
@@ -245,8 +339,8 @@ environment.etc."zsh/fzf-config.sh".text = ''
       export EZA_GRID_COLUMNS=4
       export EZA_MIN_LUMINANCE=50
       export EZA_COLORS="$LS_COLORS:hd=38;5;226:\
-      uu=38;5;202:gu=38;5;208:da=38;5;111:\
-      uR=38;5;197:uG=38;5;198"
+                uu=38;5;202:gu=38;5;208:da=38;5;111:\
+                uR=38;5;197:uG=38;5;198"
     '';
  
 # ----------------------------------
@@ -258,11 +352,11 @@ environment.etc."zsh/fzf-config.sh".text = ''
   # promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
   # ... .zshrc
  promptInit = '' 
-  [[ -f ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme ]] && \
-  source ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme && echo "nr. 1"
+#  [[ -f ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme ]] && \
+#  source ${pkgs.zsh-powerlevel10k}/share/zsh/themes/zsh-powerlevel10k/powerlevel10k.zsh-theme 
    
-  [[ -f ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme ]] && \
-  source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+# [[ -f ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme ]] && \
+#  source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
      '';
 
 
@@ -277,14 +371,14 @@ environment.etc."zsh/fzf-config.sh".text = ''
 interactiveShellInit = ''
 
 # Load API-Key 
-[[ -f "/etc/nixos/assets/sec/anthropic" ]] && source "/etc/nixos/assets/sec/anthropic"
+# [[ -f "/etc/nixos/assets/sec/anthropic" ]] && source "/etc/nixos/assets/sec/anthropic"
 
 
 # Load FZF configuration
     [[ -f /etc/zsh/fzf-config.sh ]] && source /etc/zsh/fzf-config.sh
       
 # Load colors
-[[ -f /etc/colorEnvExport.sh ]] && source /etc/colorEnvExport.sh
+# [[ -f /etc/colorEnvExport.sh ]] && source /etc/colorEnvExport.sh # wird in enviroment.nix gemacht
 
 # if [[ -f "${pkgs.nix-index}/etc/profile.d/command-not-found.sh"  ]]; then 
 # source "${pkgs.nix-index}/etc/profile.d/command-not-found.sh"
@@ -386,7 +480,7 @@ alias ZRC='Zconf'
  "HIST_VERIFY"          # Do not execute immediately upon history expansian
  "HIST_EXPIRE_DUPS_FIRST"  # Expire duplicate entries first when trimming history.
  "INTERACTIVE_COMMENTS" # Allow comments (#) in interactive shells.
- "INC_APPEND_HISTORY"   # Write to the history file immediately, not when the shell exits.
+ #"INC_APPEND_HISTORY"   # Write to the history file immediately, not when the shell exits.
  "NOTIFY"               # Report immediately when background jobs complete.
  "NOMATCH"              # Print an error if no matches are found for a pattern 
  # "no_global_rcs"	# Prevent global startup files (~/.zshrc, /etc/zshrc, etc.)
@@ -401,7 +495,7 @@ alias ZRC='Zconf'
   
 environment.systemPackages = with pkgs; [
 # ---- --> ZSH <-- ----
-  zsh # Shell
+  zsh # Shell[[ -f /etc/colorEnvExport.sh ]] 
   zsh-autosuggestions # Command line suggestions
   zsh-autocomplete # Autocomplete for Zsh
   zsh-syntax-highlighting # Syntax highlighting
@@ -512,5 +606,8 @@ micro-with-wl-clipboard # Modern and intuitive terminal-based text editor
  gitstats # Generate statistics from Git repositories 
  gitleaks # Scan git repos for secrets	 
  gitlint # Linting for git commit messages
-	 ];
+ zenmap # Offical nmap Security Scanner GUI
+ smap #Drop-in replacement for Nmap powered by shodan.io
+ nmap # Free and open source utility for network discovery and security auditing
+ 	 ];
  }

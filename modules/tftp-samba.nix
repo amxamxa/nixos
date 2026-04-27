@@ -6,13 +6,28 @@
 services.atftpd = {
   enable = true;
 #  root = "/srv/tftp";
+  '';
+})
+
 root = "/home/project/openWRT";
 };
 */
 # Firewall: allow TFTP port
 #networking.firewall.allowedUDPPorts = [ 69 ];
+environment.systemPackages = with pkgs; [
+  gvfs          # GVfs core
+  samba         # SMB client tools (smbclient etc.)
+  avahi
+];
+
+services.gvfs.enable = true;  # GVfs-Daemon aktivieren
 
   services.samba = {
+  /*
+  Share	URL
+share	smb://192.168.0.222/share
+video	smb://192.168.0.222/video
+Da beide Shares guest ok = yes haben → Anmeldung als Gast oder Felder leer lassen.b */
     enable = true;
     package = pkgs.sambaFull; # Statt des minimalen `samba`
     nsswins = true;
@@ -21,8 +36,14 @@ root = "/home/project/openWRT";
       global = {
         workgroup = "WORKGROUP";
       };
+music = {
+        path = "/home/amxamxa/media/music";
+        browseable = "yes";
+        "read only" = "yes";
+        "guest ok" = "yes";
+      };
 
-      videos = {
+      video = {
         path = "/home/video";
         browseable = "yes";
         "read only" = "yes";
@@ -34,7 +55,7 @@ root = "/home/project/openWRT";
   #      "read only" = "no"; # write
   #      "guest ok" = "yes";
   #    };
-       public = {
+       share = {
         path = "/share";
         browseable = "yes";
         "read only" = "no"; # write
@@ -52,15 +73,24 @@ root = "/home/project/openWRT";
   # Avahi für Netzwerk-Discovery aktivieren
   services.avahi = {
     enable = true;
-    nssmdns4 = true; # mDNS-Unterstützung
+    # mDNS-Unterstützung
+    nssmdns4 = true;
     publish = {
       enable = true;
-      workstation = true; # macht PC im lokalen Netzwerk „sichtbar“ als generische Workstation über mDNS/DNS-SD.
+      # macht PC im lokalen Netzwerk „sichtbar“ als generische Workstation über mDNS/DNS-SD.
+      workstation = true;
       domain = true;
-      hinfo = true; # hw,cpu
-      addresses = true; # IP-Adresse veröffentlichen
-      userServices = true; # Nutzerdienste sichtbar machen
-    };
+      # hw,cpu
+      hinfo = true;
+      # IP-Adresse veröffentlichen
+      addresses = true;
+      # Nutzerdienste sichtbar machen
+      userServices = true;     };
   };
+
+
+ # Remove stale PID file before avahi-daemon starts
+systemd.services.avahi-daemon.serviceConfig.ExecStartPre =
+  "${pkgs.coreutils}/bin/rm -f /run/avahi-daemon/pid";
 
 }

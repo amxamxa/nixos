@@ -112,7 +112,11 @@
   # Enable Flatpak support for COSMIC Store
   services.flatpak.enable = true;
  # Add Flathub repository (per user) $ flatpak remote-add --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-
+xdg.portal = {
+  enable = true;
+  extraPortals = [ pkgs.xdg-desktop-portal-cosmic ];
+  configPackages = [ pkgs.cosmic-session ];
+};
  environment.cosmic.excludePackages = with pkgs; [
     cosmic-player # Media player for the COSMIC Desktop Environment
     cosmic-edit # Text Editor
@@ -122,4 +126,3 @@
   ];
 
 }
-

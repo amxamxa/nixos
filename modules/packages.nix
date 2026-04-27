@@ -1,6 +1,25 @@
 # /etc/nixos/modules/packages.nix
-{ config, pkgs, lib, ... }: 
+{ config, pkgs, lib, ... }:
 {
+/*
+  # Aktiviert den ld-Linker-Shim für nicht-nix-Binaries
+  programs.nix-ld.enable = true;
+
+  # Bibliotheken, die oft von externen Binaries benötigt werden
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    fuse3
+    icu
+    nss
+    openssl
+    curl
+    expat
+  unzip
+  ];
+*/
+#  envfs für Skript-Kompatibilität (Shebangs): Fuse filesystem that returns symlinks to executables based on the PATH of the requesting process. This is useful to execute shebangs on NixOS that assume hard coded locations in locations like /bin or /usr/bin etc.
+ # services.envfs.enable = true;
 
 # System-wide application packages
 #--------------------------------
@@ -13,16 +32,21 @@ programs.appimage = {
   enable = true;
   binfmt = true;  # registriert AppImage als ausführbares Format via binfmt_misc
 };
+nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+             "vst2-sdk"         "vivaldi"              "vagrant"
+        "memtest86-efi"        "sublimetext"       "obsidian"
+         "typora"       "decent-sampler"    "claude-code"
+           ];
 
   # to install from unstable-channel, siehe packages.nix
-  nixpkgs.config = {
+  /*nixpkgs.config = {
     allowUnfreePredicate = pkg:
     ##allow unfree
       builtins.elem (lib.getName pkg) [
         "vivaldi"              "vagrant"
         "memtest86-efi"        "sublimetext"
         "obsidian"             "typora"
-        "decent-sampler"        "vst2-sdk"
+        "decent-sampler"
         "kiro"  "claude-code"
       ];
     allowUnfree = false;
@@ -33,10 +57,11 @@ programs.appimage = {
     };
 
   };
-
+*/
   #  Allow InsecurePackages
   nixpkgs.config.permittedInsecurePackages = [
-    #"openssl-1.1.1w" 	    #"gradle-6.9.4" 
+
+    #"openssl-1.1.1w" 	    #"gradle-6.9.4"
     # "electron-25.9.0"     # "dotnet-sdk-7.0.410"
     # "dotnet-runtime-7.0.20"
   ];
@@ -45,22 +70,29 @@ programs.appimage = {
   # ====================================
   # SYSTEM PACKAGES
     environment.systemPackages = with pkgs; [
-        gnome-disk-utility
-    
+ #envfs # Fuse filesystem that returns symlinks to executables based on the PATH of the requesting process
+xdg-user-dirs # Tool to help manage well known user directories like the desktop folder and the music folder
+   gnome-disk-utility
+#bun #Incredibly fast JavaScript runtime, bundler, transpiler and package manager – all in one
+# cope # Colourful wrapper for terminal programs
+# pingu # Ping command implementation in Go but with colorful output and pingu ascii art
 # kiro-fhs # Wrapped variant of kiro which launches in a FHS compatible environment, should allow for easy usage of extensions without nix-specific modifications
   webfont-bundler # Create @font-face kits easily
 font-manager # Simple font management for GTK desktop environments
-texlivePackages.missaali # A late medieval OpenType textura font
-dinish # Modern computer font inspired by DIN 1451
-texlivePackages.yfonts-otf # OpenType version of the Old German fonts
-
+#texlivePackages.missaali # A late medieval OpenType textura font
+#dinish # Modern computer font inspired by DIN 1451
+#texlivePackages.yfonts-otf # OpenType version of the Old German fonts
+pinta # Drawing/editing program modeled after Paint.NET
+krita # Free and open source painting application
+krita-plugin-gmic # GMic plugin for Krita
+swappy # Wayland native snapshot editing tool, inspired by Snappy on macOS
     # ──────────────────────────────────────────────
     # WAYLAND & COMPOSITOR TOOLS
        wlr-which-key              # Keymap manager for wlroots compositors
     ydotool                    # Generic automation tool for Wayland
     # ───────────────────────────────────────────
     # CORE SYSTEM UTILITIES
-        
+
     # System Information & Diagnostics
     dmidecode                  # Hardware info via SMBIOS/DMI
     efibootmgr                 # EFI boot manager utility
@@ -71,20 +103,20 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     file                       # File type identification
     inxi                       # Comprehensive system info tool
     lshw                       # Detailed hardware lister
-    
+
     # Process & Resource Monitoring
     btop                       # Modern resource monitor (htop replacement)
     htop                       # Interactive process viewer
     bottom                     # Alternative system monitor
     procs                      # Modern ps replacement
     libgtop                    # Multi-core system monitor library
-    
+
     # Disk Usage Analysis
     duf                        # Modern df with better output
     dust                       # More intuitive du
     baobab                     # Graphical disk usage analyzer (GNOME)
     # Note: ncdu is in zsh.nix as it's primarily a CLI tool
-    
+
     # Logging & System Management
     logrotate                  # Log rotation utility
     coreutils                  # GNU core utilities
@@ -92,7 +124,7 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
 
     # ──────────────────────────────────────────
     # BOOTLOADER & RECOVERY
-    
+
     grub2                      # GRUB bootloader
     memtest86-efi             # Memory testing tool
     os-prober                  # Detect other operating systems
@@ -120,7 +152,7 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     wirelesstools             # Wireless interface tools (iwconfig, etc.)
     hidapi                     # USB/Bluetooth HID device library
     ntfs3g                     # FUSE-based NTFS driver
-    
+
     # Network Tools
     curl                       # Data transfer tool
     wget                       # Network downloader
@@ -153,7 +185,7 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     sd                         # Intuitive sed alternative
     tokei                      # Code line counter
     hyperfine                  # Command-line benchmarking
-    
+
     # Shell & Script Tools
     shellcheck                 # Shell script analyzer
     shunit2                    # Bash unit testing framework
@@ -181,7 +213,7 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
 
     # ─────────────────────────
     # TERMINAL VISUALIZATION & COLORS
-    # ─────────────────────────   
+    # ─────────────────────────
     # Color Tools
     colordiff                  # Colored diff
     lscolors                   # Colorize ls output
@@ -220,7 +252,7 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     asciinema-scenario        # Create asciinema from text
     asciinema-agg             # Generate GIFs from asciinema
     agg                       # Rendering engine
-    
+
     losslesscut-bin           # Lossless video/audio editor
 
     # ─────────────────────────
@@ -309,13 +341,14 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     pix
     # shotwell                   # Photo organizer
     evince                     # Document viewer
-    flameshot                  # Screenshot tool
+    # flameshot                  # Screenshot tool
     vlc                        # Media player (from audio.nix functionality)
-    
+    libmicrodns         # Minimal mDNS resolver library, used by VLC
+
     # Web Browsers
     firefox                    # Web browser
     w3m                        # Terminal browser
-    
+
     # Educational
     tuxpaint                   # Drawing software for children
     gcompris                   # Educational software
@@ -335,7 +368,7 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     themechanger              # Theme switching utility
     pay-respects              # Command correction (thefuck alternative)
     calligraphy               # ASCII banners from text
-    
+
     # Wallpapers
     adapta-backgrounds        # Wallpaper collection
 
@@ -359,25 +392,25 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
     # Miscellaneous
     linux-firmware            # Firmware files
     pay-respects              # Command correction utility
-     
+
     #dev
-    codex # Lightweight coding agent that runs in your terminal
-    claude-code # Agentic coding tool that lives in your terminal
-    mistralclient # OpenStack Mistral Command-line Client
+#    codex # Lightweight coding agent that runs in your terminal
+ #   claude-code # Agentic coding tool that lives in your terminal
+  #  mistralclient # OpenStack Mistral Command-line Client
     #helix # Post-modern modal text editor
     #helix-gpt # Code completion LSP for Helix with support for Copilot + OpenAI
     # ─────────────────────────
-    
+
     # UNSTABLE CHANNEL PACKAGES
     # Packages from nixos-unstable for newer versions
     # ─────────────────────────
-    unstable.yt-dlp           # YouTube downloader
+  #  unstable.yt-dlp           # YouTube downloader
   ];
 
   # ============================================================================
   # PACKAGE NOTES
   # ============================================================================
-  # 
+  #
   # REMOVED (moved to zsh.nix):
   # - All zsh-* packages
   # - Shell tools: fzf, bat, zoxide, eza, lsd
@@ -402,18 +435,18 @@ texlivePackages.yfonts-otf # OpenType version of the Old German fonts
   # - Web development frameworks
 
     ## tshoot: /run/current-system/sw/share/icons
-    
+
 
 /*----------........ .__  ......... .___  ------- ___
   ____ ___  ___ ____ |  |  __ __  __| _/____   __| _/
-_/ __ \\  \/  // ___\|  | |  |  \/ __ |/ __ \ / __ | 
-\  ___/ >    <\  \___|  |_|  |  / /_/ \  ___// /_/ | 
- \___  >__/\_ \\___  >____/____/\____ |\___  >____ | 
-------\/ ---- \/ ----\/-------------- \/ -- \/ ---\/ 
-            .oPYo. 8  .o  .oPYo. .oPYo. 
-            8    8 8oP'   8    8 Yb..   
-EXCLUDED    8    8 8 `b.  8    8   'Yb. 
-PACKAGES    8YooP' 8  `o. `YooP8 `YooP' 
+_/ __ \\  \/  // ___\|  | |  |  \/ __ |/ __ \ / __ |
+\  ___/ >    <\  \___|  |_|  |  / /_/ \  ___// /_/ |
+ \___  >__/\_ \\___  >____/____/\____ |\___  >____ |
+------\/ ---- \/ ----\/-------------- \/ -- \/ ---\/
+            .oPYo. 8  .o  .oPYo. .oPYo.
+            8    8 8oP'   8    8 Yb..
+EXCLUDED    8    8 8 `b.  8    8   'Yb.
+PACKAGES    8YooP' 8  `o. `YooP8 `YooP'
 :::.........8 ....:..::......8 :.....::.....:::::::::
  ::.........8 ::::::::::: :ooP'.::::::::::...::::::: */
 # Remove unwanted packages that come with desktop environments
@@ -443,6 +476,5 @@ PACKAGES    8YooP' 8  `o. `YooP8 `YooP' 
     pkgs.gnome.cheese
   ];
 # environment.cosmic.excludePackages = with pkgs; --> cosmic.nix
- 
-}
 
+}
