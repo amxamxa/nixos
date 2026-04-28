@@ -18,58 +18,84 @@ environment.systemPackages = with pkgs; [
   gvfs          # GVfs core
   samba         # SMB client tools (smbclient etc.)
   avahi
+  wsdd
 ];
 
 services.gvfs.enable = true;  # GVfs-Daemon aktivieren
-
-  services.samba = {
-  /*
+ /*
   Share	URL
 share	smb://192.168.0.222/share
 video	smb://192.168.0.222/video
-Da beide Shares guest ok = yes haben → Anmeldung als Gast oder Felder leer lassen.b */
-    enable = true;
-    package = pkgs.sambaFull; # Statt des minimalen `samba`
-    nsswins = true;
+Da beide Shares guest ok = yes haben → Anmeldung als Gast oder leer */
 
+  services.samba = {
+    enable = true;
+    package = pkgs.sambaFull;
+    nsswins = true;
     settings = {
       global = {
         workgroup = "WORKGROUP";
+        "map to guest" = "Bad User";
+        "guest account" = "nobody";
+        "server string" = "NixOS Samba Server";
+        "netbios name" = "nixos-samba";
+        security = "user";
       };
-music = {
-        path = "/home/amxamxa/media/music";
+      share = {
+        path = "/share";
         browseable = "yes";
-        "read only" = "yes";
+        "read only" = "no";
         "guest ok" = "yes";
+        "create mask" = "0666";
+        "directory mask" = "0777";
+        "force user" = "sambaguest";  # Optional, aber empfohlen
+      };
+      music = {
+        path = "      /home/amxamxa/media/music";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "yes";
+        "create mask" = "0666";
+        "directory mask" = "0777";
+        "force user" = "sambaguest";  # Optional, aber empfohlen
       };
 
+      
       video = {
         path = "/home/video";
         browseable = "yes";
-        "read only" = "yes";
+        "read only" = "no";
         "guest ok" = "yes";
-      };
-  #     share = {
-  #      path = "/share";
-  #      browseable = "yes";
-  #      "read only" = "no"; # write
-  #      "guest ok" = "yes";
-  #    };
-       share = {
-        path = "/share";
-        browseable = "yes";
-        "read only" = "no"; # write
-        "guest ok" = "yes";
+        "create mask" = "0666";
+        "directory mask" = "0777";
+        "force user" = "sambaguest";  # Optional, aber empfohlen
       };
     };
   };
-  services.samba-wsdd.enable = true;
 
-  # If you enable the firewall, allow Samba ports:
-   #networking.firewall.allowedTCPPorts = [ 139 445 ];
-   #networking.firewall.allowedUDPPorts = [ 137 138 ];
+# gruppe anlegen  
+    users.groups.sambaguest = {};
 
+services.samba-wsdd = {
+enable = true;
+discovery = true;
 
+};
+
+# Eigener Gast-Benutzer und Gruppe
+  users.users.sambaguest = {
+    isSystemUser = true;
+    group = "sambaguest";
+    home = "/share";
+    createHome = true;
+    shell = "/sbin/nologin";
+  };
+
+  # Verzeichnis deklarativ anlegen
+  systemd.tmpfiles.rules = [
+    "d /share 0777 sambaguest sambaguest - -"
+  ];
+  
   # Avahi für Netzwerk-Discovery aktivieren
   services.avahi = {
     enable = true;

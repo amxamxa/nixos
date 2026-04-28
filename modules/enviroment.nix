@@ -54,9 +54,9 @@
     PAGER = "${pkgs.less}/bin/less -R";
 #    MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat --paging=always --style=changes -l man'";
 
-    MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat --paging=auto --style=changes -l man'";
+    MANPAGER = "sh -c 'col -bx | ${pkgs.bat}/bin/bat --paging=never --style=changes -l man'";
     MANROFFOPT="-c";
-    MANWIDTH="60";
+    MANWIDTH="80";
     BROWSWER="${pkgs.firefox}/bin/firefox";
 
   # Default applications
@@ -64,8 +64,6 @@
     # Static configuration values
     # Keep LESS options on one line to avoid stray control chars in the env value.
     LESS="--RAW-CONTROL-CHARS --long-prompt --squeeze-blank --QUIT-AT-EOF --quit-if-one-screen --quit-on-intr --status-column --quiet --ignore-case --mouse --use-color -Dd+r -Du+b";
-
-
 
     NIX_INDEX_DATABASE = "/share/nix-index";
 

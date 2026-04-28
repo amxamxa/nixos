@@ -7,6 +7,8 @@ channel probs:
 ❯ sudo nix-channel --list
 ❯ sudo nix-channel --add https://nixos.org/channels/nixos-25.11 nixos
 ❯ sudo nix-channel --update
+# ohne www
+❯ sudo nixos-rebuild switch --profile-name xam4boom  --option substitute false
 */
 {
   imports = [ # Include the results of the hardware scan.
@@ -33,9 +35,6 @@ channel probs:
     ./modules/read-only/tuxpaint.nix
 
   ];
-#-p, --priority: (1 aus:) emerg, alert, crit, err, warning, notice, info, debug , or #a value between 0 and 7
-#-t, --identifier: (STRING) eindeutiger Identifier (Tag), als Filter
-#-u, --unit:  Verknüpft die Nachricht mit einer bestimmten systemd-Unit.
 
 nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
              "vst2-sdk"
@@ -82,15 +81,16 @@ nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
   };
   boot.tmp.cleanOnBoot = true; # Wipe /tmp on boot.
   boot.supportedFilesystems = [ "ntfs" ];
- 
+
  # Balanciert Hardware-Interrupts dynamisch über alle 4 Kerne
   services.irqbalance.enable = true;
-  
+
   # Entlastung des Schreib-I/O: Durch das Verschieben des `/tmp`-Verzeichnisses in den   Arbeitsspeicher (RAM) werden unnötige Schreibzugriffe auf die SSD und CPU-Interrupts durch den I/O-Controller reduziert:
   boot.tmp.useTmpfs = true;
   boot.tmp.tmpfsSize = "2G";
 
   # Enable networking
+  networking.enableIPv6 = false;
   networking.networkmanager.enable = true;
   networking.usePredictableInterfaceNames = false; # eth0 statt ensp0
   networking.hostName = "localhorst"; # Offiziell reservierte Domains (RFC 6761)
@@ -104,7 +104,7 @@ nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
 
   #   Use services.logind.settings.Login instead.  # services.logind.extraConfig = ''     	HandlePowerKey = poweroff;    	HandlePowerKeyLongPress = reboot;	'';
 
- 
+
   # Speicheroptimierung für ältere SSDs/HDDs
   services.fstrim.enable = true; # Wichtig für die Langlebigkeit alter SSDs
   security.polkit.enable =
@@ -237,7 +237,7 @@ system.copySystemConfiguration = true;   # Copy configuration.nix into the nix s
    SP          SP   SP
  ============================================================
     '';
- 
+
   # Enable CUPS to print documents.
   services.printing.enable = false;
   # Enable touchpad support (enabled default in most desktopManager)

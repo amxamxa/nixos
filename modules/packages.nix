@@ -19,7 +19,7 @@
   ];
 */
 #  envfs für Skript-Kompatibilität (Shebangs): Fuse filesystem that returns symlinks to executables based on the PATH of the requesting process. This is useful to execute shebangs on NixOS that assume hard coded locations in locations like /bin or /usr/bin etc.
- # services.envfs.enable = true;
+ services.envfs.enable = true;
 
 # System-wide application packages
 #--------------------------------
@@ -70,8 +70,10 @@ nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
   # ====================================
   # SYSTEM PACKAGES
     environment.systemPackages = with pkgs; [
+    
     dig.dnsutils
- #envfs # Fuse filesystem that returns symlinks to executables based on the PATH of the requesting process
+    
+ envfs # Fuse filesystem that returns symlinks to executables based on the PATH of the requesting process
 xdg-user-dirs # Tool to help manage well known user directories like the desktop folder and the music folder
    gnome-disk-utility
 #bun #Incredibly fast JavaScript runtime, bundler, transpiler and package manager – all in one
