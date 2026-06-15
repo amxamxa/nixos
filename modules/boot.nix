@@ -7,7 +7,7 @@
   hardware.firmware = with pkgs; [ linux-firmware ];
 
   boot.consoleLogLevel = 4;
-  boot.initrd.verbose = true;
+  boot.initrd.verbose = false;
 
   boot.kernel.sysctl = {
     "kernel.sysrq" = 1;
@@ -40,10 +40,15 @@
 
     "zswap.enabled=1"
     # Intel graphics (integrierte GPU)
-    "i915.enable_fbc=1" # Framebuffer compression
-    "i915.enable_psr=0" # Panel Self Refresh (oft buggy bei Ivy Bridge)
-    "i915.fastboot=1" # Faster boot for Intel GPU
+    #Frame Buffer Compression – bekannte Display-Korruption
+    #"i915.enable_fbc=1" # Framebuffer compression
+    # Panel Self Refresh – Bildschirm-Flickering
+    #"i915.enable_psr=0" # Panel Self Refresh (oft buggy bei Ivy Bridge)
+    #"i915.fastboot=1" # Faster boot for Intel GPU
   ];
+
+# Blacklist gpio_ich – not used on desktop, eliminates lpc_ich conflict warning
+  boot.blacklistedKernelModules = [ "gpio_ich" ];
 
   boot.tmp.cleanOnBoot = true;
   #################################################

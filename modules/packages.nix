@@ -1,7 +1,7 @@
 # /etc/nixos/modules/packages.nix
 { config, pkgs, lib, ... }:
 {
-/*
+
   # Aktiviert den ld-Linker-Shim für nicht-nix-Binaries
   programs.nix-ld.enable = true;
 
@@ -17,7 +17,7 @@
     expat
   unzip
   ];
-*/
+
 #  envfs für Skript-Kompatibilität (Shebangs): Fuse filesystem that returns symlinks to executables based on the PATH of the requesting process. This is useful to execute shebangs on NixOS that assume hard coded locations in locations like /bin or /usr/bin etc.
  services.envfs.enable = true;
 
@@ -33,7 +33,7 @@ programs.appimage = {
   binfmt = true;  # registriert AppImage als ausführbares Format via binfmt_misc
 };
 nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-             "vst2-sdk"         "vivaldi"              "vagrant"
+        "vst2-sdk"         "vivaldi"              "vagrant"
         "memtest86-efi"        "sublimetext"       "obsidian"
          "typora"       "decent-sampler"    "claude-code"
            ];
@@ -60,20 +60,133 @@ nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
 */
   #  Allow InsecurePackages
   nixpkgs.config.permittedInsecurePackages = [
-
     #"openssl-1.1.1w" 	    #"gradle-6.9.4"
     # "electron-25.9.0"     # "dotnet-sdk-7.0.410"
     # "dotnet-runtime-7.0.20"
   ];
+# Aktiviert das D-Bus Messaging-System
+services.dbus = {
+  enable = true;
+  packages = [
+    pkgs.nemo   # Nemo D-Bus service activation files
+    pkgs.gvfs            # Virtual filesystem D-Bus interface
+    pkgs.udisks2         # Block device management via D-Bus
+    pkgs.gcr_4           # GNOME crypto/keyring D-Bus services (polkit prompts)
+  ];
+};
+# Verify D-Bus services:
+# dbus-send --print-reply --dest=org.freedesktop.DBus \
+#   /org/freedesktop/DBus org.freedesktop.DBus.ListNames \
+#   | grep -E "tumbler|gvfs|udisks|nemo"
+
+services.gvfs.enable   = true;  # MTP, SMB, Trash access for Nemo
+services.udisks2.enable = true; # Auto-mount & device management
+services.tumbler.enable = true; # Thumbnail generation via D-Bus
+# Prüfen, ob der Tumbler-Dienst über D-Bus erreichbar ist
+# dbus-send --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus.ListNames | grep tumbler
+   
+           
+# XDG MIME Default Applications
+# ==============================================================
+
+xdg.mime.enable = true;
+xdg.mime.defaultApplications = {
+# TEST:
+# xdg-mime query default application/zip
+# xdg-mime query default application/pdf
+# xdg-mime query default x-scheme-handler/https
+# xdg-mime query default inode/directory
+  # --- File Manager: Nemo ---
+  "inode/directory"                = "nemo.desktop";
+  "application/x-gnome-saved-search" = "nemo.desktop";
+  "x-scheme-handler/file"         = "nemo.desktop";
+  "x-scheme-handler/trash"        = "nemo.desktop";
+
+  # --- Browser: Firefox ---
+  "x-scheme-handler/http"         = "firefox.desktop";
+  "x-scheme-handler/https"        = "firefox.desktop";
+  "text/html"                     = "firefox.desktop";
+  "application/xhtml+xml"         = "firefox.desktop";
+
+  # --- Mail: Gmail via Firefox ---
+  # Post-install: Firefox → Einstellungen → Allgemein → Anwendungen
+  # → mailto → "Gmail verwenden" setzen
+  "x-scheme-handler/mailto"       = "firefox.desktop";
+
+  # --- Terminal: Kitty ---
+  "x-scheme-handler/terminal"     = "kitty.desktop";
+
+  # --- Code / Text Editor: GNOME Text Editor ---
+  "x-scheme-handler/code"         = "org.gnome.TextEditor.desktop";
+  "text/plain"                    = "org.gnome.TextEditor.desktop";
+  "text/x-python"                 = "org.gnome.TextEditor.desktop";
+  "text/x-chdr"                   = "org.gnome.TextEditor.desktop";
+  "text/x-csrc"                   = "org.gnome.TextEditor.desktop";
+  "application/x-zerosize"        = "org.gnome.TextEditor.desktop"; # Empty files
+
+  # --- Shell Scripts: micro ---
+  "application/x-shellscript"     = "micro.desktop";
+  "application/x-sh"              = "micro.desktop";
+  "text/x-shellscript"            = "micro.desktop";
+
+  # --- Markdown: Typora ---
+  "text/markdown"                 = "typora.desktop";
+  "text/x-markdown"               = "typora.desktop";
+
+  # --- PDF: pdf-arranger ---
+  "application/pdf"               = "pdf-arranger.desktop";
+  "application/x-pdf"             = "pdf-arranger.desktop";
+
+  # --- Images: Pix ---
+  "image/jpeg"                    = "pix.desktop";
+  "image/png"                     = "pix.desktop";
+  "image/gif"                     = "pix.desktop";
+  "image/webp"                    = "pix.desktop";
+  "image/tiff"                    = "pix.desktop";
+  "image/x-tga"                   = "pix.desktop";
+  "image/bmp"                     = "pix.desktop";
+  "image/svg+xml"                 = "pix.desktop";
+  "image/vnd.adobe.photoshop"     = "pix.desktop";
+
+  # --- Archives: file-roller ---
+  # Alternative: "xarchiver.desktop" (leichtgewichtiger, kein GNOME-Stack)
+  "application/zip"               = "org.gnome.FileRoller.desktop";
+  "application/x-tar"             = "org.gnome.FileRoller.desktop";
+  "application/x-compressed-tar" = "org.gnome.FileRoller.desktop";
+  "application/gzip"              = "org.gnome.FileRoller.desktop";
+  "application/x-bzip2"          = "org.gnome.FileRoller.desktop";
+  "application/x-xz"             = "org.gnome.FileRoller.desktop";
+  "application/x-7z-compressed"  = "org.gnome.FileRoller.desktop";
+  "application/x-rar"            = "org.gnome.FileRoller.desktop";
+  "application/x-rar-compressed" = "org.gnome.FileRoller.desktop";
+  "application/x-zstd-compressed-tar" = "org.gnome.FileRoller.desktop";
+};
 
 
-  # ====================================
-  # SYSTEM PACKAGES
-    environment.systemPackages = with pkgs; [
-    
+# Damit Nemo-Dialoge (z. B. "Datei öffnen") in anderen Apps konsistent erscheinen:
+  xdg.portal = {
+  enable = true;
+  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+};
+# ==========================
+# SYSTEM PACKAGES
+environment.systemPackages = with pkgs; [
+    parted
+    xfce.xfburn
+    marker
+    mov-cli #Cli tool to browse and watch movies
+    mpv
+python313Packages.lxml # Pythonic binding for the libxml2 and libxslt libraries
+ psmisc # Set of small useful utilities that use the proc filesystem (such as fuser, killall and pstree)
+lsof # Tool to list open files
+procfd # Linux lsof replacement to list open file descriptors for processes
+wl-clipboard # Command-line copy/paste utilities for Wayland
+        opencode #    AI coding agent built for the terminal
+        busybox # Tiny versions of common UNIX utilities in a single small executable
+drawing
+ventoy-full
     dig.dnsutils
-    
- envfs # Fuse filesystem that returns symlinks to executables based on the PATH of the requesting process
+envfs # Fuse filesystem that returns symlinks to executables based on the PATH of the requesting process
 xdg-user-dirs # Tool to help manage well known user directories like the desktop folder and the music folder
    gnome-disk-utility
 #bun #Incredibly fast JavaScript runtime, bundler, transpiler and package manager – all in one
@@ -86,12 +199,13 @@ font-manager # Simple font management for GTK desktop environments
 #dinish # Modern computer font inspired by DIN 1451
 #texlivePackages.yfonts-otf # OpenType version of the Old German fonts
 pinta # Drawing/editing program modeled after Paint.NET
-krita # Free and open source painting application
-krita-plugin-gmic # GMic plugin for Krita
+# krita # Free and open source painting application
+# krita-plugin-gmic # GMic plugin for Krita
 swappy # Wayland native snapshot editing tool, inspired by Snappy on macOS
+whipper # CD ripper aiming for accuracy over speed
     # ──────────────────────────────────────────────
     # WAYLAND & COMPOSITOR TOOLS
-       wlr-which-key              # Keymap manager for wlroots compositors
+    wlr-which-key              # Keymap manager for wlroots compositors
     ydotool                    # Generic automation tool for Wayland
     # ───────────────────────────────────────────
     # CORE SYSTEM UTILITIES
@@ -127,8 +241,7 @@ swappy # Wayland native snapshot editing tool, inspired by Snappy on macOS
 
     # ──────────────────────────────────────────
     # BOOTLOADER & RECOVERY
-
-    grub2                      # GRUB bootloader
+   # grub2                      # GRUB bootloader
     memtest86-efi             # Memory testing tool
     os-prober                  # Detect other operating systems
     nixos-grub2-theme         # NixOS GRUB theme
@@ -256,11 +369,13 @@ swappy # Wayland native snapshot editing tool, inspired by Snappy on macOS
     asciinema-agg             # Generate GIFs from asciinema
     agg                       # Rendering engine
 
-    losslesscut-bin           # Lossless video/audio editor
 
     # ─────────────────────────
     # GRAPHICS & VISUALIZATION
     # ─────────────────────────
+    gdk-pixbuf   # Standard für Bildformate
+    librsvg      # Unterstützung für SVG-Grafiken
+    libheif # ISO/IEC 23008-12:2017 HEIF image file format decoder and encoder for HEIC/AVIF
     libsixel                   # Console graphics library
     libpng                     # PNG library
     libavif                    # AVIF image library
@@ -275,7 +390,9 @@ swappy # Wayland native snapshot editing tool, inspired by Snappy on macOS
     gcolor3                    # GTK color picker
     graphviz                   # Graph visualization
     imagemagick               # Image manipulation
-    drawing                    # Basic image editor
+    evince       # Thumbnails für PDF-Dateien
+    ffmpegthumbnailer # Schnelle Vorschaubilder für Videoformate
+    totem        # Alternative für Video-Metadaten
 
     # ─────────────────────────
     # DOCUMENT PROCESSING
@@ -329,7 +446,7 @@ swappy # Wayland native snapshot editing tool, inspired by Snappy on macOS
     # ─────────────────────────
     # FILE MANAGERS & INTEGRATION
     nemo                      # Cinnamon file manager
-    nemo-qml-plugin-dbus      # D-Bus integration
+   # IRRELEVANT: nemo-qml-plugin-dbus   
     nemo-emblems              # File emblems
     folder-color-switcher     # Change folder colors
     nemo-fileroller           # Archive integration
@@ -338,10 +455,13 @@ swappy # Wayland native snapshot editing tool, inspired by Snappy on macOS
     # DESKTOP APPLICATIONS
     # Office & Productivity
     libreoffice               # Office suite
+    
     # Media
     lolcat
     pixd # a tool for visualizing binary data
     pix
+    losslesscut-bin           # Lossless video/audio editor
+
     # shotwell                   # Photo organizer
     evince                     # Document viewer
     # flameshot                  # Screenshot tool
@@ -368,7 +488,7 @@ swappy # Wayland native snapshot editing tool, inspired by Snappy on macOS
     # ─────────────────────────
     # THEMING & APPEARANCE
     # ─────────────────────────
-    themechanger              # Theme switching utility
+    # themechanger # not for COSMIC             # Theme switching utility
     pay-respects              # Command correction (thefuck alternative)
     calligraphy               # ASCII banners from text
 
@@ -456,10 +576,10 @@ PACKAGES    8YooP' 8  `o. `YooP8 `YooP'
 ## Packages die im Standartd der jeweiligen WM inkludiert sind, abwählen, per:
   environment.cinnamon.excludePackages = [
     pkgs.onboard
-    pkgs.cinnamon.mint-x-icons
-    pkgs.cinnamon.mint-l-theme
-    pkgs.cinnamon.mint-l-icons
-    pkgs.cinnamon.xreader
+#    pkgs.cinnamon.mint-x-icons
+#    pkgs.cinnamon.mint-l-theme
+#   pkgs.cinnamon.mint-l-icons
+#    pkgs.cinnamon.xreader
   ];
   environment.xfce.excludePackages = [
     pkgs.xfce.mousepad

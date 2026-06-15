@@ -23,6 +23,7 @@
   	gid = 1001;  # Festgelegte GID für die Gruppe "mxx"
   	members = [ "amxamxa" "l33" ];  # Gruppenmitglieder
   };
+  
   # Disable mutable users (all user management via configuration.nix)
   users.mutableUsers = false;
  # Wenn true, können "useradd" und "groupadd"-Befehle verwendet werden

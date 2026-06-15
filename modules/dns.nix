@@ -5,7 +5,14 @@
 # Bypasses router DNS on port 53 entirely, uses encrypted port 853.
 { config, pkgs, lib, ... }:
 {
+# nsncd: Could not parse service request, request_type: GETSERVBYNAME
+# Bekannter Bug in nsncd – tritt auf wenn Anwendungen (hier: Firefox beim Starten) bestimmte NSS-Service-Lookups machen. Workaround: 
+services.nscd.enable = false;
+system.nssModules = pkgs.lib.mkForce [];
 
+  # Deaktivierung IPv6: lokale Netzwerk IPv4. Deaktivierung -> Overhead des Netzwerk-Stacks sinkt
+  boot.kernel.sysctl."net.ipv6.conf.all.disable_ipv6" = 1;
+  boot.kernel.sysctl."net.ipv6.conf.default.disable_ipv6" = 1;
   
   networking = {
   useDHCP = false;
@@ -46,11 +53,15 @@ services.resolved = {
   dnssec        = "allow-downgrade";
   dnsovertls    = "opportunistic";
   domains       = [ "~." ];
-  extraConfig   = ''
-    DNS=5.9.164.112#digitalcourage.de
-    FallbackDNS=46.182.19.48#dns2.digitalcourage.de
-  '';
-};
+  
+  # settings maps to /etc/systemd/resolved.conf INI sections
+  settings = {
+    Resolve = {
+      DNS        = "5.9.164.112#digitalcourage.de";
+      FallbackDNS = "46.182.19.48#dns2.digitalcourage.de";
+    };
+  };
+ };
   # resolved creates /etc/resolv.conf as symlink to its stub:
   # /etc/resolv.conf -> /run/systemd/resolve/stub-resolv.conf
   # stub listens on 127.0.0.53:53 locally

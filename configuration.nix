@@ -1,52 +1,61 @@
 { config, pkgs, lib, ... }:
 ## nix-env -qaP '*' --description # You can get a list of the available packages as follows:
-# lsblk -f --topology --ascii --all --list
-# setxkbmap -query -v
+
 /*
+❯ sudo nixos-rebuild boot --show-trace --upgrade --profile-name "xam4noob" -I nixos-config=/etc/nixos/configuration.nix 
+# ohne www
+❯ sudo nixos-rebuild switch --profile-name xam4boom  --option substitute false
+
+# setxkbmap -query -v
 channel probs:
 ❯ sudo nix-channel --list
 ❯ sudo nix-channel --add https://nixos.org/channels/nixos-25.11 nixos
 ❯ sudo nix-channel --update
-# ohne www
-❯ sudo nixos-rebuild switch --profile-name xam4boom  --option substitute false
 */
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/boot.nix # grub2 & lightDM
-    ./modules/enviroment.nix # ENV
+     ./modules/dns.nix #
+      ./modules/enviroment.nix # ENV
     ./modules/user-n-permissions.nix
     ./modules/cosmic.nix # Display/Window-Mgr
+  #  ./modules/cinnamon.nix
     ./modules/packages.nix # env.pkgs
-    ./modules/audio.nix
-    ./modules/fonts.nix
-#    ./modules/logs.nix
+    ./modules/audio2.nix
     ./modules/zsh.nix # shell
-#    ./modules/bash.nix # shell
     ./modules/aliases.nix
-#    ./modules/rust.nix #
+    ./modules/eza-aliases.nix 
+    ./modules/functions.nix
+#   ./modules/bash.nix # shell
+#   ./modules/rust.nix #
+    ./modules/fonts.nix
+    ./modules/logs.nix
     ./modules/treefmt.nix #
-     ./modules/dns.nix #
     #   ./modules/python.nix # ehem.	./ld.nix
     #./modules/docker.nix
 #       ./modules/npm.nix
-        ./modules/tftp-samba.nix
+   #./modules/nfs.nix
+    #./modules/tftp-samba.nix
+    ./modules/webdav.nix
     ./modules/read-only/adBloxx.nix # ehem. ./AdBloxx.nix
     ./modules/read-only/tuxpaint.nix
-
   ];
 
+nixpkgs.config.permittedInsecurePackages = [
+                "ventoy-1.1.12"
+              ];
+
 nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-             "vst2-sdk"
-                "vivaldi"              "vagrant"
-        "memtest86-efi"        "sublimetext"
-        "obsidian"             "typora"
+        "ventoy"             "vst2-sdk"
+        "vivaldi"             "vagrant"
+        "memtest86-efi"       "sublimetext"
+        "obsidian"            "typora"
         "decent-sampler"
-        # "kiro"
-        "claude-code"
+        # "kiro"        "claude-code"
            ];
 # SSD 21 GB
-  fileSystems."/public" = {
+  fileSystems."/share" = {
     device = "/dev/disk/by-uuid/6dd1854a-047e-4f08-9ca1-ca05c25d03af";
     fsType = "btrfs";
   };
@@ -70,9 +79,6 @@ nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
       zramSwap.enable = true;
       zramSwap.memoryPercent = 25;
 
-  # Deaktivierung IPv6: lokale Netzwerk IPv4. Deaktivierung -> Overhead des Netzwerk-Stacks sinkt
-  boot.kernel.sysctl."net.ipv6.conf.all.disable_ipv6" = 1;
-  boot.kernel.sysctl."net.ipv6.conf.default.disable_ipv6" = 1;
   # RFS (Receive Flow Steering) - Globale Kernel-Einstellungen
   boot.kernel.sysctl = {
     # Maximale Anzahl an gleichzeitig verfolgten Flows (Sonden)
@@ -94,15 +100,22 @@ nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
   networking.networkmanager.enable = true;
   networking.usePredictableInterfaceNames = false; # eth0 statt ensp0
   networking.hostName = "localhorst"; # Offiziell reservierte Domains (RFC 6761)
-#
   networking.networkmanager.settings.connectivity.uri =
     "http://nmcheck.gnome.org/check_network_status.txt";
 
  # to support certain USB WLAN and WWAN adapters.  These network adapters initial present themselves as Flash Drives containing their drivers. This option enables automatic switching to the networking mode
   hardware.usb-modeswitch.enable =
-    false;
-
-  #   Use services.logind.settings.Login instead.  # services.logind.extraConfig = ''     	HandlePowerKey = poweroff;    	HandlePowerKeyLongPress = reboot;	'';
+    true;
+ /* error:
+       Failed assertions:
+       - The option definition `services.logind.extraConfig' in `/etc/nixos/configuration.nix' no longer has any effect; please remove it.
+       Use services.logind.settings.Login instead. 
+  #   Use services.logind.settings.Login instead.  # 
+   services.logind.extraConfig = ''
+        HandlePowerKey = poweroff;       
+        HandlePowerKeyLongPress = reboot;
+        '';
+        */
 
 
   # Speicheroptimierung für ältere SSDs/HDDs
@@ -112,15 +125,14 @@ nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
   services.udisks2.enable =
     true; # Daemon, der Festplatten, USB-Sticks, SD-Karten und andere Wechselmedien verwaltet  Enable automount for removable media
   services.fwupd.enable = true;
-  gtk.iconCache.enable =
-    true; # Improve GTK icon cache generation to ensure immediate visibility
 
-  services.gvfs.enable = true;
   services.upower.enable = lib.mkForce
     false; # Daemon, der Informationen über die Energieversorgung sammelt und bereitstellt. Für Akku-Betrieb
   services.power-profiles-daemon.enable = lib.mkForce false;
   services.tlp.enable = lib.mkForce
     true; # Energieoptimierung, CPU-freq, Aktivitäts-Timeouts für Festplatten und USB-Ports
+gtk.iconCache.enable =
+    true; # Improve GTK icon cache generation to ensure immediate visibility
 
   hardware.ksm.enable =
     true; # Aktiviert den Kernel Samepage Merging (KSM)-Dienst, durchsucht den RAM nach identischen Speicherseiten (Pages), spart Speicher, aber CPU-Last. Für Virtualisierungsumgebungen mit  ähnlichen VMs ... oder redundanten Speicher alloziere
@@ -267,21 +279,6 @@ system.copySystemConfiguration = true;   # Copy configuration.nix into the nix s
   #allowedUDPPorts = [ 42000 ];
   #};
 
-  /* # Enable the Flatpak
-       services.flatpak.enable = true;
-       # Enable xdg-desktop-portal for better integration with Flatpak
-       xdg.portal = {
-         enable = true;
-         extraPortals = [
-           	pkgs.xdg-desktop-portal-gtk  # integrasion for sandbox app, Ensures GTK support for XFCE, xdg-desktop-port
-         	pkgs.xdg-desktop-portal-xapp # integration for XFCE, ..
-         ];
-       };
-      #xdg-desktop-portal-gtk -6˚
-     	# -> flatpak.github.io/xdg-desktop-portal/
-     # Flatpak Ende
-  */
-
   # Some applicationsare built for X11. XWayland acts as a translator, allowing
   # these X11 windows to run inside my Wayland session
   programs.xwayland.enable = true;
@@ -300,7 +297,6 @@ system.copySystemConfiguration = true;   # Copy configuration.nix into the nix s
   services.vnstat.enable =
     true; #
  # ac/dc/enable the playerctld daemon.
-
   services.playerctld.enable =
     false;
 

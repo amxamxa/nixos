@@ -1,20 +1,10 @@
 # treefmt.toml
+{ config, lib, pkgs, ... }:
 
-#      ```nix
-#      environment.systemPackages = with pkgs; [
-#        nixfmt-tree         treefmt
-#        black         taplo        shfmt
-#        jq        mdformat       yamlfix
-#        google-java-format       alejandra
-#        rustfmt        prettier
-#      ];
-#      ```
-#
 #  Nutzung:
 # $ treefmt 
- #$ treefmt --check (ohne Änderungen).
-
-#  Pre-Commit-Hook einrichten:
+# $ treefmt --check (ohne Änderungen).
+  #  Pre-Commit-Hook einrichten:
 #    - Installiere `pre-commit`: nixpkgs.pre-commit     
 #    - Erstelle eine Datei `.pre-commit-config.yaml` im Projektverzeichnis mit folgendem Inhalt:
 #      ```yaml
@@ -34,7 +24,8 @@
 #      ```
 #    - Der Hook wird nun vor jedem Commit automatisch ausgeführt.
 ##    - Passe die `includes`- und `options`-Felder an, um das Verhalten zu steuern.
-{ config, lib, pkgs, ... }:
+
+
 let
   treefmtConfig = pkgs.writeText "treefmt.toml" ''
     # Log level for unformattable files
@@ -125,7 +116,7 @@ in
   config = lib.mkIf config.treefmt.enable {
     environment.etc."treefmt.toml".source = treefmtConfig;
 
-    environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
       treefmt
       nixfmt-tree
       black

@@ -1,3 +1,4 @@
+# cosmic.nix
 { config, pkgs, lib, ... }:
 # sudo nixos-rebuild boot --profile-name xam4boom --cores 2 --show-trace
 {
@@ -26,21 +27,21 @@
   services.displayManager.cosmic-greeter.enable = true;
   services.desktopManager.cosmic.enable = true;
   services.desktopManager.cosmic.xwayland.enable = true;
-  
+
   # Performance-Optimierung (System76 Integration)
   services.system76-scheduler.enable = true;
 
   #  Disable warning about excluded packages
-  services.desktopManager.cosmic.showExcludedPkgsWarning = false;  
+  services.desktopManager.cosmic.showExcludedPkgsWarning = false;
 
   # Clipboard Manager not working, so zwlr_data_control_manager_v1 protocol needs to be available.
   # Macht die Variable systemweit verfügbar (auch außerhalb von Login-Shells)
   environment.variables.COSMIC_DATA_CONTROL_ENABLED = "1";
-  
+
   # disable libadwaita theming for Firefox
     programs.firefox.preferences."widget.gtk.libadwaita-colors.enabled" = false;
-  
-  
+
+
   nix.settings = {
     # Erlaubt das Beziehen von fertigen COSMIC-Builds ohne Flakes
     substituters = [ "https://cosmic.cachix.org" ];
@@ -51,7 +52,7 @@
 
   # sonstige Greeter / Login / display mgr
   services.displayManager.gdm.enable = false;
-  services.xserver.displayManager = { lightdm.enable = false; };
+  services.xserver.displayManager.lightdm.enable = false;
   #-------------------------------------------
   #  window / desktop mgr
   services.desktopManager = {
@@ -59,7 +60,7 @@
     pantheon.enable = false;
   };
   services.xserver.desktopManager = {
-    cinnamon.enable = false;
+  #  cinnamon.enable = false;
     lxqt.enable = false;
     xfce.enable = false;
   };
@@ -77,10 +78,10 @@
     cosmic-design-demo # Design Demo for the COSMIC Desktop Environment
     cosmic-applibrary # Application Template for the COSMIC Desktop Environment
     cosmic-ext-tweaks # Tweaking tool for the COSMIC
-    cargo #  Downloads your Rust project's dependencies and builds your project4 cosmic-ext-tweaks 
-    just #  4 cosmic-ext-tweaks 
-    libxkbcommon #  library to handle keyboard descriptions 4 cosmic-ext-tweaks 
-    libcosmicAppHook # Setup hook for configuring and wrapping applications based on libcosmic  #  4 cosmic-ext-tweaks 
+    cargo #  Downloads your Rust project's dependencies and builds your project4 cosmic-ext-tweaks
+    just #  4 cosmic-ext-tweaks
+    libxkbcommon #  library to handle keyboard descriptions 4 cosmic-ext-tweaks
+    libcosmicAppHook # Setup hook for configuring and wrapping applications based on libcosmic  #  4 cosmic-ext-tweaks
 
     cosmic-protocols # Additional wayland-protocols used by COSMIC de
     cosmic-applets # Applets for the COSMIC
@@ -91,7 +92,7 @@
     cosmic-ext-ctl # cli for managing the configuration of the COSMIC Desktop
     libcosmicAppHook # Setup hook for configuring and wrapping applications based on libcosmic
     xdg-desktop-portal-cosmic # XDG Desktop Portal for the COSMIC
-    
+
     # WAYLAND Stuff
     wlr-protocols # Wayland roots protocol extensions
     wlr-which-key # Keymap manager for wlroots-based compositors
@@ -102,10 +103,8 @@
     wlr-randr # Xrandr clone for wlroots compositors
     wlrctl # Command line utility for miscellaneous wlroots Wayland extensions
     wlroots_0_19 # Modular Wayland compositor library
-    imv # Command line image viewer for tiling window managers
-    wl-clipboard 
+     wl-clipboard
   nwg-look # GTK settings editor, designed to work properly in wlroots-based Wayland environment
-  wayshot # Native, blazing-fast screenshot tool for wlroots based compositors such as sway and river
   nwg-wrapper # Wrapper to display a script output or a text file content on the desktop in sway or other wlroots-based compositor
 
   ];

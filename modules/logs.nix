@@ -139,7 +139,11 @@
        # Use sharedscripts to run scripts once for all logs
       sharedscripts
 
-      # -─────────────────────────────
+   
+    '';
+  };
+/*
+   # -─────────────────────────────
       # SPECIFIC LOG FILES
       # Custom rotation rules for specific logs
       # -─────────────────────────────
@@ -175,9 +179,7 @@
         notifempty
         create 0644 root root
       }
-    '';
-  };
-
+      */
   # ============================================================================
   # CENTRALIZED LOG DIRECTORY STRUCTURE
   # Ensure all custom logs go to /var/log/nixos/
@@ -290,7 +292,6 @@
     # -─────────────────────────────
     # PRIORITY-BASED FILTERING
     # -─────────────────────────────
-
     # Only critical errors
     alias logscrit='journalctl -b 0 -p crit'
 
@@ -300,7 +301,6 @@
     # -─────────────────────────────
     # SEARCH & GREP
     # -─────────────────────────────
-
     # Search logs for pattern
     # Usage: logsgrep "error"
     logsgrep() {
@@ -315,14 +315,12 @@
     # -─────────────────────────────
     # BOOT LOGS
     # -─────────────────────────────
-
     # List all available boots
     alias logsboots='journalctl --list-boots'
 
     # -─────────────────────────────
     # DISK USAGE
     # -─────────────────────────────
-
     # Show journal disk usage
     alias logssize='journalctl --disk-usage'
 
@@ -330,25 +328,8 @@
     alias logsvacuum='sudo journalctl --vacuum-time=2weeks'
 
     # -─────────────────────────────
-    # SPECIFIC COMMON SERVICES
-    # -─────────────────────────────
-
-    # Audio logs
-    alias logsaudio='journalctl -b 0 -u pipewire -u wireplumber --user -u set-volume'
-
-    # Network logs
-    alias logsnet='journalctl -b 0 -u NetworkManager'
-
-    # System logs (boot, systemd, etc.)
-    alias logssys='journalctl -b 0 -u systemd-journald'
-
-    # PAM authentication logs
-    alias logspam='journalctl -b 0 | grep pam'
-
-    # -─────────────────────────────
     # CUSTOM LOG FILES (non-journald)
     # -─────────────────────────────
-
     # View sudo log
     alias logssudo='sudo tail -f /var/log/nixos/sudo.log'
     # View permissions log
@@ -761,16 +742,6 @@
     Real-time color         → ccze       → logscolorf
     SQL queries             → lnav       → logssql
 
-    TOOL COMPARISON:
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    Tool       Interface  Best For              Real-time  SQL
-    -────────────────────────────
-    journalctl CLI        Quick queries         Yes        No
-    lnav       TUI        Analysis/Statistics   Yes        Yes
-    ccze       CLI        Readable output       Yes        No
-    glogg      GUI        Visual exploration    No         No
-    multitail  TUI        Multiple logs         Yes        No
-
     JOURNALCTL QUICK COMMANDS:
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     journalctl -b 0                # Current boot
@@ -781,61 +752,6 @@
     journalctl --since "1h ago"    # Time filter
     journalctl --disk-usage        # Check size
 
-    LNAV INTERACTIVE KEYS:
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    /pattern   Search forward      ;          SQL query mode
-    n / N      Next/prev match     i          Histogram view
-    m          Mark line           q          Quit
-    TAB        Switch files        ?          Help
-
-    LNAV SQL EXAMPLES:
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    ;SELECT COUNT(*) FROM all_logs WHERE log_level = 'error'
-    ;SELECT log_time, log_body FROM all_logs WHERE log_body LIKE '%fail%'
-
-    MULTITAIL KEYS:
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    b          Scroll back         0-9        Jump to window
-    /pattern   Search              m          Merge windows
-    q          Quit                h          Help
-
-    CCZE COLOR CODES:
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    Red        Errors/failures     Yellow     Warnings
-    Green      Success/OK          Blue       Info messages
-    Cyan       Timestamps/IPs      Magenta    URLs/paths
-
-    COMMON WORKFLOWS:
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    Quick check:     logse
-    Audio debug:     logsaudio-multi → logsaudio-nav
-    Service check:   logsvc pipewire → logsnav-svc pipewire
-    Find errors:     logsgrep "error" → logssearch "error"
-    Boot compare:    logsgui-export (boot 0 and boot -1)
-
-    ESSENTIAL ALIASES:
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    logs           All current boot logs
-    logsf          Follow logs live
-    logse          Only errors (colorized)
-    logsaudio      Audio logs (colorized)
-    logsaudio-nav  Audio logs in lnav
-    logsaudio-multi Audio logs split view
-    logsnav        All logs in lnav
-    logscolor      Colorized output
-    logsmulti      Multiple logs split
-    logsgui-export Export and open in glogg
-    logssudo       Sudo log (colorized)
-    logshelp       Show all aliases
-
-    PRO TIPS:
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    • Export once, analyze multiple ways
-    • Use ccze for readability, lnav for analysis, glogg for visual
-    • multitail for live comparison, lnav for historical patterns
-    • Save lnav sessions automatically
-    • Combine tools: journalctl | ccze | lnav
-
     HELP:
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     logshelp                              # All aliases
@@ -843,7 +759,5 @@
     man journalctl / lnav / ccze / multitail
   '';
 
-  # Create tools cheatsheet
-  #environment.etc."nixos/docs/logging-tools-cheatsheet.md".source =     builtins.toFile "logging-tools-cheatsheet.md" (builtins.readFile ./logging-tools-cheatsheet.md);
 }
 
