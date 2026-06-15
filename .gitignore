@@ -3,5 +3,5 @@ bkp/
 .codex/
 AGENTS.md
 hardware-configuration.nix
-
+/report
 sec/
